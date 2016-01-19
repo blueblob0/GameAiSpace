@@ -3,6 +3,3 @@
 #include "GalaxyGen.h"
 #include "Star.h"
 
-
-
-
