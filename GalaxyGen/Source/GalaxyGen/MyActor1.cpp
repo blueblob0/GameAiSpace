@@ -1,12 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
-// 
- #include "GalaxyGen.h"
- #include "CelestialBody.h"
 
+#include "GalaxyGen.h"
+#include "MyActor1.h"
 
 
 // Sets default values
-ACelestialBody::ACelestialBody()
+AMyActor1::AMyActor1()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -14,17 +13,16 @@ ACelestialBody::ACelestialBody()
 }
 
 // Called when the game starts or when spawned
-void ACelestialBody::BeginPlay()
+void AMyActor1::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
 // Called every frame
-void ACelestialBody::Tick( float DeltaTime )
+void AMyActor1::Tick( float DeltaTime )
 {
 	Super::Tick( DeltaTime );
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("This is an on screen message!"));
-	
+
 }
 

@@ -12,8 +12,11 @@ UCLASS()
 class GALAXYGEN_API AStar : public ACelestialBody
 {
 	GENERATED_BODY()
-	
-	
+
+
+public:
+		
+		
 	
 	
 };
