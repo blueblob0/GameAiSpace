@@ -14,7 +14,7 @@ public class AlienCreature : MonoBehaviour {
     /// </summary>
     protected virtual void Start () {
         //Create the body of the creature
-        createBody(5);
+        createBody();
 	}
 	
 	/// <summary>
@@ -43,24 +43,33 @@ public class AlienCreature : MonoBehaviour {
         //Get the position where the heads will spawn
         Vector3 headSpawnPos = body.transform.position;
         headSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y;
-        headSpawnPos.x += body.GetComponent<Renderer>().bounds.size.x * (headCount / 2);
-        //List to hold the heads
+        //Parent to hold all of the heads
+        GameObject headParent = new GameObject("Head Parent");
+        headParent.transform.position = headSpawnPos;
+        headParent.transform.SetParent(body.transform);
+        //List to kee ptrack of all the heads
         List<GameObject> heads = new List<GameObject>();
         //Loop through the amount of heads and spawn them in
         for(ushort i = 0; i < headCount; i++) {
             //Spawn in the primitive
             GameObject headToSpawn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //Set the parent
-            headToSpawn.transform.SetParent(body.transform);
             //Set the position
             headToSpawn.transform.position = headSpawnPos;
-            headSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x;
+            headSpawnPos.x += headToSpawn.GetComponent<Renderer>().bounds.size.x;
             //Scale the heads down
             headToSpawn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+            //Set the parent
+            headToSpawn.transform.SetParent(headParent.transform);
             //Change the name
             headToSpawn.name = "Head " + (i + 1);
-            //Add into the list
+            //Add to the list
             heads.Add(headToSpawn);
+        }
+        //Center the heads
+        if(headCount > 1) {
+            Vector3 newPos = headParent.transform.position;
+            newPos.x -= 0.5f * (headCount - 1);
+            headParent.transform.position = newPos;
         }
 
         //Create the arms
