@@ -26,6 +26,9 @@ public:
 	// Called every frame
 	virtual void Tick( float DeltaSeconds ) override;
 
+	UPROPERTY(BluePrintReadWrite, Category = "THIS ONE")
+	AStar *spawnStar;
+
 	
 	
 };

@@ -7,10 +7,10 @@ public class Star : CelestialBody
     public List<GameObject> planets = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
-    const float dist = 1.5f;
-    const float minDis = 2.5f;
+    const float dist = 3.5f;
+    const float minDis = 1.5f;
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
@@ -39,24 +39,25 @@ public class Star : CelestialBody
         {
             numPlanets = Random.Range(11, 14); //11 12 13
         }
-        
+
         float hold = 0;
-        for(int i=1; i <= numPlanets; i++)
+        for (int i = 0; i < numPlanets; i++)
         {
-            hold =SpawnPlanet(hold);
+            planets.Add(SpawnSatalite(hold,minDis,dist,planetPrefabName));
+            hold = planets[i].GetComponent<Satalite>().distPlanet;
 
         }
 
 
 
     }
-
+    /*
     float SpawnPlanet(float MoveAmount)
     {
         bool move2d = true;
         // star by moving out a bit from the planet 
         float move = MoveAmount + Random.Range(minDis, dist);
-       
+        Debug.Log(move);
         spheres.Add(move);
         Vector3 starPos;
         if (move2d)
@@ -70,7 +71,7 @@ public class Star : CelestialBody
         {
             starPos = Random.onUnitSphere * move;
         }
-       
+
         //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));
         GameObject a = Instantiate(Resources.Load(planetPrefabName)) as GameObject;
         a.GetComponent<Planet>().myStar = gameObject;
@@ -81,28 +82,30 @@ public class Star : CelestialBody
 
         return move;
     }
-
+    */
     // Update is called once per frame
-    void Update () {
-
-        
-
-
-
-
-
-	}
-    
-     void OnDrawGizmos()
+    void Update()
     {
 
-        foreach(float f in spheres)
+
+
+
+
+
+
+    }
+
+
+    void OnDrawGizmos()
+    {
+
+        foreach (float f in spheres)
         {
             Gizmos.color = Color.yellow;
             Gizmos.DrawWireSphere(transform.position, f);
 
         }
 
-        
+
     }
 }
