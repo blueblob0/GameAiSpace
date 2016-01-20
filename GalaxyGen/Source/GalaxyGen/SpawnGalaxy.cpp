@@ -22,7 +22,7 @@ ASpawnGalaxy::ASpawnGalaxy()
 	UE_LOG(LogTemp, Warning, TEXT("START"));
 	for (int i = 0; i < numofSuns;i++)
 	{
-		//SpawnSun();
+		SpawnSun();
 	}
 
 }
@@ -63,18 +63,17 @@ void ASpawnGalaxy::SpawnSun()
 
 	FVector hold =  FVector(0.f, 0.f, 300.f);
 	FRotator holdr = FRotator::ZeroRotator;
-	
+	/*
 	AStar* A1 = FindObject<AStar>(nullptr, TEXT("Star"));
 	if (A1 == NULL) {
 		UE_LOG(LogTemp, Warning, TEXT("NULL"));
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("Null"));
-	}
+	}*/
 	
-	CreateCloneOfMyActor(A1, hold, holdr);
+	//CreateCloneOfMyActor(A1, hold, holdr);
 
 	//AMySpawner* NewActor = GetWorld()->SpawnActor<AMySpawner>(GetClass(), NewLocation, FRotator::ZeroRotator);
-	//AStar* NewActor = GetWorld()->SpawnActor<AStar>(GetClass(), hold, FRotator::ZeroRotator);
-
+	AStar* NewActor = GetWorld()->SpawnActor<AStar>(spawnStar, hold, FRotator::ZeroRotator);
 	
 		
 	//UWorld* World = AActor::GetWorld();

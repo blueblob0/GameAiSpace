@@ -1,15 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Moon : CelestialBody {
+public class Moon : Satalite {
 
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        speed = Random.Range(50, 70);
+    }
 	
-	}
 	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+
+   
 }
