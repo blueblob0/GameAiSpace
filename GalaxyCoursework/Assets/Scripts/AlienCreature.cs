@@ -10,6 +10,7 @@ using System.Collections.Generic;
 public class AlienCreature : MonoBehaviour {
 
     //Set in inspector
+    public string creatureName = "Change my name";
     public ushort maxAmountOfHeads = 1;
     public ushort maxAmountOfArms = 2;
     public ushort maxAmountOfLegs = 2;
@@ -31,6 +32,9 @@ public class AlienCreature : MonoBehaviour {
         if(maxAmountOfLegs < 2) {
             maxAmountOfLegs = 2;
         }
+
+        //Set the name
+        name = creatureName;
 
         //Get the object's rotation
         Quaternion rot = transform.rotation;
