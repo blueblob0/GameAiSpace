@@ -38,7 +38,7 @@ public class AlienCreature : MonoBehaviour {
         transform.rotation = new Quaternion();
 
         //Create the creature
-        createCreature(maxAmountOfHeads, maxAmountOfLegs, maxAmountOfLegs);
+        createCreature(maxAmountOfHeads, maxAmountOfArms, maxAmountOfLegs);
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
@@ -99,7 +99,7 @@ public class AlienCreature : MonoBehaviour {
             }
 
             //Create the arms
-            ushort armCount = (ushort)Random.Range(1, maxArms + 1);
+            ushort armCount = (ushort)Random.Range(2, maxArms + 1);
             //Get the position the arms will spawn
             Vector3 armSpawnPos = body.transform.position;
             armSpawnPos.x += body.GetComponent<Renderer>().bounds.size.x;
@@ -107,6 +107,8 @@ public class AlienCreature : MonoBehaviour {
             GameObject armParent = new GameObject("Arm Parent");
             armParent.transform.position = body.transform.position;
             armParent.transform.SetParent(body.transform);
+            //Used to position the arms
+            int twoCheck = 2;
             //Loop through the arm count and spawn in the arms
             for(ushort i = 0; i < armCount; i++) {
                 //Multiply the position by to put the arms on each side
@@ -124,6 +126,10 @@ public class AlienCreature : MonoBehaviour {
                 Vector3 temp = armtoSpawn.transform.position;
                 temp.x *= spawnMod;
                 armtoSpawn.transform.position = temp;
+                if(i == twoCheck - 1) {
+                    armSpawnPos.y -= armtoSpawn.GetComponent<Renderer>().bounds.size.x / 2;
+                    twoCheck += 2;
+                }
                 //Scale the arm
                 armtoSpawn.transform.localScale = new Vector3(0.25f, 0.75f, 0.25f);
                 //rotate
@@ -134,7 +140,7 @@ public class AlienCreature : MonoBehaviour {
                 if(isEven(i)) {
                     armtoSpawn.name = "Right Arm " + (i + 1);
                 } else {
-                    armtoSpawn.name = "Left Arm " + (i + 1);
+                    armtoSpawn.name = "Left   Arm " + (i + 1);
                 }
             }
             
