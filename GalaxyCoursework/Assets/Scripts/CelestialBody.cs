@@ -15,7 +15,7 @@ public class CelestialBody : MonoBehaviour {
     /// <summary>
     /// spawing Satalite around things 
     /// </summary>
-    /// <param name="MoveAmount"></param>
+    /// <param name="MoveAmount">The distance you have to move to start spawning from</param>
     /// <param name="minDist"> The min dsitance from previous one</param>
     /// <param name="MaxDist"> the max distance</param>
     /// <param name="prefabName"> name of prefab to spawn</param>

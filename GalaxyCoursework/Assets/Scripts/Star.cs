@@ -7,8 +7,8 @@ public class Star : CelestialBody
     public List<GameObject> planets = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
-    const float dist = 3.5f;
-    const float minDis = 1.5f;
+    const float dist = 1.5f;
+    const float minDis = 0.5f;
     // Use this for initialization
     void Start()
     {
@@ -31,7 +31,7 @@ public class Star : CelestialBody
         {
             numPlanets = Random.Range(5, 8); //567
         }
-        else if (numPlanets < 80)
+        else if (numPlanets < 90)
         {
             numPlanets = Random.Range(8, 11); //8910
         }
@@ -40,7 +40,7 @@ public class Star : CelestialBody
             numPlanets = Random.Range(11, 14); //11 12 13
         }
 
-        float hold = 0;
+        float hold = transform.localScale.x / 2;
         for (int i = 0; i < numPlanets; i++)
         {
             planets.Add(SpawnSatalite(hold,minDis,dist,planetPrefabName));
