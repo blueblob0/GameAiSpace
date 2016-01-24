@@ -1,13 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Satalite : CelestialBody
+public abstract class Satalite : CelestialBody
 {
-    protected int speed;
+    
     public GameObject orbitingBody;
     public float distPlanet;// distance from planet
-    void Update()
+    protected override void Update()
     {
-        transform.RotateAround(orbitingBody.transform.position, Vector3.up, speed * Time.deltaTime);
+        transform.RotateAround(orbitingBody.transform.position, Vector3.up, moveAmount * Time.deltaTime);
+
     }
+
+
+    protected override abstract void Start();
+
+
+
 }

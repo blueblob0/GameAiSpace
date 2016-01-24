@@ -4,23 +4,23 @@ using System.Collections.Generic;
 public class Planet : Satalite
 {
     int numPlanets;
-    public List<GameObject> planets = new List<GameObject>();
-    public List<float> spheres = new List<float>();
+    public List<GameObject> moons = new List<GameObject>();    
     public string planetPrefabName = "MoonPrefab";
-    const float dist = 0.3f;
-    const float minDis = 0.6f;
+    const float dist = 0.4f;
+    const float minDis = 0.2f;
 
 
 
     // Use this for initialization
-    void Start () {
+    protected override void Start () {
         numPlanets = Random.Range(0, 4);
-        speed = Random.Range(10,35);
+      
+        mass = 5.972f * Mathf.Pow(10, 24);
         float hold = transform.lossyScale.x/2;
         for (int i = 0; i < numPlanets; i++)
         {
-            planets.Add(SpawnSatalite(hold, minDis, dist, planetPrefabName));
-            hold = planets[i].GetComponent<Satalite>().distPlanet;
+            moons.Add(SpawnSatalite(hold, minDis, dist, planetPrefabName));
+            hold = moons[i].GetComponent<Satalite>().distPlanet;
 
         }
 
@@ -50,7 +50,9 @@ public class Planet : Satalite
         }
         texture.Apply();
     }
-	
-	// Update is called once per frame
-	
+
+    // Update is called once per frame
+    
+ 
+    
 }
