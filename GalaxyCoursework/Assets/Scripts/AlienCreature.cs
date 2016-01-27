@@ -63,6 +63,11 @@ public class AlienCreature : MonoBehaviour {
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
     protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2){
         if(!spawned) {
+            //Get the random values so we know what dimentions to make the body
+            ushort headCount = (ushort)Random.Range(1, maxHeads + 1);
+            ushort armCount = (ushort)Random.Range(2, maxArms + 1);
+            ushort legCount = (ushort)Random.Range(2, maxLegs + 1);
+
             //Create a cube for the body
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Cube);
             //Set the position of the body
@@ -74,8 +79,7 @@ public class AlienCreature : MonoBehaviour {
             //Make the body a child of this object
             body.transform.SetParent(transform);
 
-            //Create the heads
-            ushort headCount = (ushort)Random.Range(1, maxHeads + 1);
+            //-----------------Create the heads-----------------\\
             //Get the position where the heads will spawn
             Vector3 headSpawnPos = body.transform.position;
             headSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y;
@@ -104,8 +108,7 @@ public class AlienCreature : MonoBehaviour {
                 headParent.transform.position = newPos;
             }
 
-            //Create the arms
-            ushort armCount = (ushort)Random.Range(2, maxArms + 1);
+            //----------------Create the arms---------------------\\
             //Get the position the arms will spawn
             Vector3 armSpawnPos = body.transform.position;
             armSpawnPos.x += body.GetComponent<Renderer>().bounds.size.x;
@@ -150,8 +153,7 @@ public class AlienCreature : MonoBehaviour {
                 }
             }
 
-            //Create the legs
-            ushort legCount = (ushort)Random.Range(2, maxLegs + 1);
+            //------------------Create the legs----------------------\\
             //Get the position the legs will spawn
             Vector3 legSpawnPos = body.transform.position;
             legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y;
