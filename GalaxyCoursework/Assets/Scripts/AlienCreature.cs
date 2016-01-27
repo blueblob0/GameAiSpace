@@ -73,7 +73,7 @@ public class AlienCreature : MonoBehaviour {
             //Set the position of the body
             body.transform.position = transform.position;
             //Set the scale
-            body.transform.localScale = new Vector3(1, 1.5f, 1);
+            body.transform.localScale = new Vector3(1, 1, 1);
             //Set the name
             body.name = "Body";
             //Make the body a child of this object
@@ -158,6 +158,7 @@ public class AlienCreature : MonoBehaviour {
             Vector3 legSpawnPos = body.transform.position;
             legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y;
             legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x / 2;
+            legSpawnPos.z += body.GetComponent<Renderer>().bounds.size.z / 2;
             //Parent to hold all of the legs
             GameObject legParent = new GameObject("Leg Parent");
             legParent.transform.position = legSpawnPos;
