@@ -149,7 +149,7 @@ public class AlienCreature : MonoBehaviour {
             }
 
             //Create the legs
-            ushort legCount = (ushort)Random.Range(2, maxLegs);
+            ushort legCount = (ushort)Random.Range(2, maxLegs + 1);
             //Get the position the legs will spawn
             Vector3 legSpawnPos = body.transform.position;
             legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y;
@@ -157,6 +157,30 @@ public class AlienCreature : MonoBehaviour {
             GameObject legParent = new GameObject("Leg Parent");
             legParent.transform.position = legSpawnPos;
             legParent.transform.SetParent(body.transform);
+            //Keep track of legs placed
+            ushort totalLegsPlaced = 0;
+            //Legs get placed in rows of 2
+            for(int i = 0; i < legCount; i += 2) { //first loop does the group of legs (i.e front two or back two)
+                for(int j = 0; j < 2; j++) { //Second loop does the actual legs
+                    //Make sure we dont spawn extra legs
+                    if(totalLegsPlaced < legCount) {
+                        //Spawn in the primitve
+                        GameObject legToSpawn = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                        //Set the position
+                        legToSpawn.transform.position = legSpawnPos;
+                        legSpawnPos.x += body.GetComponent<Renderer>().bounds.size.x;
+                        //Scale the legs
+                        legToSpawn.transform.localScale = new Vector3(0.25f, 0.5f, 0.25f);
+                        //Set the parent
+                        legToSpawn.transform.SetParent(legParent.transform);
+                        //Change the name
+                        legToSpawn.name = "Leg " + (i + 1);
+                    }
+                }
+                //Move the position back
+                legSpawnPos.z -= body.GetComponent<Renderer>().bounds.size.z;
+                legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x * 2;
+            }
 
             //Creature has now been spawned
             spawned = true;
