@@ -153,6 +153,7 @@ public class AlienCreature : MonoBehaviour {
             //Get the position the legs will spawn
             Vector3 legSpawnPos = body.transform.position;
             legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y;
+            legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x / 2;
             //Parent to hold all of the legs
             GameObject legParent = new GameObject("Leg Parent");
             legParent.transform.position = legSpawnPos;
