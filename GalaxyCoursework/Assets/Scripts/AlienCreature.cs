@@ -65,8 +65,10 @@ public class AlienCreature : MonoBehaviour {
         if(!spawned) {
             //Create a cube for the body
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            //Set the position of the body the gameObject's
+            //Set the position of the body
             body.transform.position = transform.position;
+            //Set the scale
+            body.transform.localScale = new Vector3(1, 1.5f, 1);
             //Set the name
             body.name = "Body";
             //Make the body a child of this object
