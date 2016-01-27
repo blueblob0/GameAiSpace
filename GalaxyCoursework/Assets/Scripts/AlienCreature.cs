@@ -142,13 +142,21 @@ public class AlienCreature : MonoBehaviour {
                 armtoSpawn.transform.SetParent(armParent.transform);
                 //Change the name
                 if(isEven(i)) {
-                    armtoSpawn.name = "Right Arm " + (i + 1);
+                    armtoSpawn.name = "Arm " + (i + 1) + " R";
                 } else {
-                    armtoSpawn.name = "Left   Arm " + (i + 1);
+                    armtoSpawn.name = "Arm " + (i + 1) + " L";
                 }
             }
-            
+
             //Create the legs
+            ushort legCount = (ushort)Random.Range(2, maxLegs);
+            //Get the position the legs will spawn
+            Vector3 legSpawnPos = body.transform.position;
+            legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y;
+            //Parent to hold all of the legs
+            GameObject legParent = new GameObject("Leg Parent");
+            legParent.transform.position = legSpawnPos;
+            legParent.transform.SetParent(body.transform);
 
             //Creature has now been spawned
             spawned = true;
