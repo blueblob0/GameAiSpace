@@ -7,13 +7,16 @@ public class Planet : Satalite
     public List<GameObject> planets = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "MoonPrefab";
-    const float dist = 0.3f;
-    const float minDis = 0.6f;
+    const float dist = 0.03f;
+    const float minDis = 0.06f;
 
 
 
     // Use this for initialization
-    void Start () {
+
+        
+    protected override void Start () {
+        base.Start();
         numPlanets = Random.Range(0, 4);
         speed = Random.Range(10,35);
         float hold = transform.lossyScale.x/2;
