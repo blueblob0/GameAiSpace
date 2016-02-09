@@ -47,9 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\AlienCreature.cs" />
+     <Compile Include="Assets\Scripts\BlackHole.cs" />
+     <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
      <Compile Include="Assets\Scripts\CreateGalaxy.cs" />
      <Compile Include="Assets\Scripts\Moon.cs" />
+     <Compile Include="Assets\Scripts\Noise.cs" />
      <Compile Include="Assets\Scripts\Planet.cs" />
      <Compile Include="Assets\Scripts\Satalite.cs" />
      <Compile Include="Assets\Scripts\Star.cs" />

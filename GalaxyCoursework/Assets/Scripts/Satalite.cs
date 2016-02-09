@@ -9,5 +9,6 @@ public class Satalite : CelestialBody
     void Update()
     {
         transform.RotateAround(orbitingBody.transform.position, Vector3.up, speed * Time.deltaTime);
+        Debug.Log(orbitingBody.transform.position);
     }
 }
