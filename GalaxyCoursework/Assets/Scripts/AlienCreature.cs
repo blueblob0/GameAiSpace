@@ -59,7 +59,7 @@ public class AlienCreature : MonoBehaviour {
         creatureName = "";
         int nameLength = Random.Range(2, 6);
         for(int i = 0; i < nameLength; i++) {
-            creatureName += nameParts[Random.Range(1, 40)];
+            creatureName += nameParts[Random.Range(0, nameParts.Length)];
         }
 
         //Get the object's rotation
