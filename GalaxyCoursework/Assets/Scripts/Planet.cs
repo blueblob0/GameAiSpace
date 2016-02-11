@@ -36,18 +36,15 @@ public class Planet : Satalite
         for (int y = 0; y < texture.height; y++)
         {
             
-
             if (y == oneSect )
             {
                 count++;
                 color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
                 oneSect = (texture.height / numOfChanges) * count;
-            }          
-
+            }
 
             for (int x = 0; x < texture.width; x++)
-            {
-                
+            {                
                 texture.SetPixel(x, y, color);
             }
         }
@@ -56,4 +53,18 @@ public class Planet : Satalite
 	
 	// Update is called once per frame
 	
+}
+
+enum biome
+{
+    Land,
+    Forest,
+    Desert,
+    Radiated,
+    Ice,
+    Water,
+    Mountainous,
+    Lava
+
+
 }

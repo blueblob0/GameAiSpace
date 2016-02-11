@@ -17,14 +17,18 @@ public class BlackHole : CelestialBody
 	
 	// Update is called once per frame
 	void Update () {
-
-        foreach (GameObject s in controler.stars)
+        if (mass > 0)
         {
-            
-            //float force = 1000 * mass / Vector3.Distance(transform.position, s.transform.position * s.GetComponent<Star>().mass);
-           // s.transform.position = Vector3.MoveTowards(s.transform.position, transform.position, force * Time.deltaTime);
-            // Debug.Log(force); 
+            foreach (GameObject s in controler.stars)
+            {
+
+                float force = 100 * mass/ s.GetComponent<Star>().mass; // / Vector3.Distance(transform.position, s.transform.position * s.GetComponent<Star>().mass);
+                s.transform.position = Vector3.MoveTowards(s.transform.position, transform.position, force * Time.deltaTime);
+                // Debug.Log(force); 
+            }
+
         }
+        
     }
 
     void OnTriggerEnter(Collider other)
@@ -45,7 +49,9 @@ public class BlackHole : CelestialBody
         //Debug.Log(other);
         //Debug.Log(other.GetComponent<CelestialBody>());
         //mass += other.GetComponent<CelestialBody>().Mass;
-        transform.localScale = Vector3.one * (mass );
+
+        //transform.localScale = Vector3.one * (mass );
+
         //Debug.Log(mass);
         mass -= other.GetComponent<CelestialBody>().Mass;
 

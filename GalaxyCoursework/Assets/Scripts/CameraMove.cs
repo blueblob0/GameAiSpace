@@ -5,10 +5,10 @@ public class CameraMove : MonoBehaviour {
     private float maxSpeed =1.0f;
     private float acceleration = 1.0f;
     public Vector3 velocity;
-    private bool left ;
-    private bool right;
-    private bool forward;
-    private bool back;
+    public bool left ;
+    public bool right;
+    public bool forward;
+    public bool back;
     private bool mouseHeld;
 
     Vector2 _mouseAbsolute;
@@ -86,22 +86,25 @@ public class CameraMove : MonoBehaviour {
         if (forward && velocity.x < maxSpeed)
         {
             velocity.x += acceleration * Time.deltaTime;
-
+            //Debug.Log("14");
         }
         else if (!forward && velocity.x > 0)
         {
-            velocity.x -= (acceleration + velocity.x / 2) * Time.deltaTime;
+            velocity.x -= (acceleration + velocity.x ) * Time.deltaTime;
+            //Debug.Log("13");
         }
 
 
         if (back && velocity.x > -maxSpeed)
         {
             velocity.x -= acceleration * Time.deltaTime;
+            //Debug.Log("12");
 
         }
         else if (!back && velocity.x < 0)
         {
-            velocity.x += (acceleration - velocity.x / 2) * Time.deltaTime;
+            //Debug.Log("11");
+            velocity.x += (acceleration - velocity.x ) * Time.deltaTime;
         }
 
         if (left && velocity.z > -maxSpeed)
@@ -110,7 +113,7 @@ public class CameraMove : MonoBehaviour {
         }
         else if (!left && velocity.z < 0)
         {
-            velocity.z += (acceleration - velocity.z / 2) * Time.deltaTime;
+            velocity.z += (acceleration - velocity.z ) * Time.deltaTime;
 
         }
         if (right && velocity.z < maxSpeed)
@@ -119,7 +122,7 @@ public class CameraMove : MonoBehaviour {
         }
         else if (!right && velocity.z > 0)
         {
-            velocity.z -= (acceleration +velocity.z/2 )* Time.deltaTime ;
+            velocity.z -= (acceleration +velocity.z )* Time.deltaTime ;
 
         }
 
@@ -129,6 +132,7 @@ public class CameraMove : MonoBehaviour {
 
             velocity.z = 0;
         }
+
         if (velocity.x < 0.01f && velocity.x > -0.01f)
         {
 

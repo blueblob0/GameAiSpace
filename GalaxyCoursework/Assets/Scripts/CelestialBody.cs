@@ -71,7 +71,7 @@ public class CelestialBody : MonoBehaviour {
     protected GameObject SpawnSatalite(SataliteDetails starPos, string prefabName)
     {
 
-        // star by moving out a bit from the planet 
+        // start by moving out a bit from the planet 
         
 
         //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));
@@ -81,7 +81,7 @@ public class CelestialBody : MonoBehaviour {
         holds.distPlanet = starPos.distFromBody;
         a.name = starPos.distFromBody.ToString(); 
         a.transform.SetParent(gameObject.transform);
-        a.transform.position = starPos.location;
+        a.transform.localPosition = starPos.location;
         return a;
     }
     
@@ -103,8 +103,8 @@ public class CelestialBody : MonoBehaviour {
 
         starPos = Random.insideUnitCircle.normalized * move;
         //Vector3 starPos = Vector3.one * move;
-        starPos.z = starPos.y + transform.position.z;
-        starPos.x = starPos.x + transform.position.x;
+        starPos.z = starPos.y; //+ transform.position.z;
+        //starPos.x = starPos.x + transform.position.x;
         starPos.y = 0;
 
 
@@ -132,12 +132,6 @@ public struct SataliteDetails
         location = aLocation;
         distFromBody = hold;
     }
-
-
-  
-
-
-
 }
 
 
