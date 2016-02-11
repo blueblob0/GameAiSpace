@@ -15,6 +15,11 @@ public class AlienCreature : MonoBehaviour {
     public ushort maxAmountOfArms = 2;
     public ushort maxAmountOfLegs = 2;
 
+    //Lists to keep track of the limbs
+    List<GameObject> heads = new List<GameObject>();
+    List<GameObject> arms = new List<GameObject>();
+    List<GameObject> legs = new List<GameObject>();
+
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
 
@@ -82,8 +87,6 @@ public class AlienCreature : MonoBehaviour {
             GameObject headParent = new GameObject("Head Parent");
             headParent.transform.position = headSpawnPos;
             headParent.transform.SetParent(body.transform);
-            //Keep track of the heads placed
-            ushort totalHeadsPlaced = 0;
             //Offset to line the heads up
             float offset = 0;
             //Loop through the amount of heads and spawn them in
@@ -93,7 +96,7 @@ public class AlienCreature : MonoBehaviour {
                 //Scale the heads down
                 headToSpawn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                 //Correct the spawn position
-                if(totalHeadsPlaced == 0) {
+                if(heads.Count == 0) {
                     headSpawnPos.y += headToSpawn.transform.localScale.y / 2;
                 }
                 //Set the position
@@ -104,11 +107,10 @@ public class AlienCreature : MonoBehaviour {
                 //Change the name
                 headToSpawn.name = "Head " + (i + 1);
                 //Increase the offset
-                if(totalHeadsPlaced > 0) {
+                if(heads.Count > 0) {
                     offset += headToSpawn.GetComponent<Renderer>().bounds.size.x;
                 }
-                //Increase the count
-                totalHeadsPlaced++;
+                heads.Add(headToSpawn);
             }
             //Center the heads
             if(maxHeads > 1) {
@@ -127,12 +129,10 @@ public class AlienCreature : MonoBehaviour {
             armParent.transform.SetParent(body.transform);
             //Used to position the arms
             int twoCheck = 2;
-            //Keep track of how many arms are placed
-            ushort totalArmsPlaced = 0;
             //Loop through the arm count and spawn in the arms
             for(int i = 0; i < maxArms; i += 2) {
                 for(int j = 0; j < 4; j++) {
-                    if(totalArmsPlaced < maxArms) {
+                    if(arms.Count < maxArms) {
                         //Multiply the position by to put the arms on each side
                         short spawnMod;
                         //If the number is even we want to spawn the arm on X+ else spawn on X-
@@ -146,7 +146,7 @@ public class AlienCreature : MonoBehaviour {
                         //Scale the arm
                         armtoSpawn.transform.localScale = new Vector3(0.25f, 0.75f, 0.25f);
                         //Correct the spawn position
-                        if(totalArmsPlaced == 0) {
+                        if(arms.Count == 0) {
                             armSpawnPos.x += armtoSpawn.GetComponent<Renderer>().bounds.size.x;
                             armSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y / 4;
                         }
@@ -169,8 +169,7 @@ public class AlienCreature : MonoBehaviour {
                         } else {
                             armtoSpawn.name = "Arm " + (i + 1) + " L";
                         }
-                        //Increase the count
-                        totalArmsPlaced++;
+                        arms.Add(armtoSpawn);
                     }
                 }
                 //Reset the position
@@ -193,19 +192,17 @@ public class AlienCreature : MonoBehaviour {
             GameObject legParent = new GameObject("Leg Parent");
             legParent.transform.position = legSpawnPos;
             legParent.transform.SetParent(body.transform);
-            //Keep track of legs placed
-            ushort totalLegsPlaced = 0;
             //Legs get placed in rows of 2
             for(int i = 0; i < maxLegs; i += 2) { //first loop does the group of legs (i.e front two or back two)
                 for(int j = 0; j < 2; j++) { //Second loop does the actual legs
                     //Make sure we dont spawn extra legs
-                    if(totalLegsPlaced < maxLegs) {
+                    if(legs.Count < maxLegs) {
                         //Spawn in the primitve
                         GameObject legToSpawn = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                         //Scale the legs
                         legToSpawn.transform.localScale = new Vector3(0.25f, 0.75f, 0.25f);
                         //Correct the spawn pos on the first leg
-                        if(totalLegsPlaced == 0) {
+                        if(legs.Count == 0) {
                             legSpawnPos.y -= legToSpawn.GetComponent<Renderer>().bounds.size.y / 2;
                         }
                         //Set the position
@@ -215,8 +212,7 @@ public class AlienCreature : MonoBehaviour {
                         legToSpawn.transform.SetParent(legParent.transform);
                         //Change the name
                         legToSpawn.name = "Leg " + (j + i + 1);
-                        //Increased the count
-                        totalLegsPlaced++;
+                        legs.Add(legToSpawn);
                     }
                 }
                 //Move the position back
