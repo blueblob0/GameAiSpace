@@ -14,6 +14,9 @@ public class AlienCreature : MonoBehaviour {
     public ushort maxAmountOfHeads = 1;
     public ushort maxAmountOfArms = 2;
     public ushort maxAmountOfLegs = 2;
+    public ushort intelligence = 0;
+    public ushort strength = 0;
+    public ushort speed = 0;
 
     //Lists to keep track of the limbs
     List<GameObject> heads = new List<GameObject>();
