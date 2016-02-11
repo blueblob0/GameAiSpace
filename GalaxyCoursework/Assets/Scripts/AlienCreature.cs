@@ -63,11 +63,6 @@ public class AlienCreature : MonoBehaviour {
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
     protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2) {
         if(!spawned) {
-            //Get the random values so we know what dimentions to make the body
-            ushort headCount = (ushort)Random.Range(1, maxHeads + 1);
-            ushort armCount = (ushort)Random.Range(2, maxArms + 1);
-            ushort legCount = (ushort)Random.Range(2, maxLegs + 1);
-
             //Create a cube for the body
             GameObject body = GameObject.CreatePrimitive(PrimitiveType.Cube);
             //Set the position of the body
@@ -88,7 +83,7 @@ public class AlienCreature : MonoBehaviour {
             headParent.transform.position = headSpawnPos;
             headParent.transform.SetParent(body.transform);
             //Loop through the amount of heads and spawn them in
-            for(ushort i = 0; i < headCount; i++) {
+            for(ushort i = 0; i < maxHeads; i++) {
                 //Spawn in the primitive
                 GameObject headToSpawn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
                 //Set the position
@@ -102,9 +97,9 @@ public class AlienCreature : MonoBehaviour {
                 headToSpawn.name = "Head " + (i + 1);
             }
             //Center the heads
-            if(headCount > 1) {
+            if(maxHeads > 1) {
                 Vector3 newPos = headParent.transform.position;
-                newPos.x -= 0.5f * (headCount - 1);
+                newPos.x -= 0.5f * (maxHeads - 1);
                 headParent.transform.position = newPos;
             }
 
@@ -121,9 +116,9 @@ public class AlienCreature : MonoBehaviour {
             //Keep track of how many arms are placed
             ushort totalArmsPlaced = 0;
             //Loop through the arm count and spawn in the arms
-            for(int i = 0; i < armCount; i += 2) {
+            for(int i = 0; i < maxArms; i += 2) {
                 for(int j = 0; j < 4; j++) {
-                    if(totalArmsPlaced < armCount) {
+                    if(totalArmsPlaced < maxArms) {
                         //Multiply the position by to put the arms on each side
                         short spawnMod;
                         //If the number is even we want to spawn the arm on X+ else spawn on X-
@@ -180,10 +175,10 @@ public class AlienCreature : MonoBehaviour {
             //Keep track of legs placed
             ushort totalLegsPlaced = 0;
             //Legs get placed in rows of 2
-            for(int i = 0; i < legCount; i += 2) { //first loop does the group of legs (i.e front two or back two)
+            for(int i = 0; i < maxLegs; i += 2) { //first loop does the group of legs (i.e front two or back two)
                 for(int j = 0; j < 2; j++) { //Second loop does the actual legs
                                              //Make sure we dont spawn extra legs
-                    if(totalLegsPlaced < legCount) {
+                    if(totalLegsPlaced < maxLegs) {
                         //Spawn in the primitve
                         GameObject legToSpawn = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                         //Set the position
@@ -214,7 +209,7 @@ public class AlienCreature : MonoBehaviour {
     /// </summary>
     /// <param name="value">Value to pass</param>
     /// <returns></returns>
-    bool isEven(int value) {
+    private bool isEven(int value) {
         return value % 2 == 0;
     }
 }
