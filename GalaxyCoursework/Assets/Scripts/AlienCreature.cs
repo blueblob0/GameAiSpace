@@ -68,7 +68,7 @@ public class AlienCreature : MonoBehaviour {
             //Set the position of the body
             body.transform.position = transform.position;
             //Set the scale
-            body.transform.localScale = new Vector3(1, 2, 1);
+            body.transform.localScale = new Vector3(1, 1.5f, 1);
             //Set the name
             body.name = "Body";
             //Make the body a child of this object
@@ -77,29 +77,43 @@ public class AlienCreature : MonoBehaviour {
             //-----------------Create the heads-----------------\\
             //Get the position where the heads will spawn
             Vector3 headSpawnPos = body.transform.position;
-            headSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y;
+            headSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y / 2;
             //Parent to hold all of the heads
             GameObject headParent = new GameObject("Head Parent");
             headParent.transform.position = headSpawnPos;
             headParent.transform.SetParent(body.transform);
+            //Keep track of the heads placed
+            ushort totalHeadsPlaced = 0;
+            //Offset to line the heads up
+            float offset = 0;
             //Loop through the amount of heads and spawn them in
             for(ushort i = 0; i < maxHeads; i++) {
                 //Spawn in the primitive
                 GameObject headToSpawn = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                //Scale the heads down
+                headToSpawn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+                //Correct the spawn position
+                if(totalHeadsPlaced == 0) {
+                    headSpawnPos.y += headToSpawn.transform.localScale.y / 2;
+                }
                 //Set the position
                 headToSpawn.transform.position = headSpawnPos;
                 headSpawnPos.x += headToSpawn.GetComponent<Renderer>().bounds.size.x;
-                //Scale the heads down
-                headToSpawn.transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                 //Set the parent
                 headToSpawn.transform.SetParent(headParent.transform);
                 //Change the name
                 headToSpawn.name = "Head " + (i + 1);
+                //Increase the offset
+                if(totalHeadsPlaced > 0) {
+                    offset += headToSpawn.GetComponent<Renderer>().bounds.size.x;
+                }
+                //Increase the count
+                totalHeadsPlaced++;
             }
             //Center the heads
             if(maxHeads > 1) {
                 Vector3 newPos = headParent.transform.position;
-                newPos.x -= 0.5f * (maxHeads - 1);
+                newPos.x -= offset / 2;
                 headParent.transform.position = newPos;
             }
 
@@ -129,6 +143,13 @@ public class AlienCreature : MonoBehaviour {
                         }
                         //Spawn in the primitive
                         GameObject armtoSpawn = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                        //Scale the arm
+                        armtoSpawn.transform.localScale = new Vector3(0.25f, 0.75f, 0.25f);
+                        //Correct the spawn position
+                        if(totalArmsPlaced == 0) {
+                            armSpawnPos.x += armtoSpawn.GetComponent<Renderer>().bounds.size.x;
+                            armSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y / 4;
+                        }
                         //Set the position
                         armtoSpawn.transform.position = armSpawnPos;
                         Vector3 temp = armtoSpawn.transform.position;
@@ -138,8 +159,6 @@ public class AlienCreature : MonoBehaviour {
                             armSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.x / 2;
                             twoCheck += 2;
                         }
-                        //Scale the arm
-                        armtoSpawn.transform.localScale = new Vector3(0.25f, 0.75f, 0.25f);
                         //rotate
                         armtoSpawn.transform.rotation = Quaternion.Euler(0, 0, 90);
                         //Set the Parent
@@ -165,9 +184,11 @@ public class AlienCreature : MonoBehaviour {
             //------------------Create the legs----------------------\\
             //Get the position the legs will spawn
             Vector3 legSpawnPos = body.transform.position;
-            legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y;
-            legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x / 2;
-            legSpawnPos.z += body.GetComponent<Renderer>().bounds.size.z / 2;
+            legSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y / 2;
+            legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x / 4;
+            if(maxLegs > 2) {
+                legSpawnPos.z += body.GetComponent<Renderer>().bounds.size.z / 2;
+            }
             //Parent to hold all of the legs
             GameObject legParent = new GameObject("Leg Parent");
             legParent.transform.position = legSpawnPos;
@@ -177,26 +198,30 @@ public class AlienCreature : MonoBehaviour {
             //Legs get placed in rows of 2
             for(int i = 0; i < maxLegs; i += 2) { //first loop does the group of legs (i.e front two or back two)
                 for(int j = 0; j < 2; j++) { //Second loop does the actual legs
-                                             //Make sure we dont spawn extra legs
+                    //Make sure we dont spawn extra legs
                     if(totalLegsPlaced < maxLegs) {
                         //Spawn in the primitve
                         GameObject legToSpawn = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                        //Scale the legs
+                        legToSpawn.transform.localScale = new Vector3(0.25f, 0.75f, 0.25f);
+                        //Correct the spawn pos on the first leg
+                        if(totalLegsPlaced == 0) {
+                            legSpawnPos.y -= legToSpawn.GetComponent<Renderer>().bounds.size.y / 2;
+                        }
                         //Set the position
                         legToSpawn.transform.position = legSpawnPos;
-                        legSpawnPos.x += body.GetComponent<Renderer>().bounds.size.x;
-                        //Scale the legs
-                        legToSpawn.transform.localScale = new Vector3(0.25f, 0.5f, 0.25f);
+                        legSpawnPos.x += body.GetComponent<Renderer>().bounds.size.x / 2;
                         //Set the parent
                         legToSpawn.transform.SetParent(legParent.transform);
                         //Change the name
-                        legToSpawn.name = "Leg " + (i + 1);
+                        legToSpawn.name = "Leg " + (j + i + 1);
                         //Increased the count
                         totalLegsPlaced++;
                     }
                 }
                 //Move the position back
                 legSpawnPos.z -= body.GetComponent<Renderer>().bounds.size.z;
-                legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x * 2;
+                legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x;
             }
 
             //Creature has now been spawned
