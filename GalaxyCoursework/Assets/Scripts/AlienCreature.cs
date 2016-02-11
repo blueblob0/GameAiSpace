@@ -58,7 +58,7 @@ public class AlienCreature : MonoBehaviour {
     /// <summary>
     /// Spawns in the creature
     /// </summary>
-    /// <param name="maxHeads">The maximum amount of hezads the creature can have</param>
+    /// <param name="maxHeads">The maximum amount of heads the creature can have</param>
     /// <param name="maxArms">The maximum amount of arms the creature can have</param>
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
     protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2) {
@@ -68,7 +68,7 @@ public class AlienCreature : MonoBehaviour {
             //Set the position of the body
             body.transform.position = transform.position;
             //Set the scale
-            body.transform.localScale = new Vector3(1, 1, 1);
+            body.transform.localScale = new Vector3(1, 2, 1);
             //Set the name
             body.name = "Body";
             //Make the body a child of this object
