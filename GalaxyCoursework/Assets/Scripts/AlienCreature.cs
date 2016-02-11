@@ -57,10 +57,11 @@ public class AlienCreature : MonoBehaviour {
 
         //Set the name
         creatureName = "";
-        int nameLength = Random.Range(2, 6);
+        int nameLength = Random.Range(2, 5);
         for(int i = 0; i < nameLength; i++) {
             creatureName += nameParts[Random.Range(0, nameParts.Length)];
         }
+        creatureName = upperCaseFirst(creatureName);
 
         //Get the object's rotation
         Quaternion rot = transform.rotation;
@@ -294,5 +295,19 @@ public class AlienCreature : MonoBehaviour {
     /// <returns></returns>
     private bool isEven(int value) {
         return value % 2 == 0;
+    }
+
+    /// <summary>
+    /// Makes the first letter of the string upper case then returns that string
+    /// </summary>
+    /// <param name="s"></param>
+    /// <returns></returns>
+    private string upperCaseFirst(string s) {
+        // Check for empty string.
+        if(string.IsNullOrEmpty(s)) {
+            return string.Empty;
+        }
+        // Return char and concat substring.
+        return char.ToUpper(s[0]) + s.Substring(1);
     }
 }
