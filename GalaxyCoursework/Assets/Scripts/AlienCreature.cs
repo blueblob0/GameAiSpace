@@ -228,16 +228,14 @@ public class AlienCreature : MonoBehaviour {
                 } else {
                     higherVal = maxArms;
                 }
-                //Only move the body back if the count is more than 4, so ignore 4 of the limbs
-                higherVal -= 4;
                 //Increase the depth of the body based on the higher val
-                Vector3 scaleTemp = body.transform.localScale;
-                scaleTemp.z *= higherVal;
-                body.transform.localScale = scaleTemp;
+                //Vector3 scaleTemp = body.transform.localScale;
+                //scaleTemp.z *= higherVal;
+                //body.transform.localScale = scaleTemp;
                 //Make sure the body is pushed back
-                Vector3 posTemp = body.transform.position;
-                posTemp.z -= body.GetComponent<Renderer>().bounds.size.z / 4;
-                body.transform.position = posTemp;
+                //Vector3 posTemp = body.transform.position;
+                //posTemp.z -= body.GetComponent<Renderer>().bounds.size.z / higherVal;
+                //body.transform.position = posTemp;
             }
 
             //Set the parents
