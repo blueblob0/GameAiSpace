@@ -10,7 +10,7 @@ using System.Collections.Generic;
 public class AlienCreature : MonoBehaviour {
 
     //Set in inspector
-    public string creatureName = "Change my name";
+    public string creatureName = "Name";
     public ushort maxAmountOfHeads = 1;
     public ushort maxAmountOfArms = 2;
     public ushort maxAmountOfLegs = 2;
@@ -25,6 +25,20 @@ public class AlienCreature : MonoBehaviour {
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
+
+    //The rot val of the arms
+    private float rotSpeedArm = 30;
+    private float armTotalRot = 0;
+    //The rot val of the legs
+    private float rotSpeedLeg = 30;
+    private float legTotalRot = 0;
+
+    //An array of potential names
+    string[] nameParts = {"si", "la", "ti", "aa", "ul", "er", "ta", "ei",
+                          "ae", "ui", "lo", "ka", "pi", "cc", "sc", "br",
+                          "fj", "or", "nj", "st", "th", "yu", "pt", "kl",
+                          "cl", "ph", "pho", "ri", "we", "gh", "io", "ao",
+                          "nm", "mm", "nn", "jy", "fv", "vv", "tb", "lk"};
 
     /// <summary>
     /// Will spawn the creature into the game world
@@ -42,7 +56,11 @@ public class AlienCreature : MonoBehaviour {
         }
 
         //Set the name
-        name = creatureName;
+        creatureName = "";
+        int nameLength = Random.Range(2, 6);
+        for(int i = 0; i < nameLength; i++) {
+            creatureName += nameParts[Random.Range(1, 40)];
+        }
 
         //Get the object's rotation
         Quaternion rot = transform.rotation;
@@ -60,6 +78,27 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
+        //Rotate the arms
+        foreach(GameObject arm in arms) {
+            arm.transform.Rotate(new Vector3(rotSpeedArm * Time.deltaTime, 0, 0));
+        }
+        armTotalRot += rotSpeedArm * Time.deltaTime;
+        if(armTotalRot > 30) {
+            rotSpeedArm *= -1;
+        } else if(armTotalRot < -30) {
+            rotSpeedArm *= -1;
+        }
+
+        //Rotate the legs
+        foreach(GameObject leg in legs) {
+            leg.transform.Rotate(new Vector3(rotSpeedLeg * Time.deltaTime, 0, 0));
+        }
+        legTotalRot += rotSpeedLeg * Time.deltaTime;
+        if(legTotalRot > 30) {
+            rotSpeedLeg *= -1;
+        } else if(legTotalRot < -30) {
+            rotSpeedLeg *= -1;
+        }
 
     }
 
