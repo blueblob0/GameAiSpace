@@ -17,6 +17,7 @@ public class CreateGalaxy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+       // Random.seed = 1;
         int max = 10000;
         Application.runInBackground = true;
         Debug.Log("need to add lod to planets");
@@ -28,103 +29,26 @@ public class CreateGalaxy : MonoBehaviour
                 
        
         if (galaxy == GalaxyType.Test)
-        {
-            /*
-           for (float a = 0; a < xPos; a++)
-           {
-               for (float b = 0; b < zPos; b++)
-               {
-                   float holdx = a / xPos *10;
-                   float holdz = b / zPos * 10;
-
-                   float sample = Mathf.PerlinNoise(holdx, holdz);
-                   //Debug.Log(sample + " " + holdx + " " + holdz);
-                   if(sample>0)
-                   {
-                       //CheckStarNear(xPos, zPos);
-                       starPos = new Vector3(a*100, yPos, b * 100);
-                       GameObject Star = Instantiate(Resources.Load(starPrefabName)) as GameObject;
-                       Star.transform.SetParent(transform);
-
-                       stars.Add(Star);
-                       Star.transform.position = starPos;
-                       Star.GetComponent<Star>().SetMass(Mathf.CeilToInt(sample* baseStarMass));
-
-                   }
-
-               }
-
-           }
-           */
-            if (galaxy == GalaxyType.Circle)
-            {
-                int angle = Random.Range(0, 365);
-                int radius = Random.Range(0, 10000);
-                xPos = (int)(centerpos.x + radius * Mathf.Cos(angle * Mathf.Deg2Rad));
-                zPos = (int)(centerpos.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad));
-            }
-
-            int radiusMax = 40;
-            float radiusIncrease = 10;
+        {           
+            
+            int radiusMax = 50;
+            float radiusIncrease = 4;
             int angelMax = 360;
-
-            if (galaxy == GalaxyType.CircleRand)
-            {
-                for (float radius = 0; radius < radiusMax * radiusIncrease; radius += radiusIncrease)
-                {
-                    // look at this and more rotaions 
-                    for (float angle = 0; angle < angelMax; angle += (300 / radius))
-                    {
-                        // Debug.Log((150 / radius) + " " + radius);
-                        //float holdx = a / xPos * 10;
-                        // float holdz = b / zPos * 10;
-                        float holdx = centerpos.x + radius * Mathf.Cos(angle * Mathf.Deg2Rad);
-                        float holdz = centerpos.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad);
-
-                        float sample = Random.Range(0.2f, 0.9f);//Mathf.PerlinNoise(holdx, holdz);                   
-                                                                //Debug.Log(sample + " " + holdx + " " + holdz);
-                        if (sample > 0)
-                        {
-                            //CheckStarNear(xPos, zPos);
-                            starPos = new Vector3(holdx * 10, yPos, holdz * 10);
-                            GameObject Star = Instantiate(Resources.Load(starPrefabName)) as GameObject;
-                            Star.transform.SetParent(transform);
-
-                            stars.Add(Star);
-                            Star.transform.position = starPos;
-                            Star.GetComponent<Star>().SetMass(Mathf.CeilToInt(sample * baseStarMass));
-
-                        }
-
-                    }
-                }
-            }
-
-
-
-
-             radiusMax =50;
-            radiusIncrease = 2;
-             angelMax = 360;
             int spirals = 2;
             int sprialWidth = 50;
             float[] spiralAngel =new float[spirals];
             float angelhold = angelMax / spirals;
             for (int i = 0; i < spiralAngel.Length;i++)
             {
-
                 spiralAngel[i] = i * angelhold;
-
             }
-
-
-
-            float increase = 0;
+            
+            
             
             for (float c = 0; c < radiusMax ; c++)
             {          
                 // look at this and more rotaions 
-                for (float angle = 0; angle < angelMax; angle += increase)
+                for (float angle = 0; angle < angelMax; angle += 10)
                 {
 
                     for (int i = 0; i < spiralAngel.Length; i++)
@@ -135,66 +59,39 @@ public class CreateGalaxy : MonoBehaviour
                             float holdx = centerpos.x + (radiusIncrease * c)     * Mathf.Cos(angle * Mathf.Deg2Rad);
                             float holdz = centerpos.z + (radiusIncrease * c)   * Mathf.Sin(angle * Mathf.Deg2Rad);
 
-                            float sample = Random.Range(0.4f, 0.8f);//Mathf.PerlinNoise(holdx, holdz);                   
-                            GameObject Stara = null;                              //Debug.Log(sample + " " + holdx + " " + holdz);
+                            float sample = Random.Range(0.4f, 0.8f);                  
+                            GameObject Stara = null;                              
                             if (sample > 0)
                             {
-                                //CheckStarNear(xPos, zPos);
+                               
                                 starPos = new Vector3(holdx * 10, yPos, holdz * 10);
                                 Stara = Instantiate(Resources.Load(starPrefabName)) as GameObject;
                                 Stara.transform.SetParent(transform);
 
                                 stars.Add(Stara);
                                 Stara.transform.position = starPos;
-                                // if(angle> spiralAngel && angle< spiralAngel+ sprialWidth)
-                                // {
-                                //     Star.GetComponent<Star>().SetMass(Mathf.CeilToInt(sample * baseStarMass*2));
-
-                                // }
-                                // else
-                                // {
+                                
                                 Stara.GetComponent<Star>().SetMass(Mathf.CeilToInt(sample * baseStarMass));
                                 Stara.GetComponent<Star>().angle = angle;
                                 Stara.GetComponent<Star>().spiralAngel = spiralAngel[i];
-                                //  }
+                               
 
                             }
                             i = spiralAngel.Length;
 
                         }
                     }
-
-
-
-
                    
-                   
-
-                    increase = 10;// (500 / radius);
-                    
-                    /*
-                   
-                    if (angle > spiralAngel && angle < spiralAngel + sprialWidth)
-                    {
-                        increase = (300 / radius);
-
-                    }
-                    else
-                    {
-                        increase = (600 / radius);
-
-                    }
-                    */
-
-
                 }
-
+                
 
                 for (int i = 0; i < spiralAngel.Length; i++)
                 {
 
-                    spiralAngel[i] += radiusIncrease;
+                    spiralAngel[i] += radiusIncrease; // create spiral
 
+                    //resets spiral to 0 when go over 360
+                    /*
                     if (spiralAngel[i] >= angelMax)
                     {
                         spiralAngel[i] -= angelMax;
@@ -203,22 +100,24 @@ public class CreateGalaxy : MonoBehaviour
                     {
                         spiralAngel[i] += angelMax;
                     }
-
+                    */
                 }
-
-
-               
-
-
-                //radiusIncrease = Random.Range(0.0f, 10.0f);
+                
             }
 
 
         }
-       //GameObject ablack = Instantiate(Resources.Load("BlackHole")) as GameObject;
-        
-       // ablack.transform.SetParent(transform);
-        //black = ablack.GetComponent<BlackHole>();
+
+        if (backhole)
+        {
+            GameObject ablack = Instantiate(Resources.Load("BlackHole")) as GameObject;
+
+            ablack.transform.SetParent(transform);
+            black = ablack.GetComponent<BlackHole>();
+
+        }
+
+       
     }
   
 
@@ -445,6 +344,8 @@ public class CreateGalaxy : MonoBehaviour
             }
             zPos = Random.Range(-maxn, max);
 
+            
+
             if (galaxy == GalaxyType.Circle)
             {
                 int angle = Random.Range(0, 365);
@@ -453,7 +354,9 @@ public class CreateGalaxy : MonoBehaviour
                 zPos = (int)(centerpos.z + radius * Mathf.Sin(angle * Mathf.Deg2Rad));
             }
 
+          
 
+            
 
 
             //if a star is already in teh area where this one would spawn that star gets this ones mass

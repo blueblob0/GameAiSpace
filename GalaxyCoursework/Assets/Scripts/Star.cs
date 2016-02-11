@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Collections;
 public class Star: CelestialBody
 {
-    int numPlanets;
+    public int numPlanets;
     public GameObject[] planets;// = new List<GameObject>();
     public SataliteDetails[] planetsLoc;// = new List<SataliteDetails>();
     public GameObject miniSun;
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
-    const float dist = 0.2f;
-    const float minDis = 0.1f;
+    const float dist = 0.04f;
+    const float minDis = 0.02f;
     public float angle;
     public float spiralAngel;
     // Use this for initialization
@@ -24,6 +24,7 @@ public class Star: CelestialBody
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
         numPlanets = Random.Range(0, 100);
+
         if (numPlanets < 2)
         {
             numPlanets = 0;
@@ -48,10 +49,10 @@ public class Star: CelestialBody
         {
             numPlanets = Random.Range(11, 14); //11 12 13
         }
-
+       // Debug.Log(numPlanets);
         planetsLoc = new SataliteDetails[numPlanets];
         float hold = transform.lossyScale.x / 2;
-        hold = 0.5f;
+        hold = 0.05f;
         for (int i = 0; i < numPlanets; i++)
         {
            
@@ -68,8 +69,8 @@ public class Star: CelestialBody
 
     public void IncreaseMass(int plus)
     {
-       // mass += plus;
-       // transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti;
+        mass += plus;
+        transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti;
     }
 
     public void SetMass(int newMass)
