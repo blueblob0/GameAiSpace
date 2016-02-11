@@ -86,7 +86,6 @@ public class AlienCreature : MonoBehaviour {
             //Parent to hold all of the heads
             GameObject headParent = new GameObject("Head Parent");
             headParent.transform.position = headSpawnPos;
-            headParent.transform.SetParent(body.transform);
             //Offset to line the heads up
             float offset = 0;
             //Loop through the amount of heads and spawn them in
@@ -126,7 +125,6 @@ public class AlienCreature : MonoBehaviour {
             //Parent to hold all of the arms
             GameObject armParent = new GameObject("Arm Parent");
             armParent.transform.position = body.transform.position;
-            armParent.transform.SetParent(body.transform);
             //Used to position the arms
             int twoCheck = 2;
             //Loop through the arm count and spawn in the arms
@@ -156,7 +154,7 @@ public class AlienCreature : MonoBehaviour {
                         temp.x *= spawnMod;
                         armtoSpawn.transform.position = temp;
                         if(j == twoCheck - 1) {
-                            armSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.x / 2;
+                            armSpawnPos.y -= body.GetComponent<Renderer>().bounds.size.y / 4;
                             twoCheck += 2;
                         }
                         //rotate
@@ -165,20 +163,19 @@ public class AlienCreature : MonoBehaviour {
                         armtoSpawn.transform.SetParent(armParent.transform);
                         //Change the name
                         if(isEven(j)) {
-                            armtoSpawn.name = "Arm " + (i + 1) + " R";
+                            armtoSpawn.name = "Arm " + (i + j + 1) + " R";
                         } else {
-                            armtoSpawn.name = "Arm " + (i + 1) + " L";
+                            armtoSpawn.name = "Arm " + (i + j + 1) + " L";
                         }
                         arms.Add(armtoSpawn);
                     }
                 }
                 //Reset the position
-                armSpawnPos.y += body.GetComponent<Renderer>().bounds.size.x;
+                armSpawnPos.y += body.GetComponent<Renderer>().bounds.size.y / 2;
                 armSpawnPos.z -= body.GetComponent<Renderer>().bounds.size.z;
                 //Put this back to 2
                 twoCheck = 2;
             }
-
 
             //------------------Create the legs----------------------\\
             //Get the position the legs will spawn
@@ -191,7 +188,6 @@ public class AlienCreature : MonoBehaviour {
             //Parent to hold all of the legs
             GameObject legParent = new GameObject("Leg Parent");
             legParent.transform.position = legSpawnPos;
-            legParent.transform.SetParent(body.transform);
             //Legs get placed in rows of 2
             for(int i = 0; i < maxLegs; i += 2) { //first loop does the group of legs (i.e front two or back two)
                 for(int j = 0; j < 2; j++) { //Second loop does the actual legs
@@ -219,6 +215,32 @@ public class AlienCreature : MonoBehaviour {
                 legSpawnPos.z -= body.GetComponent<Renderer>().bounds.size.z;
                 legSpawnPos.x -= body.GetComponent<Renderer>().bounds.size.x;
             }
+
+            //Adjust the depth of the body
+            if(maxArms > 8 || maxLegs > 4) {
+                //Find which one is the highest value to know how far to move the body back
+                ushort higherVal;
+                if(maxLegs > maxArms) {
+                    higherVal = maxLegs;
+                } else {
+                    higherVal = maxArms;
+                }
+                //Only move the body back if the count is more than 4, so ignore 4 of the limbs
+                higherVal -= 4;
+                //Increase the depth of the body based on the higher val
+                Vector3 scaleTemp = body.transform.localScale;
+                scaleTemp.z *= higherVal;
+                body.transform.localScale = scaleTemp;
+                //Make sure the body is pushed back
+                Vector3 posTemp = body.transform.position;
+                posTemp.z -= body.GetComponent<Renderer>().bounds.size.z / 4;
+                body.transform.position = posTemp;
+            }
+
+            //Set the parents
+            legParent.transform.SetParent(body.transform);
+            armParent.transform.SetParent(body.transform);
+            headParent.transform.SetParent(body.transform);
 
             //Creature has now been spawned
             spawned = true;
