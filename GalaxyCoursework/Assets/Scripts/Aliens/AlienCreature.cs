@@ -5,6 +5,9 @@ using System.Collections.Generic;
 /* The super class that will handle all the characteristics
  * of the alien creatures that will spawn, all the random spawning variables
  * like arms, legs, heads will happen here too, also all of the basic AI will happen here
+ *
+ * Each alien will have a unique set of arms/legs/heads (set in inspector) but will always spawn
+ * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
 
 public class AlienCreature : MonoBehaviour {
@@ -64,7 +67,7 @@ public class AlienCreature : MonoBehaviour {
         transform.rotation = new Quaternion();
 
         //Create the creature
-        createCreature(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
+        createCreature((ushort)Random.Range(0, 10), (ushort)Random.Range(0, 10), (ushort)Random.Range(0, 10));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
