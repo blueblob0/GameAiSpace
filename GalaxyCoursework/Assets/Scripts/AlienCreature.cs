@@ -39,7 +39,7 @@ public class AlienCreature : MonoBehaviour {
     private float rotSpeedLeg = 30;
     private float legTotalRot = 0;
 
-    //An array of potential names
+    //An array of potential name parts
     string[] nameParts = {"si", "la", "ti", "aa", "ul", "er", "ta", "ei",
                           "ae", "ui", "lo", "ka", "pi", "cc", "sc", "br",
                           "fj", "or", "nj", "st", "th", "yu", "pt", "kl",
