@@ -10,7 +10,13 @@ using System.Collections.Generic;
 public class AlienCreature : MonoBehaviour {
 
     //Set in inspector
-    public string creatureName = "Name";
+    public GameObject bodyPrefab;
+    public GameObject headPrefab;
+    public GameObject armPrefab;
+    public GameObject legPrefab;
+
+    public string creatureName = "NO_NAME";
+    public string creatureType = "NO_TYPE";
     public ushort maxAmountOfHeads = 1;
     public ushort maxAmountOfArms = 2;
     public ushort maxAmountOfLegs = 2;
