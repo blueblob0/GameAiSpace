@@ -66,8 +66,13 @@ public class AlienCreature : MonoBehaviour {
         //Reset it to 0
         transform.rotation = new Quaternion();
 
+        //Get the maximum number of spawn spots
+        ushort maxHead = bodyPrefab.GetComponent<AlienBodyInfo>().headSpots;
+        ushort maxArm = bodyPrefab.GetComponent<AlienBodyInfo>().armSpots;
+        ushort maxLeg = bodyPrefab.GetComponent<AlienBodyInfo>().legSpots;
+
         //Create the creature
-        createCreature((ushort)Random.Range(1, 6), (ushort)Random.Range(2, 11), (ushort)Random.Range(2, 11));
+        createCreature((ushort)Random.Range(1, maxHead), (ushort)Random.Range(2, maxArm), (ushort)Random.Range(2, maxLeg));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
