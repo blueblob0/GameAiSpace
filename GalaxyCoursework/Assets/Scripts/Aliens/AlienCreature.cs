@@ -15,7 +15,7 @@ public class AlienCreature : MonoBehaviour {
     public GameObject armPrefab;
     public GameObject legPrefab;
 
-    public string creatureName = "NO_NAME";
+    public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
     public ushort maxAmountOfHeads = 1;
     public ushort maxAmountOfArms = 2;
