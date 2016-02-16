@@ -17,9 +17,7 @@ public class AlienCreature : MonoBehaviour {
 
     public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
-    public ushort maxAmountOfHeads = 1;
-    public ushort maxAmountOfArms = 2;
-    public ushort maxAmountOfLegs = 2;
+
     public ushort intelligence = 0;
     public ushort strength = 0;
     public ushort speed = 0;
@@ -50,17 +48,6 @@ public class AlienCreature : MonoBehaviour {
     /// Will spawn the creature into the game world
     /// </summary>
     protected virtual void Start() {
-        //Check that nothing is out of bounds
-        if(maxAmountOfHeads < 1) {
-            maxAmountOfHeads = 1;
-        }
-        if(maxAmountOfArms < 2) {
-            maxAmountOfArms = 2;
-        }
-        if(maxAmountOfLegs < 2) {
-            maxAmountOfLegs = 2;
-        }
-
         //Set the name
         creatureName = "";
         int nameLength = Random.Range(2, 5);
@@ -77,7 +64,7 @@ public class AlienCreature : MonoBehaviour {
         transform.rotation = new Quaternion();
 
         //Create the creature
-        createCreature(maxAmountOfHeads, maxAmountOfArms, maxAmountOfLegs);
+        createCreature(Random.Range(0, 10), Random.Range(0, 10), Random.Range(0, 10));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
@@ -87,6 +74,7 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
+        /*
         //Rotate the arms
         foreach(GameObject arm in arms) {
             arm.transform.Rotate(new Vector3(rotSpeedArm * Time.deltaTime, 0, 0));
@@ -108,7 +96,7 @@ public class AlienCreature : MonoBehaviour {
         } else if(legTotalRot < -30) {
             rotSpeedLeg *= -1;
         }
-
+        */
     }
 
     /// <summary>
@@ -119,7 +107,30 @@ public class AlienCreature : MonoBehaviour {
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
     protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2) {
         if(!spawned) {
-            
+            //Spawn in the body
+            GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
+            body.transform.SetParent(transform);
+
+            //Spawn in the Head(s)
+            for(int i = 0; i < maxHeads; i++) {
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is a 'Head' spot and that it is free
+                    GameObject headSpot = body.transform.GetChild(j).gameObject;
+                    if(headSpot.name == "Head" + i && headSpot.transform.childCount == 0) {
+                        //Spawn in the head
+                        GameObject head = GameObject.Instantiate<GameObject>(headPrefab);
+                        //Set the parent
+                        head.transform.SetParent(headSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        head.transform.position = headSpot.transform.position;
+                        head.transform.rotation = headSpot.transform.rotation;
+                        //Add onto vector
+                        heads.Add(head);
+                    }
+                }
+            }
+
             //Creature has now been spawned
             spawned = true;
         }
