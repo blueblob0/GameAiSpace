@@ -6,7 +6,6 @@ using System.Collections;
  */
 
 public class AlienBodyInfo : MonoBehaviour{
-
     public ushort headSpots;
     public ushort armSpots;
     public ushort legSpots;
