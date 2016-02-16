@@ -64,6 +64,7 @@ public class AlienCreature : MonoBehaviour {
         //Reset it to 0
         transform.rotation = new Quaternion();
 
+        //Add the body script
         bodyScript = bodyPrefab.GetComponent<AlienBody>();
 
         //Get the maximum number of spawn spots
@@ -84,9 +85,7 @@ public class AlienCreature : MonoBehaviour {
     protected virtual void Update() {
         /*
         //Rotate the arms
-        foreach(GameObject arm in arms) {
-            arm.transform.Rotate(new Vector3(0, rotSpeedArm * Time.deltaTime, 0));
-        }
+        bodyScript.rotateArms(0, rotSpeedArm * Time.deltaTime, 0);
         armTotalRot += rotSpeedArm * Time.deltaTime;
         if(armTotalRot > 30) {
             rotSpeedArm *= -1;
@@ -95,9 +94,7 @@ public class AlienCreature : MonoBehaviour {
         }
 
         //Rotate the legs
-        foreach(GameObject leg in legs) {
-            leg.transform.Rotate(new Vector3(rotSpeedLeg * Time.deltaTime, 0, 0));
-        }
+        bodyScript.rotateLegs(rotSpeedArm * Time.deltaTime, 0, 0);
         legTotalRot += rotSpeedLeg * Time.deltaTime;
         if(legTotalRot > 30) {
             rotSpeedLeg *= -1;
