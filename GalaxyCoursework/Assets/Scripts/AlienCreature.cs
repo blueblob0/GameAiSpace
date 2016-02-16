@@ -68,6 +68,8 @@ public class AlienCreature : MonoBehaviour {
             creatureName += nameParts[Random.Range(0, nameParts.Length)];
         }
         creatureName = upperCaseFirst(creatureName);
+        //Set the name in the inspector
+        name = creatureType + ": " + creatureName;
 
         //Get the object's rotation
         Quaternion rot = transform.rotation;
