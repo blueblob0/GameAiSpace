@@ -11,7 +11,8 @@ public class AlienBody : MonoBehaviour{
     private List<GameObject> armSpots;
     private List<GameObject> legSpots;
 
-    void Start() {
+    //Inits the body, must be called firstd
+    public void initialize() {
         headSpots = new List<GameObject>();
         armSpots = new List<GameObject>();
         legSpots = new List<GameObject>();
