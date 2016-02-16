@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 /* The super class that will handle all the characteristics
  * of the alien creatures that will spawn, all the random spawning variables
- * like arms, legs, heads will happen here too
+ * like arms, legs, heads will happen here too, also all of the basic AI will happen here
  */
 
 public class AlienCreature : MonoBehaviour {
