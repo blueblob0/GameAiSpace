@@ -82,6 +82,7 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
+        /*
         //Rotate the arms
         foreach(GameObject arm in arms) {
             arm.transform.Rotate(new Vector3(0, rotSpeedArm * Time.deltaTime, 0));
@@ -103,6 +104,7 @@ public class AlienCreature : MonoBehaviour {
         } else if(legTotalRot < -30) {
             rotSpeedLeg *= -1;
         }
+        */
     }
 
     /// <summary>
