@@ -139,6 +139,26 @@ public class AlienCreature : MonoBehaviour {
                 }
             }
 
+            //Spawn in the Arms
+            for(int i = 0; i < maxArms; i++) {
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is an 'Arm' spot and that it is free
+                    GameObject armSpot = body.transform.GetChild(j).gameObject;
+                    if(armSpot.name == "Arm" + i && armSpot.transform.childCount == 0) {
+                        //Spawn in the arm
+                        GameObject arm = GameObject.Instantiate<GameObject>(armPrefab);
+                        //Set the parent
+                        arm.transform.SetParent(armSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        arm.transform.position = armSpot.transform.position;
+                        arm.transform.rotation = armSpot.transform.rotation;
+                        //Add onto vector
+                        arms.Add(arm);
+                    }
+                }
+            }
+
             //Creature has now been spawned
             spawned = true;
         }
