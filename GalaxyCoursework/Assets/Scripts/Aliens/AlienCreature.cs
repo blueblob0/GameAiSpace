@@ -72,7 +72,7 @@ public class AlienCreature : MonoBehaviour {
         ushort maxLeg = bodyPrefab.GetComponent<AlienBodyInfo>().legSpots;
 
         //Create the creature
-        createCreature((ushort)Random.Range(1, maxHead), (ushort)Random.Range(2, maxArm), (ushort)Random.Range(2, maxLeg));
+        createCreature((ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
