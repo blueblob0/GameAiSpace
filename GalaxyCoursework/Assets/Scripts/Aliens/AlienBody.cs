@@ -35,6 +35,25 @@ public class AlienBody : MonoBehaviour{
     }
 
     //These functions rotate the limbs (for walknig ect)
+    public void rotateArms(float XAmount, float YAmount, float ZAmount) {
+        Vector3 rot = new Vector3(XAmount, YAmount, ZAmount);
+        rotateArms(rot);
+    }
+    public void rotateArms(Vector3 eulerAmount) {
+        foreach(GameObject arm in armSpots) {
+            arm.transform.Rotate(eulerAmount);
+        }
+    }
+
+    public void rotateLegs(float XAmount, float YAmount, float ZAmount) {
+        Vector3 rot = new Vector3(XAmount, YAmount, ZAmount);
+        rotateLegs(rot);
+    }
+    public void rotateLegs(Vector3 eulerAmount) {
+        foreach(GameObject leg in legSpots) {
+            leg.transform.Rotate(eulerAmount);
+        }
+    }
 
     //These functions add and parent a gameobject onto the available slots
     public void addHead(GameObject headPrefab) {
