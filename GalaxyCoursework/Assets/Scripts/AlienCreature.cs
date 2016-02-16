@@ -50,7 +50,7 @@ public class AlienCreature : MonoBehaviour {
     /// Will spawn the creature into the game world
     /// </summary>
     protected virtual void Start() {
-        //Check that nthoing is out of bounds
+        //Check that nothing is out of bounds
         if(maxAmountOfHeads < 1) {
             maxAmountOfHeads = 1;
         }
