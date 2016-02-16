@@ -159,6 +159,26 @@ public class AlienCreature : MonoBehaviour {
                 }
             }
 
+            //Spawn in the Legs
+            for(int i = 0; i < maxArms; i++) {
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is an 'Leg' spot and that it is free
+                    GameObject legSpot = body.transform.GetChild(j).gameObject;
+                    if(legSpot.name == "Leg" + i && legSpot.transform.childCount == 0) {
+                        //Spawn in the leg
+                        GameObject leg = GameObject.Instantiate<GameObject>(legPrefab);
+                        //Set the parent
+                        leg.transform.SetParent(legSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        leg.transform.position = legSpot.transform.position;
+                        leg.transform.rotation = legSpot.transform.rotation;
+                        //Add onto vector
+                        legs.Add(leg);
+                    }
+                }
+            }
+
             //Creature has now been spawned
             spawned = true;
         }
