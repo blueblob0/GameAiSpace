@@ -32,4 +32,15 @@ public class AlienBody : MonoBehaviour{
             }
         }
     }
+
+    //Getters
+    public int getHeadSpotCount() {
+        return headSpots.Count;
+    }
+    public int getArmSpotCount() {
+        return armSpots.Count;
+    }
+    public int getLegSpotCount() {
+        return legSpots.Count;
+    }
 }

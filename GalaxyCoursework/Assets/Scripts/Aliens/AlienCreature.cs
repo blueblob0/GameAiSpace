@@ -40,6 +40,9 @@ public class AlienCreature : MonoBehaviour {
     private float rotSpeedLeg = 30;
     private float legTotalRot = 0;
 
+    //The script the body contains
+    private AlienBody bodyScript;
+
     //An array of potential name parts
     string[] nameParts = {"si", "la", "ti", "aa", "ul", "er", "ta", "ei",
                           "ae", "ui", "lo", "ka", "pi", "cc", "sc", "br",
@@ -66,10 +69,12 @@ public class AlienCreature : MonoBehaviour {
         //Reset it to 0
         transform.rotation = new Quaternion();
 
+        bodyScript = bodyPrefab.GetComponent<AlienBody>();
+
         //Get the maximum number of spawn spots
-        ushort maxHead = bodyPrefab.GetComponent<AlienBodyInfo>().headSpots;
-        ushort maxArm = bodyPrefab.GetComponent<AlienBodyInfo>().armSpots;
-        ushort maxLeg = bodyPrefab.GetComponent<AlienBodyInfo>().legSpots;
+        ushort maxHead = (ushort)bodyScript.getHeadSpotCount();
+        ushort maxArm = (ushort)bodyScript.getArmSpotCount();
+        ushort maxLeg = (ushort)bodyScript.getLegSpotCount();
 
         //Create the creature
         createCreature((ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1));
