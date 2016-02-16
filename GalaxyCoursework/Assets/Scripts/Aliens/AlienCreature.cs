@@ -67,7 +67,7 @@ public class AlienCreature : MonoBehaviour {
         transform.rotation = new Quaternion();
 
         //Create the creature
-        createCreature((ushort)Random.Range(0, 10), (ushort)Random.Range(0, 10), (ushort)Random.Range(0, 10));
+        createCreature((ushort)Random.Range(1, 11), (ushort)Random.Range(2, 11), (ushort)Random.Range(2, 11));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
