@@ -25,11 +25,6 @@ public class AlienCreature : MonoBehaviour {
     public ushort strength = 0;
     public ushort speed = 0;
 
-    //Lists to keep track of the limbs
-    List<GameObject> heads = new List<GameObject>();
-    List<GameObject> arms = new List<GameObject>();
-    List<GameObject> legs = new List<GameObject>();
-
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
 
@@ -69,9 +64,7 @@ public class AlienCreature : MonoBehaviour {
         //Reset it to 0
         transform.rotation = new Quaternion();
 
-        //Get a reference to the script and init it
         bodyScript = bodyPrefab.GetComponent<AlienBody>();
-        bodyScript.initialize();
 
         //Get the maximum number of spawn spots
         ushort maxHead = (ushort)bodyScript.getHeadSpotCount();
@@ -89,8 +82,11 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
+        /*
         //Rotate the arms
-        bodyScript.rotateArms(0, rotSpeedArm * Time.deltaTime, 0);
+        foreach(GameObject arm in arms) {
+            arm.transform.Rotate(new Vector3(0, rotSpeedArm * Time.deltaTime, 0));
+        }
         armTotalRot += rotSpeedArm * Time.deltaTime;
         if(armTotalRot > 30) {
             rotSpeedArm *= -1;
@@ -99,13 +95,16 @@ public class AlienCreature : MonoBehaviour {
         }
 
         //Rotate the legs
-        bodyScript.rotateLegs(rotSpeedLeg * Time.deltaTime, 0, 0);
+        foreach(GameObject leg in legs) {
+            leg.transform.Rotate(new Vector3(rotSpeedLeg * Time.deltaTime, 0, 0));
+        }
         legTotalRot += rotSpeedLeg * Time.deltaTime;
         if(legTotalRot > 30) {
             rotSpeedLeg *= -1;
         } else if(legTotalRot < -30) {
             rotSpeedLeg *= -1;
         }
+        */
     }
 
     /// <summary>
@@ -122,17 +121,56 @@ public class AlienCreature : MonoBehaviour {
 
             //Spawn in the Head(s)
             for(int i = 0; i < maxHeads; i++) {
-                bodyScript.addHead(headPrefab);
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is a 'Head' spot and that it is free
+                    GameObject headSpot = body.transform.GetChild(j).gameObject;
+                    if(headSpot.name == "Head" + i && headSpot.transform.childCount == 0) {
+                        //Spawn in the head
+                        GameObject head = GameObject.Instantiate<GameObject>(headPrefab);
+                        //Set the parent
+                        head.transform.SetParent(headSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        head.transform.localPosition = new Vector3();
+                        head.transform.localRotation = Quaternion.identity;
+                    }
+                }
             }
 
             //Spawn in the Arms
             for(int i = 0; i < maxArms; i++) {
-                bodyScript.addArm(armPrefab);
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is an 'Arm' spot and that it is free
+                    GameObject armSpot = body.transform.GetChild(j).gameObject;
+                    if(armSpot.name == "Arm" + i && armSpot.transform.childCount == 0) {
+                        //Spawn in the arm
+                        GameObject arm = GameObject.Instantiate<GameObject>(armPrefab);
+                        //Set the parent
+                        arm.transform.SetParent(armSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        arm.transform.localPosition = new Vector3();
+                        arm.transform.localRotation = Quaternion.identity;
+                    }
+                }
             }
 
             //Spawn in the Legs
             for(int i = 0; i < maxArms; i++) {
-                bodyScript.addLeg(legPrefab);
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is an 'Leg' spot and that it is free
+                    GameObject legSpot = body.transform.GetChild(j).gameObject;
+                    if(legSpot.name == "Leg" + i && legSpot.transform.childCount == 0) {
+                        //Spawn in the leg
+                        GameObject leg = GameObject.Instantiate<GameObject>(legPrefab);
+                        //Set the parent
+                        leg.transform.SetParent(legSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        leg.transform.localPosition = new Vector3();
+                        leg.transform.localRotation = Quaternion.identity;
+                    }
+                }
             }
 
             //Creature has now been spawned
