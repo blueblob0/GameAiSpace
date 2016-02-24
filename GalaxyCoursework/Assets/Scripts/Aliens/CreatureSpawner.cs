@@ -3,7 +3,7 @@ using System.Collections;
 
 /*
  * This script is attached to planets and will spawn a 
- * a certain amount of creatures provided
+ * a certain amount of the creatures provided
  */
 
 public class CreatureSpawner : MonoBehaviour {
