@@ -17,6 +17,7 @@ public class AlienCreature : MonoBehaviour {
     public GameObject headPrefab;
     public GameObject armPrefab;
     public GameObject legPrefab;
+    public GameObject wingPrefab;
 
     public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
@@ -115,7 +116,7 @@ public class AlienCreature : MonoBehaviour {
     /// <param name="maxHeads">The maximum amount of heads the creature can have</param>
     /// <param name="maxArms">The maximum amount of arms the creature can have</param>
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
-    protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2) {
+    protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
         if(!spawned) {
             //Spawn in the body
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
@@ -174,6 +175,8 @@ public class AlienCreature : MonoBehaviour {
                     }
                 }
             }
+
+            //TODO SPAWN IN WINGS
 
             //Creature has now been spawned
             spawned = true;
