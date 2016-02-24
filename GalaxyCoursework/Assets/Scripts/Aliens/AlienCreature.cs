@@ -177,15 +177,6 @@ public class AlienCreature : MonoBehaviour {
     }
 
     /// <summary>
-    /// Returns true if the value passed is even
-    /// </summary>
-    /// <param name="value">Value to pass</param>
-    /// <returns></returns>
-    private bool isEven(int value) {
-        return value % 2 == 0;
-    }
-
-    /// <summary>
     /// Makes the first letter of the string upper case then returns that string
     /// </summary>
     /// <param name="s"></param>
