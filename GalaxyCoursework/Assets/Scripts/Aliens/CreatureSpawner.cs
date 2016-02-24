@@ -18,16 +18,20 @@ public class CreatureSpawner : MonoBehaviour {
 	void Start () {
         //Init the bool array
         creatureSpawned = new bool[creatureTypes.Length];
-
         //How many total types to spawn
-        int amountOfTypestoSpawn = Random.Range(0, creatureTypes.Length);
-
+        int amountOfTypestoSpawn = Random.Range(1, creatureTypes.Length + 1);
         //Loop through the array and start spawning creatures
         for(int i = 0; i < amountOfTypestoSpawn; i++) {
             if(!creatureSpawned[i]) {
-                GameObject.Instantiate<GameObject>(creatureTypes[i]);
+                //Instantiate the prefab
+                GameObject creature = GameObject.Instantiate<GameObject>(creatureTypes[i]);
+                //Set the tranform
+                creature.transform.SetParent(transform);
+                creature.transform.localPosition = new Vector3();
+                creature.transform.localRotation = Quaternion.identity;
+                creature.transform.localScale = new Vector3();
                 creatureSpawned[i] = true;
             }
         }
-	}
+    }
 }
