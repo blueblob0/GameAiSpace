@@ -29,7 +29,7 @@ public class CreatureSpawner : MonoBehaviour {
                 creature.transform.SetParent(transform);
                 creature.transform.localPosition = new Vector3();
                 creature.transform.localRotation = Quaternion.identity;
-                creature.transform.localScale = new Vector3();
+                creature.transform.localScale = new Vector3(1, 1, 1);
                 creatureSpawned[i] = true;
             }
         }
