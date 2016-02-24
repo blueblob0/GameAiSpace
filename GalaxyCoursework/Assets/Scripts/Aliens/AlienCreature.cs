@@ -60,7 +60,7 @@ public class AlienCreature : MonoBehaviour {
         //Set the name in the inspector
         name = creatureType + ": " + creatureName;
 
-        //Get the object's rotation
+        //Get the object's rotation, easier to spawn everything the same direction
         Quaternion rot = transform.rotation;
         //Reset it to 0
         transform.rotation = new Quaternion();
