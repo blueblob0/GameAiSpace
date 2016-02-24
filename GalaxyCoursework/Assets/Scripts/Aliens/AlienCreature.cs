@@ -43,7 +43,8 @@ public class AlienCreature : MonoBehaviour {
                           "ae", "ui", "lo", "ka", "pi", "cc", "sc", "br",
                           "fj", "or", "nj", "st", "th", "yu", "pt", "kl",
                           "cl", "ph", "pho", "ri", "we", "gh", "io", "ao",
-                          "nm", "mm", "nn", "jy", "fv", "vv", "tb", "lk"};
+                          "nm", "mm", "nn", "jy", "fv", "vv", "tb", "lk",
+                          "ri", "ru", "lar", "ij"};
 
     /// <summary>
     /// Will spawn the creature into the game world
