@@ -105,6 +105,8 @@ public class AlienCreature : MonoBehaviour {
             rotSpeedLeg *= -1;
         }
         */
+
+        //Add something here for the creature to copy itself (ie reprooduce)
     }
 
     /// <summary>
