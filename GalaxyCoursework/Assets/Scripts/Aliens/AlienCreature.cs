@@ -42,11 +42,14 @@ public class AlienCreature : MonoBehaviour {
     private AlienBody bodyScript;
 
     //An array of potential name parts
-    string[] nameParts = {"si", "la", "ti", "aa", "ul", "er", "ta", "ei",
-                          "ae", "ui", "lo", "ka", "pi", "cc", "sc", "br",
-                          "fj", "or", "nj", "st", "th", "yu", "pt", "kl",
-                          "cl", "ph", "pho", "ri", "we", "gh", "io", "ao",
-                          "nm", "mm", "nn", "jy", "fv", "vv", "tb", "lk",
+    string[] nameParts = {"si", "la", "ti", "aa", "ul",
+                          "er", "ta", "ei", "ae", "ui",
+                          "lo", "ka", "pi", "cc", "sc",
+                          "br", "fj", "or", "nj", "st",
+                          "th", "yu", "pt", "kl", "cl",
+                          "ph", "pho", "ri", "we", "gh",
+                          "io", "ao", "nm", "mm", "nn",
+                          "jy", "fv", "vv", "tb", "lk",
                           "ri", "ru", "lar", "ij"};
 
     /// <summary>
@@ -121,6 +124,7 @@ public class AlienCreature : MonoBehaviour {
             //Spawn in the body
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
             body.transform.SetParent(transform);
+            body.transform.localPosition = new Vector3();
 
             //Spawn in the Head(s)
             for(int i = 0; i < maxHeads; i++) {
