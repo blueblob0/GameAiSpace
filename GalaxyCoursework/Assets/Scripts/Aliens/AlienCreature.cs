@@ -24,6 +24,8 @@ public class AlienCreature : MonoBehaviour {
     public ushort intelligence = 0;
     public ushort strength = 0;
     public ushort speed = 0;
+    public ushort reproductionRate = 0;
+    public ushort agressivness = 0;
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
