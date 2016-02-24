@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class CreateGalaxy : MonoBehaviour
 {
-    public const int starMuti = 1;
+    public const int starMuti = 10;
     public int numStars = 100;
     public List<GameObject> stars = new List<GameObject>();
     public string starPrefabName = "StarPrefab";
@@ -12,30 +12,31 @@ public class CreateGalaxy : MonoBehaviour
     private Vector3 centerpos = Vector3.zero;
     bool testing = false;
     bool backhole = true;
+    //bool backhole = false;
     BlackHole black;
 
     // Use this for initialization
     void Start()
     {
        // Random.seed = 1;
-        int max = 10000;
+        //int max = 10000;
         Application.runInBackground = true;
         Debug.Log("need to add lod to planets");
         Vector3 starPos;
-        int xPos = 50;
+        //int xPos = 50;
         int yPos = 0;
-        int zPos = 25;
+        //int zPos = 25;
         int baseStarMass = 10;
                 
        
         if (galaxy == GalaxyType.Test)
         {           
             
-            int radiusMax = 50;
-            float radiusIncrease = 4;
+            int radiusMax = 50 ;
+            float radiusIncrease = 4 * (starMuti);
             int angelMax = 360;
             int spirals = 2;
-            int sprialWidth = 50;
+            int sprialWidth = 50 ;
             float[] spiralAngel =new float[spirals];
             float angelhold = angelMax / spirals;
             for (int i = 0; i < spiralAngel.Length;i++)
@@ -45,7 +46,7 @@ public class CreateGalaxy : MonoBehaviour
             
             
             
-            for (float c = 0; c < radiusMax ; c++)
+            for (float c = 0; c < radiusMax; c++)
             {          
                 // look at this and more rotaions 
                 for (float angle = 0; angle < angelMax; angle += 10)
@@ -87,20 +88,8 @@ public class CreateGalaxy : MonoBehaviour
 
                 for (int i = 0; i < spiralAngel.Length; i++)
                 {
-
-                    spiralAngel[i] += radiusIncrease; // create spiral
-
-                    //resets spiral to 0 when go over 360
-                    /*
-                    if (spiralAngel[i] >= angelMax)
-                    {
-                        spiralAngel[i] -= angelMax;
-                    }
-                    else if (spiralAngel[i] < 0)
-                    {
-                        spiralAngel[i] += angelMax;
-                    }
-                    */
+                    spiralAngel[i] += radiusIncrease/ (starMuti); // This moves the angle that the sun can spawn at along after each rotation
+                  
                 }
                 
             }

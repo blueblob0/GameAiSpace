@@ -2,14 +2,17 @@
 using System.Collections;
 
 public class CameraMove : MonoBehaviour {
-    private float maxSpeed =1.0f;
-    private float acceleration = 1.0f;
+    private float maxSpeed =1.0f * CreateGalaxy.starMuti;
+    private float acceleration = 0.5f * CreateGalaxy.starMuti;
     public Vector3 velocity;
     public bool left ;
     public bool right;
     public bool forward;
     public bool back;
     private bool mouseHeld;
+
+    private float speedChange =10;
+
 
     Vector2 _mouseAbsolute;
     Vector2 _smoothMouse;
@@ -127,13 +130,13 @@ public class CameraMove : MonoBehaviour {
         }
 
 
-        if(velocity.z <0.01f && velocity.z > -0.01f)
+        if(velocity.z < acceleration / 100 && velocity.z > -acceleration / 100)
         {
 
             velocity.z = 0;
         }
 
-        if (velocity.x < 0.01f && velocity.x > -0.01f)
+        if (velocity.x < (acceleration / 100) && velocity.x > (-acceleration / 100))
         {
 
             velocity.x = 0;
@@ -148,7 +151,32 @@ public class CameraMove : MonoBehaviour {
 
     }
 
+    public void DecreaseSpeed()
+    {
+        maxSpeed /= speedChange;
+        acceleration /= speedChange;
 
+        //gameObject.GetComponent<SphereCollider>().radius /= speedChange;
+        if (velocity.x> maxSpeed)
+        {
+            velocity.x = maxSpeed;
+        }
+        if (velocity.z > maxSpeed)
+        {
+            velocity.z = maxSpeed;
+        }
+
+
+
+    }
+
+    public void IncreaseSpeed()
+    {
+
+        maxSpeed *= speedChange;
+        acceleration *= speedChange;
+        //gameObject.GetComponent<SphereCollider>().radius *= speedChange;
+    }
 
     private void CheckButton()
     {

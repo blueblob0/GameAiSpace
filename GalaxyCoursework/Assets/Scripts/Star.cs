@@ -53,10 +53,14 @@ public class Star: CelestialBody
         planetsLoc = new SataliteDetails[numPlanets];
         float hold = transform.lossyScale.x / 2;
         hold = 0.05f;
+        Vector2 circlePos = Random.insideUnitCircle.normalized;
+        circlePos = Vector2.one;
         for (int i = 0; i < numPlanets; i++)
         {
-           
-            planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
+
+            //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
+            planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos);
+            
             hold = planetsLoc[i].distFromBody;
         }
 
@@ -94,6 +98,12 @@ public class Star: CelestialBody
     {
         if (other.tag =="MainCamera")
         {
+            //Decrease Speed for moving around soloar system
+            other.GetComponent<CameraMove>().DecreaseSpeed();
+
+           // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
+            //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
+
             Debug.Log("hit");
             miniSun.SetActive(true);
             Color c = GetComponent<Renderer>().material.color;
@@ -142,6 +152,10 @@ public class Star: CelestialBody
         if (other.tag == "MainCamera")
         {
             miniSun.SetActive(false);
+            //increase speed for moving around galxy 
+            other.GetComponent<CameraMove>().IncreaseSpeed();
+            //other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 20f);
+            //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 10f);
             Color c = GetComponent<Renderer>().material.color;
             c.a = 1;
             GetComponent<Renderer>().material.color = c;
