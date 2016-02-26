@@ -10,6 +10,7 @@ public class AlienBody : MonoBehaviour{
     public GameObject[] headSpots;
     public GameObject[] armSpots;
     public GameObject[] legSpots;
+    public GameObject[] wingSpots;
 
     //These functions rotate the limbs (for walknig ect)
     public void rotateArms(float XAmount, float YAmount, float ZAmount) {
@@ -40,5 +41,8 @@ public class AlienBody : MonoBehaviour{
     }
     public int getLegSpotCount() {
         return legSpots.Length;
+    }
+    public int getWingSpotCount() {
+        return wingSpots.Length;
     }
 }

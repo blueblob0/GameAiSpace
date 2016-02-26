@@ -17,6 +17,7 @@ public class AlienCreature : MonoBehaviour {
     public GameObject headPrefab;
     public GameObject armPrefab;
     public GameObject legPrefab;
+    public GameObject wingPrefab;
 
     public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
@@ -24,6 +25,8 @@ public class AlienCreature : MonoBehaviour {
     public ushort intelligence = 0;
     public ushort strength = 0;
     public ushort speed = 0;
+    public ushort reproductionRate = 0;
+    public ushort agressivness = 0;
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
@@ -39,11 +42,15 @@ public class AlienCreature : MonoBehaviour {
     private AlienBody bodyScript;
 
     //An array of potential name parts
-    string[] nameParts = {"si", "la", "ti", "aa", "ul", "er", "ta", "ei",
-                          "ae", "ui", "lo", "ka", "pi", "cc", "sc", "br",
-                          "fj", "or", "nj", "st", "th", "yu", "pt", "kl",
-                          "cl", "ph", "pho", "ri", "we", "gh", "io", "ao",
-                          "nm", "mm", "nn", "jy", "fv", "vv", "tb", "lk"};
+    string[] nameParts = {"si", "la", "ti", "aa", "ul",
+                          "er", "ta", "ei", "ae", "ui",
+                          "lo", "ka", "pi", "cc", "sc",
+                          "br", "fj", "or", "nj", "st",
+                          "th", "yu", "pt", "kl", "cl",
+                          "ph", "pho", "ri", "we", "gh",
+                          "io", "ao", "nm", "mm", "nn",
+                          "jy", "fv", "vv", "tb", "lk",
+                          "ri", "ru", "lar", "ij"};
 
     /// <summary>
     /// Will spawn the creature into the game world
@@ -59,10 +66,10 @@ public class AlienCreature : MonoBehaviour {
         //Set the name in the inspector
         name = creatureType + ": " + creatureName;
 
-        //Get the object's rotation
+        //Get the object's rotation, easier to spawn everything the same direction
         Quaternion rot = transform.rotation;
         //Reset it to 0
-        transform.rotation = new Quaternion();
+        transform.rotation = Quaternion.identity;
 
         //Add the body script
         bodyScript = bodyPrefab.GetComponent<AlienBody>();
@@ -102,6 +109,8 @@ public class AlienCreature : MonoBehaviour {
             rotSpeedLeg *= -1;
         }
         */
+
+        //Add something here for the creature to copy itself (ie reprooduce)
     }
 
     /// <summary>
@@ -110,11 +119,12 @@ public class AlienCreature : MonoBehaviour {
     /// <param name="maxHeads">The maximum amount of heads the creature can have</param>
     /// <param name="maxArms">The maximum amount of arms the creature can have</param>
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
-    protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2) {
+    protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
         if(!spawned) {
             //Spawn in the body
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
             body.transform.SetParent(transform);
+            body.transform.localPosition = new Vector3();
 
             //Spawn in the Head(s)
             for(int i = 0; i < maxHeads; i++) {
@@ -170,18 +180,11 @@ public class AlienCreature : MonoBehaviour {
                 }
             }
 
+            //TODO SPAWN IN WINGS
+
             //Creature has now been spawned
             spawned = true;
         }
-    }
-
-    /// <summary>
-    /// Returns true if the value passed is even
-    /// </summary>
-    /// <param name="value">Value to pass</param>
-    /// <returns></returns>
-    private bool isEven(int value) {
-        return value % 2 == 0;
     }
 
     /// <summary>
