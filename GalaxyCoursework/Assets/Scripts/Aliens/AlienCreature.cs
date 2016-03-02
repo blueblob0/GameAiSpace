@@ -31,6 +31,9 @@ public class AlienCreature : MonoBehaviour {
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
 
+    //Used to check if the creature is scaled
+    private bool isScaled = false;
+
     //The rot val of the arms
     private float rotSpeedArm = 30;
     private float armTotalRot = 0;
@@ -124,7 +127,7 @@ public class AlienCreature : MonoBehaviour {
             //Spawn in the body
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
             body.transform.SetParent(transform);
-            body.transform.localPosition = new Vector3();
+            body.transform.localPosition = Vector3.zero;
 
             //Spawn in the Head(s)
             for(int i = 0; i < maxHeads; i++) {
@@ -138,7 +141,7 @@ public class AlienCreature : MonoBehaviour {
                         //Set the parent
                         head.transform.SetParent(headSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
-                        head.transform.localPosition = new Vector3();
+                        head.transform.localPosition = Vector3.zero;
                         head.transform.localRotation = Quaternion.identity;
                     }
                 }
@@ -156,7 +159,7 @@ public class AlienCreature : MonoBehaviour {
                         //Set the parent
                         arm.transform.SetParent(armSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
-                        arm.transform.localPosition = new Vector3();
+                        arm.transform.localPosition = Vector3.zero;
                         arm.transform.localRotation = Quaternion.identity;
                     }
                 }
@@ -174,7 +177,7 @@ public class AlienCreature : MonoBehaviour {
                         //Set the parent
                         leg.transform.SetParent(legSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
-                        leg.transform.localPosition = new Vector3();
+                        leg.transform.localPosition = Vector3.zero;
                         leg.transform.localRotation = Quaternion.identity;
                     }
                 }
@@ -199,5 +202,16 @@ public class AlienCreature : MonoBehaviour {
         }
         // Return char and concat substring.
         return char.ToUpper(s[0]) + s.Substring(1);
+    }
+
+    public bool isSpawned(){
+        return spawned;
+    }
+
+    public void hasBeenScaled(bool scaled){
+        isScaled = scaled;
+    }
+    public bool checkScaled(){
+        return isScaled;
     }
 }

@@ -6,7 +6,7 @@ public class Planet : Satalite
     int numPlanets;
     public List<GameObject> planets = new List<GameObject>();
     public List<float> spheres = new List<float>();
-    public Renderer surface;
+    public Renderer surface; // The plane on the planet
     public string planetPrefabName = "MoonPrefab";
     const float dist = 0.03f;
     const float minDis = 0.06f;
@@ -35,9 +35,9 @@ public class Planet : Satalite
         GetComponent<Renderer>().material.mainTexture = texture;
         surface.material.mainTexture = texture;
         Color color = Color.white;
-        int numOfChanges = 6;     
-        float oneSect = texture.height / numOfChanges;
-        int count = 1;
+        int numOfChanges = 6;
+        float oneSect = 0;// texture.height / numOfChanges;
+        int count = 0;
         for (int y = 0; y < texture.height; y++)
         {
             
@@ -45,7 +45,12 @@ public class Planet : Satalite
             {
                 count++;
                 color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
-                oneSect = (texture.height / numOfChanges) * count;
+
+                float test = texture.height;
+                test /= numOfChanges;
+
+                //Debug.Log(test);
+                oneSect = Mathf.CeilToInt( (test) * count);
             }
 
             for (int x = 0; x < texture.width; x++)
@@ -54,6 +59,9 @@ public class Planet : Satalite
             }
         }
         texture.Apply();
+
+        surface.gameObject.SetActive(false);
+
     }
 
     // Update is called once per frame

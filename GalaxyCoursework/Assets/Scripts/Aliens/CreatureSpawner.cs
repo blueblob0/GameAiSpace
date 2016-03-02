@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 /*
  * This script is attached to planets and will spawn a 
@@ -14,8 +14,18 @@ public class CreatureSpawner : MonoBehaviour {
     //Quick way of checking what creature type has been spawned
     private bool[] creatureSpawned;
 
+    //Check if the creatures have been scaled
+    private bool allScaled;
+    
+
+    private List<GameObject> spawnedCreatures;
+
 	// Use this for initialization
 	void Start () {
+        //Init
+        allScaled = false;
+        spawnedCreatures = new List<GameObject>();
+
         //Init the bool array
         creatureSpawned = new bool[creatureTypes.Length];
         //How many total types to spawn
@@ -24,13 +34,36 @@ public class CreatureSpawner : MonoBehaviour {
         for(int i = 0; i < amountOfTypestoSpawn; i++) {
             if(!creatureSpawned[i]) {
                 //Instantiate the prefab
-                GameObject creature = GameObject.Instantiate<GameObject>(creatureTypes[i]);
+                GameObject creature = Instantiate(creatureTypes[i]);
                 //Set the tranform
                 creature.transform.SetParent(transform);
-                creature.transform.localPosition = new Vector3();
+                creature.transform.localPosition = Vector3.zero;
                 creature.transform.localRotation = Quaternion.identity;
-                creature.transform.localScale = new Vector3(1, 1, 1);
+                creature.transform.localScale = Vector3.one;
                 creatureSpawned[i] = true;
+                //Finally, add to list
+                spawnedCreatures.Add(creature);
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (!allScaled)
+        {
+            allScaled = true;
+            for (int i = 0; i < spawnedCreatures.Count; i++)
+            {
+                if (spawnedCreatures[i].GetComponent<AlienCreature>().isSpawned() && !spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled())
+                {
+                    spawnedCreatures[i].transform.localScale *= 0.1f;
+                    spawnedCreatures[i].GetComponent<AlienCreature>().hasBeenScaled(true);
+                }
+                else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled())
+                {
+                    allScaled = false;
+                }
+
             }
         }
     }

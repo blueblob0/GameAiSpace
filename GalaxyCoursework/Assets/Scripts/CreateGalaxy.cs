@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class CreateGalaxy : MonoBehaviour
 {
-    public const int starMuti = 10;
+    public const int starMuti = 50;
     public int numStars = 100;
     public List<GameObject> stars = new List<GameObject>();
     public string starPrefabName = "StarPrefab";

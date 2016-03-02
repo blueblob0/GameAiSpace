@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class CameraMove : MonoBehaviour {
-    private float maxSpeed =1.0f * CreateGalaxy.starMuti;
+    private float maxSpeed; //=1.0f * CreateGalaxy.starMuti;
     private float acceleration = 0.5f * CreateGalaxy.starMuti;
     public Vector3 velocity;
     public bool left ;
@@ -25,7 +25,8 @@ public class CameraMove : MonoBehaviour {
    
     // Use this for initialization
     void Start () {
-
+        maxSpeed = 1.0f * CreateGalaxy.starMuti;
+        Debug.Log(maxSpeed);
         velocity = Vector3.zero;
         left = false;
         right = false;
@@ -38,7 +39,7 @@ public class CameraMove : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-
+        //Debug.Log(maxSpeed);
         CheckButton();       
         
         // if you hold the mous rotate the camera
