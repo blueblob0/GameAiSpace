@@ -89,7 +89,7 @@ public class AlienCreature : MonoBehaviour {
     /// </summary>
     protected virtual void Update() {
         //seek test
-        velocity = seekTarget(transform.position, transform.position + transform.forward, velocity);
+        velocity = seekTarget(transform.position, transform.position + transform.forward, speed);
 
         //Add on the velocity each update
         transform.position += velocity;
@@ -170,17 +170,15 @@ public class AlienCreature : MonoBehaviour {
     }
 
     /// <summary>
-    /// Seeks the agent towards the target, applies steering
+    /// Seeks the agent towards the target, TODO: add steering
     /// </summary>
     /// <param name="currentPos">Position of the agent</param>
     /// <param name="targetPos">Position of the target</param>
     /// <param name="currentVelocity">current velocity of the agent</param>
     /// <returns>Returns the new velocity</returns>
-    private Vector3 seekTarget(Vector3 currentPos, Vector3 targetPos, Vector3 currentVelocity) {
+    private Vector3 seekTarget(Vector3 currentPos, Vector3 targetPos, float agentSpeed) {
         //Create a desired velocity by normalizing the distance between the two points
-        Vector3 desiredVelocity = Vector3.Normalize(targetPos - currentPos) * speed * Time.deltaTime;
-        //Return the desired velocity based off of the current velocity
-        return desiredVelocity - currentVelocity;
+        return Vector3.Normalize(targetPos - currentPos) * speed * Time.deltaTime;
     }
 
     /// <summary>
