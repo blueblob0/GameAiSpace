@@ -93,10 +93,6 @@ public class AlienCreature : MonoBehaviour {
 
         //Add on the velocity each update
         transform.position += velocity;
-        //If the velcoity has changed, then look at it
-        if(velocity != Vector3.zero) {
-            transform.LookAt(velocity);
-        }
     }
 
     /// <summary>
