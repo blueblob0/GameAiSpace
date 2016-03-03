@@ -32,7 +32,7 @@ public class AlienCreature : MonoBehaviour {
     private bool spawned = false;
 
     //Velocity of the creature
-    private Vector3 velcoity = Vector3.zero;
+    private Vector3 velocity = Vector3.zero;
 
     //The script the body contains
     private AlienBody bodyScript;
@@ -88,8 +88,15 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
+        //seek test
+        velocity = seekTarget(transform.position, transform.position + transform.forward, velocity);
+
         //Add on the velocity each update
-        transform.position += velcoity;
+        transform.position += velocity;
+        //If the velcoity has changed, then look at it
+        if(velocity != Vector3.zero) {
+            transform.LookAt(velocity);
+        }
     }
 
     /// <summary>
@@ -167,6 +174,29 @@ public class AlienCreature : MonoBehaviour {
     }
 
     /// <summary>
+    /// Seeks the agent towards the target, applies steering
+    /// </summary>
+    /// <param name="currentPos">Position of the agent</param>
+    /// <param name="targetPos">Position of the target</param>
+    /// <param name="currentVelocity">current velocity of the agent</param>
+    /// <returns>Returns the new velocity</returns>
+    private Vector3 seekTarget(Vector3 currentPos, Vector3 targetPos, Vector3 currentVelocity) {
+        //Create a desired velocity by normalizing the distance between the two points
+        Vector3 desiredVelocity = Vector3.Normalize(targetPos - currentPos) * speed * Time.deltaTime;
+        //Return the desired velocity based off of the current velocity
+        return desiredVelocity - currentVelocity;
+    }
+
+    /// <summary>
+    /// Returns the velocity for the agent to wander
+    /// </summary>
+    /// <param name="currentPos">Current position of the agent</param>
+    /// <returns></returns>
+    private Vector3 wander(Vector3 currentPos) {
+        return Vector3.zero;
+    }
+
+    /// <summary>
     /// Makes the first letter of the string upper case then returns that string
     /// </summary>
     /// <param name="s"></param>
@@ -180,6 +210,10 @@ public class AlienCreature : MonoBehaviour {
         return char.ToUpper(s[0]) + s.Substring(1);
     }
 
+    /// <summary>
+    /// Returns true if this creature has been spawned in
+    /// </summary>
+    /// <returns></returns>
     public bool isSpawned(){
         return spawned;
     }
