@@ -51,10 +51,12 @@ public class CreatureSpawner : MonoBehaviour {
         //Wait
         yield return null;
 
-        //Scale of creature types
+        //Scale the creatures and move them up
         for(int i = 0; i < creatures.Count; i++) {
-            //Keep the mscaled with the ratio
+            //Keep them scaled with the ratio
             creatures[i].transform.localScale /= CreateGalaxy.starMuti;
+            Vector3 moveUp = new Vector3(0, 0.135f, 0);//Fixed amount for now
+            creatures[i].transform.localPosition += moveUp;
         }
     }
 }
