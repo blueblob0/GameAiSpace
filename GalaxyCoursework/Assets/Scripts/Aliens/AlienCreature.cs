@@ -26,7 +26,7 @@ public class AlienCreature : MonoBehaviour {
     public ushort strength = 0;
     public ushort speed = 0;
     public ushort reproductionRate = 0;
-    public ushort agressivness = 0;
+    public ushort agressiveness = 0;
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
@@ -92,27 +92,7 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
-        /*
-        //Rotate the arms
-        bodyScript.rotateArms(0, rotSpeedArm * Time.deltaTime, 0);
-        armTotalRot += rotSpeedArm * Time.deltaTime;
-        if(armTotalRot > 30) {
-            rotSpeedArm *= -1;
-        } else if(armTotalRot < -30) {
-            rotSpeedArm *= -1;
-        }
-
-        //Rotate the legs
-        bodyScript.rotateLegs(rotSpeedArm * Time.deltaTime, 0, 0);
-        legTotalRot += rotSpeedLeg * Time.deltaTime;
-        if(legTotalRot > 30) {
-            rotSpeedLeg *= -1;
-        } else if(legTotalRot < -30) {
-            rotSpeedLeg *= -1;
-        }
-        */
-
-        //Add something here for the creature to copy itself (ie reprooduce)
+       
     }
 
     /// <summary>
