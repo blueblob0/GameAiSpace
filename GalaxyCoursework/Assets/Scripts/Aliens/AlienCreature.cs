@@ -42,7 +42,9 @@ public class AlienCreature : MonoBehaviour {
     private AlienBody bodyScript;
 
     //An array of potential name parts
-    string[] nameParts = {"si", "la", "ti", "aa", "ul",
+    string[] nameParts = {"a", "e", "i", "o", "u", "si",
+                          "la", "ti", "aa", "ul", "r",
+                          "p", "y", "k", "s", "c" ,
                           "er", "ta", "ei", "ae", "ui",
                           "lo", "ka", "pi", "cc", "sc",
                           "br", "fj", "or", "nj", "st",
