@@ -7,6 +7,7 @@ using System.Collections.Generic;
  */
 
 public class AlienBody : MonoBehaviour{
+    public GameObject   body;
     public GameObject[] headSpots;
     public GameObject[] armSpots;
     public GameObject[] legSpots;
