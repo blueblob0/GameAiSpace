@@ -31,9 +31,6 @@ public class AlienCreature : MonoBehaviour {
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
 
-    //Used to check if the creature is scaled
-    private bool isScaled = false;
-
     //The rot val of the arms
     private float rotSpeedArm = 30;
     private float armTotalRot = 0;
@@ -206,12 +203,5 @@ public class AlienCreature : MonoBehaviour {
 
     public bool isSpawned(){
         return spawned;
-    }
-
-    public void hasBeenScaled(bool scaled){
-        isScaled = scaled;
-    }
-    public bool checkScaled(){
-        return isScaled;
     }
 }

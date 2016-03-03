@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 /*
@@ -14,17 +15,13 @@ public class CreatureSpawner : MonoBehaviour {
     //Quick way of checking what creature type has been spawned
     private bool[] creatureSpawned;
 
-    //Check if the creatures have been scaled
-    private bool allScaled;
-    
-
-    private List<GameObject> spawnedCreatures;
+    //Keep track of the creatures spawned
+    private List<GameObject> spawnedCreatureTypes;
 
 	// Use this for initialization
 	void Start () {
-        //Init
-        allScaled = false;
-        spawnedCreatures = new List<GameObject>();
+        //Init the list
+        spawnedCreatureTypes = new List<GameObject>();
 
         //Init the bool array
         creatureSpawned = new bool[creatureTypes.Length];
@@ -42,29 +39,22 @@ public class CreatureSpawner : MonoBehaviour {
                 creature.transform.localScale = Vector3.one;
                 creatureSpawned[i] = true;
                 //Finally, add to list
-                spawnedCreatures.Add(creature);
+                spawnedCreatureTypes.Add(creature);
+                //Then wait before evyerthing is scaled doen
+                StartCoroutine(scaleCreatures(spawnedCreatureTypes));
             }
         }
     }
 
-    void Update()
-    {
-        if (!allScaled)
-        {
-            allScaled = true;
-            for (int i = 0; i < spawnedCreatures.Count; i++)
-            {
-                if (spawnedCreatures[i].GetComponent<AlienCreature>().isSpawned() && !spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled())
-                {
-                    spawnedCreatures[i].transform.localScale *= 0.1f;
-                    spawnedCreatures[i].GetComponent<AlienCreature>().hasBeenScaled(true);
-                }
-                else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled())
-                {
-                    allScaled = false;
-                }
+    //Called at the end to scale all the creatures down
+    IEnumerator scaleCreatures(List<GameObject> creatures) {
+        //Wait
+        yield return null;
 
-            }
+        //Scale of creature types
+        for(int i = 0; i < creatures.Count; i++) {
+            //Keep the mscaled with the ratio
+            creatures[i].transform.localScale /= CreateGalaxy.starMuti;
         }
     }
 }
