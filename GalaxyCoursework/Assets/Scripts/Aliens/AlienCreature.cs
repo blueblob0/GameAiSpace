@@ -31,12 +31,8 @@ public class AlienCreature : MonoBehaviour {
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
 
-    //The rot val of the arms
-    private float rotSpeedArm = 30;
-    private float armTotalRot = 0;
-    //The rot val of the legs
-    private float rotSpeedLeg = 30;
-    private float legTotalRot = 0;
+    //Velocity of the creature
+    private Vector3 velcoity = Vector3.zero;
 
     //The script the body contains
     private AlienBody bodyScript;
@@ -92,7 +88,8 @@ public class AlienCreature : MonoBehaviour {
     /// Update the creature to peform movement ect.
     /// </summary>
     protected virtual void Update() {
-       
+        //Add on the velocity each update
+        transform.position += velcoity;
     }
 
     /// <summary>
