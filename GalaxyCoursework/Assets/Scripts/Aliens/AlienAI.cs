@@ -7,8 +7,11 @@ using System.Collections;
 
 public class AlienAI : MonoBehaviour {
 
-	// Use this for initialization
-	public virtual void Start () {
+    //Set in inspector
+    public ushort speed = 1;
+   
+    // Use this for initialization
+    public virtual void Start () {
 	
 	}
 	
@@ -16,4 +19,16 @@ public class AlienAI : MonoBehaviour {
 	public virtual void Update () {
 	
 	}
+
+    protected Vector3 seek(Vector3 targetWorldPos) {
+        return Vector3.zero;
+    }
+
+    protected Vector3 flee(Vector3 targetWorldPos) {
+        return Vector3.zero;
+    }
+
+    protected Vector3 wander() {
+        return Vector3.zero;
+    }
 }
