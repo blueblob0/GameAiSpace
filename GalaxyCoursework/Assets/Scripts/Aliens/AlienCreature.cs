@@ -10,7 +10,7 @@ using System.Collections.Generic;
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
 
-public class AlienCreature : MonoBehaviour {
+public class AlienCreature : AlienAI {
 
     //Set in inspector
     public GameObject bodyPrefab;
@@ -58,7 +58,9 @@ public class AlienCreature : MonoBehaviour {
     /// <summary>
     /// Will spawn the creature into the game world
     /// </summary>
-    protected virtual void Start() {
+    public override void Start() {
+        base.Start();
+
         //Set the name
         creatureName = "";
         int nameLength = Random.Range(2, 5);
@@ -92,28 +94,9 @@ public class AlienCreature : MonoBehaviour {
     /// <summary>
     /// Update the creature to peform movement ect.
     /// </summary>
-    protected virtual void Update() {
-        /*
-        //Rotate the arms
-        bodyScript.rotateArms(0, rotSpeedArm * Time.deltaTime, 0);
-        armTotalRot += rotSpeedArm * Time.deltaTime;
-        if(armTotalRot > 30) {
-            rotSpeedArm *= -1;
-        } else if(armTotalRot < -30) {
-            rotSpeedArm *= -1;
-        }
+    public override void Update() {
+        base.Update();
 
-        //Rotate the legs
-        bodyScript.rotateLegs(rotSpeedArm * Time.deltaTime, 0, 0);
-        legTotalRot += rotSpeedLeg * Time.deltaTime;
-        if(legTotalRot > 30) {
-            rotSpeedLeg *= -1;
-        } else if(legTotalRot < -30) {
-            rotSpeedLeg *= -1;
-        }
-        */
-
-        //Add something here for the creature to copy itself (ie reprooduce)
     }
 
     /// <summary>
