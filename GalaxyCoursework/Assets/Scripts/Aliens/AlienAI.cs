@@ -23,9 +23,14 @@ public class AlienAI : MonoBehaviour {
         //Update the agent's position based on the velcoity
         transform.position += (velocity * speed * Time.deltaTime);
 
-
 	}
 
+    /// <summary>
+    /// Makes the agent seek the target
+    /// </summary>
+    /// <param name="currentPos">Current position of the agent</param>
+    /// <param name="targetWorldPos">The world position of the target to seek</param>
+    /// <returns></returns>
     protected Vector3 seek(Vector3 currentPos, Vector3 targetWorldPos) {
         Vector3 ret = targetWorldPos - currentPos;
         ret.Normalize();
@@ -33,8 +38,17 @@ public class AlienAI : MonoBehaviour {
         return ret;
     }
 
-    protected Vector3 flee(Vector3 targetWorldPos) {
-        return Vector3.zero;
+    /// <summary>
+    /// Makes the agent flee from the target
+    /// </summary>
+    /// <param name="currentPos">Current position of the agent</param>
+    /// <param name="targetWorldPos">World position of the target to flee from</param>
+    /// <returns></returns>
+    protected Vector3 flee(Vector3 currentPos, Vector3 targetWorldPos) {
+        Vector3 ret = currentPos - targetWorldPos;
+        ret.Normalize();
+
+        return ret;
     }
 
     protected Vector3 wander() {
