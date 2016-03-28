@@ -20,10 +20,12 @@ public class AlienAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	public virtual void Update () {
-        //Update the agent's position based on the velcoity
-        transform.position += (velocity * speed * Time.deltaTime);
+        //velocity = wander(transform.position, transform.forward, 2);
 
-	}
+        //Update the agent's position based on the velcoity
+        transform.LookAt(velocity);
+        transform.position += (velocity * speed * Time.deltaTime);
+    }
 
     /// <summary>
     /// Makes the agent seek the target
@@ -51,7 +53,26 @@ public class AlienAI : MonoBehaviour {
         return ret;
     }
 
-    protected Vector3 wander() {
-        return Vector3.zero;
+    /// <summary>
+    /// Makes the agent wander around
+    /// </summary>
+    /// <param name="curentPos">Current position of the agent</param>
+    /// <param name="agentForward">Agent's forward vector</param>
+    /// <param name="wanderOffSet">How far forward to set the wander pos</param>
+    /// <returns></returns>
+    protected Vector3 wander(Vector3 curentPos, Vector3 agentForward, float wanderOffSet) {
+        //Create the 'circle' for the velcoity to be in
+        Vector3 circleCenter = curentPos + agentForward;// * wanderOffSet);
+        //The radius of the circle will be how far the displacement can go
+        float circleRadius = 0.25f;
+
+        //Get the displacement force (direction to wander to)
+        Vector3 displacement = circleCenter;
+        displacement += new Vector3(Random.Range(-circleRadius, circleRadius), 0, Random.Range(-circleRadius, circleRadius));
+
+        //Return the new velocity force
+        Vector3 wanderForce = displacement;
+        wanderForce.Normalize();
+        return wanderForce;
     }
 }
