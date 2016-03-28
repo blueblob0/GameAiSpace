@@ -22,12 +22,6 @@ public class AlienCreature : AlienAI {
     public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
 
-    public ushort intelligence = 0;
-    public ushort strength = 0;
-    public ushort speed = 0;
-    public ushort reproductionRate = 0;
-    public ushort agressivness = 0;
-
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
 
