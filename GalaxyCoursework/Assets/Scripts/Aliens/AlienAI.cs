@@ -12,18 +12,23 @@ public class AlienAI : MonoBehaviour {
 
     //The velocity vector
     private Vector3 velocity;
-   
+
+
+    //Debug
+    private GameObject testcube;
+
+
     // Use this for initialization
     public virtual void Start () {
-	
+        
 	}
 	
 	// Update is called once per frame
 	public virtual void Update () {
         velocity = wander(transform.position, transform.forward, 2);
 
-        //Update the agent's position based on the velcoity
-        transform.LookAt(velocity);
+        //Update the agent's position and rotation based on the velcoity
+        transform.rotation = Quaternion.LookRotation(velocity);
         transform.position += (velocity * speed * Time.deltaTime);
     }
 
@@ -36,7 +41,6 @@ public class AlienAI : MonoBehaviour {
     protected Vector3 seek(Vector3 currentPos, Vector3 targetWorldPos) {
         Vector3 ret = targetWorldPos - currentPos;
         ret.Normalize();
-
         return ret;
     }
 
@@ -49,7 +53,6 @@ public class AlienAI : MonoBehaviour {
     protected Vector3 flee(Vector3 currentPos, Vector3 targetWorldPos) {
         Vector3 ret = currentPos - targetWorldPos;
         ret.Normalize();
-
         return ret;
     }
 
