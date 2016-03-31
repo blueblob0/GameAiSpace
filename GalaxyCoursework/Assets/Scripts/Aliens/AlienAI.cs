@@ -67,10 +67,10 @@ public class AlienAI : MonoBehaviour {
         //Create the 'circle' for the velcoity to be in
         Vector3 circleCenter = curentPos + (agentForward * wanderOffSet);
         //The radius of the circle will be how far the displacement can go
-        float circleRadius = 0.25f;
+        float circleRadius = 2.0f;
 
         //Init the displacement force (direction to wander to)
-        Vector3 displacement = circleCenter * circleRadius;
+        Vector3 displacement = new Vector3(0, 0, 1) * circleRadius;
         //Get an angle anywhere from 0 - 360
         float angle = Random.Range(0, 360);
         //Displace the vector by the angle
