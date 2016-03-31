@@ -20,7 +20,7 @@ public class AlienAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	public virtual void Update () {
-        //velocity = wander(transform.position, transform.forward, 2);
+        velocity = wander(transform.position, transform.forward, 2);
 
         //Update the agent's position based on the velcoity
         transform.LookAt(velocity);
@@ -62,16 +62,20 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     protected Vector3 wander(Vector3 curentPos, Vector3 agentForward, float wanderOffSet) {
         //Create the 'circle' for the velcoity to be in
-        Vector3 circleCenter = curentPos + agentForward;// * wanderOffSet);
+        Vector3 circleCenter = curentPos + (agentForward * wanderOffSet);
         //The radius of the circle will be how far the displacement can go
         float circleRadius = 0.25f;
 
-        //Get the displacement force (direction to wander to)
-        Vector3 displacement = circleCenter;
-        displacement += new Vector3(Random.Range(-circleRadius, circleRadius), 0, Random.Range(-circleRadius, circleRadius));
+        //Init the displacement force (direction to wander to)
+        Vector3 displacement = circleCenter * circleRadius;
+        //Get an angle anywhere from 0 - 360
+        float angle = Random.Range(0, 360);
+        //Displace the vector by the angle
+        displacement.x = Mathf.Cos(angle);
+        displacement.z = Mathf.Sin(angle);
 
-        //Return the new velocity force
-        Vector3 wanderForce = displacement;
+        //Caculate and return the new velocity force
+        Vector3 wanderForce = circleCenter + displacement;
         wanderForce.Normalize();
         return wanderForce;
     }
