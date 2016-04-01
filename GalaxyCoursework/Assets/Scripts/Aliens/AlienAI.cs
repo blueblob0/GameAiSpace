@@ -2,10 +2,9 @@
 using System.Collections;
 
 /*
- * The class that will control the AI of the creatures
+ * This class basically holds all the steering algs for the creatures
  */
 
-[RequireComponent(typeof(SphereCollider))]
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
@@ -13,17 +12,11 @@ public class AlienAI : MonoBehaviour {
     public ushort mass = 15;
     public ushort targetDetectRadius = 20;
 
-    //The target of the agent
-    protected GameObject target;
-
     //The velocity vector
     private Vector3 velocity;
     //Used to apply steering
     private Vector3 steering;
     private Vector3 desiredVelocity;
-
-    //Used to detect targets
-    SphereCollider targetCollider;
 
     // Use this for initialization
     public virtual void Start () {
@@ -31,11 +24,6 @@ public class AlienAI : MonoBehaviour {
         velocity = transform.forward * speed * Time.deltaTime;
         steering = Vector3.zero;
         desiredVelocity = Vector3.zero;
-
-        //Set up the collider
-        targetCollider = GetComponent<SphereCollider>();
-        targetCollider.isTrigger = true;
-        targetCollider.radius = targetDetectRadius;
     }
 	
 	// Update is called once per frame
@@ -56,28 +44,6 @@ public class AlienAI : MonoBehaviour {
         //Update the position and look 'forward'
         transform.rotation = Quaternion.LookRotation(velocity);
         transform.position += velocity;
-    }
-
-    /// <summary>
-    /// Gets called when a object enters the collider
-    /// </summary>
-    /// <param name="other">The collided object</param>
-    public void OnTriggerEnter(Collider other) {
-        //Make sure it is an AI agent and not this agent
-        if(other.GetComponent<AlienAI>() && other.gameObject != gameObject) {
-            target = other.gameObject;
-        }
-    }
-
-    /// <summary>
-    /// Gets called when an object exits a collider
-    /// </summary>
-    /// <param name="other">The collided object</param>
-    public void OnTriggerExit(Collider other) {
-        //Make sure its our target
-        if(other.gameObject == target) {
-            target = null;
-        }
     }
 
     /// <summary>

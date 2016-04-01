@@ -13,6 +13,7 @@ using System.Collections.Generic;
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
 
+[RequireComponent(typeof(SphereCollider))]
 public class AlienCreature : AlienAI {
 
     //Set in inspector
@@ -24,6 +25,9 @@ public class AlienCreature : AlienAI {
 
     public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
+
+    //The target of the agent
+    public GameObject target;
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
@@ -40,6 +44,9 @@ public class AlienCreature : AlienAI {
 
     //The script the body contains
     private AlienBody bodyScript;
+
+    //Used to detect targets
+    private SphereCollider targetCollider;
 
     //An array of potential name parts
     string[] nameParts = {"si", "la", "ti", "aa", "ul",
@@ -87,6 +94,11 @@ public class AlienCreature : AlienAI {
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
+
+        //Set up the collider
+        targetCollider = GetComponent<SphereCollider>();
+        targetCollider.isTrigger = true;
+        targetCollider.radius = targetDetectRadius;
     }
 
     /// <summary>
@@ -94,10 +106,36 @@ public class AlienCreature : AlienAI {
     /// </summary>
     public override void Update() {
         //Wander around
-        setSteering(wander());
+        if(target) {
+            setSteering(seek(target.transform.position));
+        } else {
+            setSteering(wander());
+        }
 
         //Call last to apply velocity updates
         base.Update();
+    }
+
+    /// <summary>
+    /// Gets called when a object enters the collider
+    /// </summary>
+    /// <param name="other">The collided object</param>
+    public void OnTriggerEnter(Collider other) {
+        //Make sure it is an AI agent and not this agent
+        if(other.GetComponent<AlienAI>() && other.gameObject != gameObject) {
+            target = other.gameObject;
+        }
+    }
+
+    /// <summary>
+    /// Gets called when an object exits a collider
+    /// </summary>
+    /// <param name="other">The collided object</param>
+    public void OnTriggerExit(Collider other) {
+        //Make sure its our target
+        if(other.gameObject == target) {
+            target = null;
+        }
     }
 
     /// <summary>
@@ -204,6 +242,7 @@ public class AlienCreature : AlienAI {
         return char.ToUpper(s[0]) + s.Substring(1);
     }
 
+    //REPLACE WITH BETTER FUNCTIONALITY (CreatureSpawner.cs)
     public bool isSpawned() {
         return spawned;
     }
