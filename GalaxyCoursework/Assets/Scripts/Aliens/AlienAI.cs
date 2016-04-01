@@ -125,11 +125,11 @@ public class AlienAI : MonoBehaviour {
         displacement.x = circleRadius * Mathf.Cos(angle);
         displacement.z = circleRadius * Mathf.Sin(angle);
 
-        //Normalize the new steering force
-        Vector3 wanderForce = calculateSpeed(circleCenter + displacement);
+        //Normalize the new steering force to the speed
+        desiredVelocity = calculateSpeed(circleCenter + displacement);
 
         //Return the new force
-        return wanderForce;
+        return desiredVelocity - velocity;
     }
 
     /// <summary>
