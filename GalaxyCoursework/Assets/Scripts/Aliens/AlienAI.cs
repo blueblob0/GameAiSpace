@@ -97,11 +97,21 @@ public class AlienAI : MonoBehaviour {
     /// <summary>
     /// Makes the agent flee from the target
     /// </summary>
-    /// <param name="currentPos">Current position of the agent</param>
     /// <param name="targetWorldPos">World position of the target to flee from</param>
     /// <returns></returns>
-    protected Vector3 flee(Vector3 currentPos, Vector3 targetWorldPos) {
-        return currentPos - targetWorldPos;
+    protected Vector3 flee(Vector3 targetWorldPos) {
+        //The steering force
+        Vector3 force;
+
+        //Set the diesried velocity to the away from the target
+        desiredVelocity = transform.position - targetWorldPos;
+        //Scale to the speed of the agent
+        desiredVelocity.Normalize();
+        desiredVelocity *= speed * Time.deltaTime;
+
+        //Return the steering force of the desired velocity
+        force = desiredVelocity - velocity;
+        return force;
     }
 
     /// <summary>
