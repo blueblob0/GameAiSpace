@@ -59,6 +59,28 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Gets called when a object enters the collider
+    /// </summary>
+    /// <param name="other">The collided object</param>
+    public void OnTriggerEnter(Collider other) {
+        //Make sure it is an AI agent
+        if(other.GetComponent<AlienAI>()) {
+            target = other.gameObject;
+        }
+    }
+
+    /// <summary>
+    /// Gets called when an object exits a collider
+    /// </summary>
+    /// <param name="other">The collided object</param>
+    public void OnTriggerExit(Collider other) {
+        //Make sure its our target
+        if(other.gameObject == target) {
+            target = null;
+        }
+    }
+
+    /// <summary>
     /// Makes the agent seek the target
     /// </summary>
     /// <param name="targetWorldPos">The world position of the target to seek</param>
