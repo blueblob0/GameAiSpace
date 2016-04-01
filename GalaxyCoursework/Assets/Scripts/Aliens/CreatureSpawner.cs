@@ -16,12 +16,12 @@ public class CreatureSpawner : MonoBehaviour {
 
     //Check if the creatures have been scaled
     private bool allScaled;
-    
+
 
     private List<GameObject> spawnedCreatures;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start() {
         //Init
         allScaled = false;
         spawnedCreatures = new List<GameObject>();
@@ -47,20 +47,14 @@ public class CreatureSpawner : MonoBehaviour {
         }
     }
 
-    void Update()
-    {
-        if (!allScaled)
-        {
+    void Update() {
+        if(!allScaled) {
             allScaled = true;
-            for (int i = 0; i < spawnedCreatures.Count; i++)
-            {
-                if (spawnedCreatures[i].GetComponent<AlienCreature>().isSpawned() && !spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled())
-                {
+            for(int i = 0; i < spawnedCreatures.Count; i++) {
+                if(spawnedCreatures[i].GetComponent<AlienCreature>().isSpawned() && !spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
                     spawnedCreatures[i].transform.localScale *= 0.1f;
                     spawnedCreatures[i].GetComponent<AlienCreature>().hasBeenScaled(true);
-                }
-                else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled())
-                {
+                } else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
                     allScaled = false;
                 }
 
