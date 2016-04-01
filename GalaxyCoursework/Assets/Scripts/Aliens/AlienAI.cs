@@ -47,6 +47,14 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Returns the velocity vector of the current agent
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 getvelocity() {
+        return velocity;
+    }
+
+    /// <summary>
     /// Makes the agent seek the target
     /// </summary>
     /// <param name="targetWorldPos">The world position of the target to seek</param>
@@ -57,6 +65,19 @@ public class AlienAI : MonoBehaviour {
 
         //Return the steering force of the desired velocity
         return desiredVelocity - velocity;
+    }
+
+    /// <summary>
+    /// Returns the steering force for persuing the target
+    /// </summary>
+    /// <param name="target">The agent to seek</param>
+    /// <param name="t">How far ahead (Time) to persue</param>
+    /// <returns></returns>
+    protected Vector3 persue(AlienAI target, float t = 50.0f) {
+        //Get the future position of the agent
+        Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
+        //Return the seek steering of the future position
+        return seek(futurePosition);
     }
 
     /// <summary>
