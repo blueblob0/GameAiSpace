@@ -80,9 +80,10 @@ public class AlienCreature : AlienAI {
         ushort maxHead = (ushort)bodyScript.getHeadSpotCount();
         ushort maxArm = (ushort)bodyScript.getArmSpotCount();
         ushort maxLeg = (ushort)bodyScript.getLegSpotCount();
+        ushort maxWing = (ushort)bodyScript.getWingSpotCount();
 
         //Create the creature
-        createCreature((ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1));
+        createCreature((ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1), (ushort)Random.Range(2, maxWing + 1));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
@@ -149,10 +150,10 @@ public class AlienCreature : AlienAI {
             }
 
             //Spawn in the Legs
-            for(int i = 0; i < maxArms; i++) {
+            for(int i = 0; i < maxLegs; i++) {
                 //Get the body's children
                 for(int j = 0; j < body.transform.childCount; j++) {
-                    //Check if the spot is an 'Leg' spot and that it is free
+                    //Check if the spot is a 'Leg' spot and that it is free
                     GameObject legSpot = body.transform.GetChild(j).gameObject;
                     if(legSpot.name == "Leg" + i && legSpot.transform.childCount == 0) {
                         //Spawn in the leg
@@ -166,7 +167,23 @@ public class AlienCreature : AlienAI {
                 }
             }
 
-            //TODO SPAWN IN WINGS
+            //Spawn in the wings
+            for(int i = 0; i < maxWings; i++) {
+                //Get the body's children
+                for(int j = 0; j < body.transform.childCount; j++) {
+                    //Check if the spot is a 'Wing' spot and that it is free
+                    GameObject wingSpot = body.transform.GetChild(j).gameObject;
+                    if(wingSpot.name == "Wing" + i && wingSpot.transform.childCount == 0) {
+                        //Spawn in the wing
+                        GameObject wing = GameObject.Instantiate<GameObject>(wingPrefab);
+                        //Set the parent
+                        wing.transform.SetParent(wingSpot.transform);
+                        //Make sure it is at 0,0,0 in relation to the parent
+                        wing.transform.localPosition = Vector3.zero;
+                        wing.transform.localRotation = Quaternion.identity;
+                    }
+                }
+            }
 
             //Creature has now been spawned
             spawned = true;
