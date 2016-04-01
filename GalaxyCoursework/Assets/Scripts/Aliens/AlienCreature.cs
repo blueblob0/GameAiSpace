@@ -106,11 +106,7 @@ public class AlienCreature : AlienAI {
     /// </summary>
     public override void Update() {
         //Wander around
-        if(target) {
-            setSteering(seek(target.transform.position));
-        } else {
-            setSteering(wander());
-        }
+        setSteering(wander());
 
         //Call last to apply velocity updates
         base.Update();
