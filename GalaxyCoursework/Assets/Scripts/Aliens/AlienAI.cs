@@ -109,12 +109,13 @@ public class AlienAI : MonoBehaviour {
     /// <summary>
     /// Makes the agent wander around
     /// </summary>
-    /// <param name="wanderOffSet">How far forward to set the wander pos</param>
+    /// <param name="circleDistance">How far forward to set the wander pos</param>
     /// <param name="circleRadius">How big the displacement vector can be</param>
     /// <returns>The wander (steering) force</returns>
-    protected Vector3 wander(float wanderOffSet = 6.0f, float circleRadius = 5.0f) {
+    protected Vector3 wander(float circleDistance = 6.0f, float circleRadius = 5.0f) {
         //Create the 'circle' for a wander position to be in
-        Vector3 circleCenter = calculateSpeed(velocity);
+        Vector3 circleCenter = velocity.normalized;
+        circleCenter *= circleDistance;
 
         //Init the displacement force (direction to wander to)
         Vector3 displacement = new Vector3(0, 0, 1);
