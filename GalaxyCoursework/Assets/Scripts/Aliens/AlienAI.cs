@@ -5,6 +5,7 @@ using System.Collections;
  * The class that will control the AI of the creatures
  */
 
+[RequireComponent(typeof(SphereCollider))]
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
@@ -20,34 +21,24 @@ public class AlienAI : MonoBehaviour {
     private Vector3 steering;
     private Vector3 desiredVelocity;
 
-    //DEBUG
-    private GameObject testCube;
-    private float wait = 3;
-    private float then = 0;
+    //Used to detect targets
+    SphereCollider targetCollider;
 
     // Use this for initialization
     public virtual void Start () {
+        //Init the velocity vectors
         velocity = transform.forward * speed * Time.deltaTime;
         steering = Vector3.zero;
         desiredVelocity = Vector3.zero;
 
-        testCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        testCube.transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+        //Set up the collider
+        targetCollider = GetComponent<SphereCollider>();
+        targetCollider.isTrigger = true;
     }
 	
 	// Update is called once per frame
 	public virtual void Update () {
         //DEBUG---------------------
-        if(then >= wait) {
-            testCube.transform.position = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
-
-            target = testCube;
-
-            then = 0;
-        } else {
-            then += Time.deltaTime;
-        }
-
         displayDebugLines();
         //--------------------------
 
