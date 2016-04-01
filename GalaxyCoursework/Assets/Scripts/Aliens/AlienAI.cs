@@ -55,6 +55,8 @@ public class AlienAI : MonoBehaviour {
         if(target) {
             steering = seek(target.transform.position);
             steering /= mass;
+        } else {
+            steering = wander();
         }
 
         //Add to the velocity
@@ -64,7 +66,8 @@ public class AlienAI : MonoBehaviour {
         velocity.Normalize();
         velocity *= speed * Time.deltaTime;
 
-        //Update the position
+        //Update the position and look 'forward'
+        transform.rotation = Quaternion.LookRotation(velocity);
         transform.position += velocity;
     }
 
@@ -102,15 +105,13 @@ public class AlienAI : MonoBehaviour {
     /// <summary>
     /// Makes the agent wander around
     /// </summary>
-    /// <param name="curentPos">Current position of the agent</param>
-    /// <param name="agentForward">Agent's forward vector</param>
     /// <param name="wanderOffSet">How far forward to set the wander pos</param>
     /// <returns></returns>
-    protected Vector3 wander(Vector3 curentPos, Vector3 agentForward, float wanderOffSet = 5.0f) {
+    protected Vector3 wander(float wanderOffSet = 5.0f) {
         //Create the 'circle' for the velcoity to be in
-        Vector3 circleCenter = curentPos + (agentForward * wanderOffSet);
+        Vector3 circleCenter = transform.position + (transform.forward * wanderOffSet);
         //The radius of the circle will be how far the displacement can go
-        float circleRadius = wanderOffSet / 2;
+        float circleRadius = wanderOffSet;
 
         //Init the displacement force (direction to wander to)
         Vector3 displacement = new Vector3();
@@ -131,7 +132,7 @@ public class AlienAI : MonoBehaviour {
         //Desired velocity
         Debug.DrawLine(transform.position, transform.position + (desiredVelocity.normalized * 5), Color.blue);
         //Steering
-        Debug.DrawLine(transform.position + (velocity.normalized * 5), transform.position + (steering.normalized * 5), Color.red);
+        Debug.DrawLine(transform.position, transform.position + (steering.normalized * 5), Color.red);
         //Velocity
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 5), Color.green);
     }
