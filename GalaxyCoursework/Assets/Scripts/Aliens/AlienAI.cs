@@ -143,7 +143,7 @@ public class AlienAI : MonoBehaviour {
     /// <summary>
     /// Makes the agent stop
     /// </summary>
-    protected void atopMovement() {
+    protected void stopMovement() {
         velocity = Vector3.zero;
         desiredVelocity = Vector3.zero;
         steering = Vector3.zero;
