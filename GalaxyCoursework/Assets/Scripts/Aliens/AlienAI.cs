@@ -11,7 +11,7 @@ public class AlienAI : MonoBehaviour {
     //Set in inspector
     public ushort speed = 5;
     public ushort mass = 15;
-    public ushort targetDetectRadius = 10;
+    public ushort targetDetectRadius = 20;
 
     //The target of the agent
     protected GameObject target;
