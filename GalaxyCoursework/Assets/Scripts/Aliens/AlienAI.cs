@@ -14,7 +14,7 @@ public class AlienAI : MonoBehaviour {
     public ushort targetDetectRadius = 10;
 
     //The target of the agent
-    private GameObject target;
+    protected GameObject target;
 
     //The velocity vector
     private Vector3 velocity;
