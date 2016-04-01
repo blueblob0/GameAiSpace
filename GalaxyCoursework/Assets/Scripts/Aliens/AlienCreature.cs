@@ -92,8 +92,11 @@ public class AlienCreature : AlienAI {
     /// Update the creature to peform movement ect.
     /// </summary>
     public override void Update() {
-        base.Update();
+        //Wander around
+        setSteering(wander());
 
+        //Call last to apply velocity updates
+        base.Update();
     }
 
     /// <summary>
