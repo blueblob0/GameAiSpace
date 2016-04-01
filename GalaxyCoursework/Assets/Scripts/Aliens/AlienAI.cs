@@ -63,8 +63,8 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <param name="other">The collided object</param>
     public void OnTriggerEnter(Collider other) {
-        //Make sure it is an AI agent
-        if(other.GetComponent<AlienAI>()) {
+        //Make sure it is an AI agent and not this agent
+        if(other.GetComponent<AlienAI>() && other.gameObject != gameObject) {
             target = other.gameObject;
         }
     }
