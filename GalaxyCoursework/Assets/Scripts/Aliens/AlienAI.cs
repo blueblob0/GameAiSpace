@@ -8,8 +8,8 @@ using System.Collections;
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
-    public ushort speed = 1;
-    public ushort mass = 10;
+    public ushort speed = 5;
+    public ushort mass = 15;
 
     //The target of the agent
     private GameObject target;
@@ -41,7 +41,7 @@ public class AlienAI : MonoBehaviour {
         if(then >= wait) {
             testCube.transform.position = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
 
-            //target = testCube;
+            target = testCube;
 
             then = 0;
         } else {
@@ -65,8 +65,7 @@ public class AlienAI : MonoBehaviour {
         velocity += steering;
 
         //Normalise the desired velocity and add the speed
-        velocity.Normalize();
-        velocity *= speed * Time.deltaTime;
+        velocity = calculateSpeed(velocity);
 
         //Update the position and look 'forward'
         transform.rotation = Quaternion.LookRotation(velocity);
@@ -79,19 +78,11 @@ public class AlienAI : MonoBehaviour {
     /// <param name="targetWorldPos">The world position of the target to seek</param>
     /// <returns>Returns the steering force</returns>
     protected Vector3 seek(Vector3 targetWorldPos) {
-        //The steering force
-        Vector3 force;
-
         //Set the diesried velocity to the direction of the target
-        desiredVelocity = targetWorldPos - transform.position;
-        //Scale to the speed of the agent
-        desiredVelocity.Normalize();
-        desiredVelocity *= speed * Time.deltaTime;
+        desiredVelocity = calculateSpeed(targetWorldPos - transform.position);
 
         //Return the steering force of the desired velocity
-        force = desiredVelocity - velocity;
-        return force;
-
+        return desiredVelocity - velocity;
     }
 
     /// <summary>
@@ -100,18 +91,11 @@ public class AlienAI : MonoBehaviour {
     /// <param name="targetWorldPos">World position of the target to flee from</param>
     /// <returns></returns>
     protected Vector3 flee(Vector3 targetWorldPos) {
-        //The steering force
-        Vector3 force;
-
         //Set the diesried velocity to the away from the target
-        desiredVelocity = transform.position - targetWorldPos;
-        //Scale to the speed of the agent
-        desiredVelocity.Normalize();
-        desiredVelocity *= speed * Time.deltaTime;
+        desiredVelocity = calculateSpeed(transform.position - targetWorldPos);
 
         //Return the steering force of the desired velocity
-        force = desiredVelocity - velocity;
-        return force;
+        return desiredVelocity - velocity;
     }
 
     /// <summary>
@@ -122,9 +106,7 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     protected Vector3 wander(float wanderOffSet = 6.0f, float circleRadius = 5.0f) {
         //Create the 'circle' for a wander position to be in
-        Vector3 circleCenter = velocity;
-        circleCenter.Normalize();
-        circleCenter *= wanderOffSet;
+        Vector3 circleCenter = calculateSpeed(velocity);
 
         //Init the displacement force (direction to wander to)
         Vector3 displacement = new Vector3(0, 0, 1);
@@ -135,12 +117,19 @@ public class AlienAI : MonoBehaviour {
         displacement.z = circleRadius * Mathf.Sin(angle);
 
         //Normalize the new steering force
-        Vector3 wanderForce = circleCenter + displacement;
-        wanderForce.Normalize();
-        wanderForce *= speed * Time.deltaTime;
+        Vector3 wanderForce = calculateSpeed(circleCenter + displacement);
 
         //Return the new force
         return wanderForce;
+    }
+
+    /// <summary>
+    /// Calculates the length of the the vector based off of speed
+    /// </summary>
+    /// <param name="vec">Vector to calculate from</param>
+    /// <returns></returns>
+    private Vector3 calculateSpeed(Vector3 vec) {
+        return vec.normalized * speed * Time.deltaTime;
     }
 
     /// <summary>
