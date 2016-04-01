@@ -41,7 +41,7 @@ public class AlienAI : MonoBehaviour {
         if(then >= wait) {
             testCube.transform.position = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
 
-            target = testCube;
+            //target = testCube;
 
             then = 0;
         } else {
@@ -54,10 +54,12 @@ public class AlienAI : MonoBehaviour {
         //Get a steering force
         if(target) {
             steering = seek(target.transform.position);
-            steering /= mass;
         } else {
             steering = wander();
         }
+
+        //Get a smooth turn
+        steering /= mass;
 
         //Add to the velocity
         velocity += steering;
@@ -106,23 +108,29 @@ public class AlienAI : MonoBehaviour {
     /// Makes the agent wander around
     /// </summary>
     /// <param name="wanderOffSet">How far forward to set the wander pos</param>
+    /// <param name="circleRadius">How big the displacement vector can be</param>
     /// <returns></returns>
-    protected Vector3 wander(float wanderOffSet = 5.0f) {
-        //Create the 'circle' for the velcoity to be in
-        Vector3 circleCenter = transform.position + (transform.forward * wanderOffSet);
-        //The radius of the circle will be how far the displacement can go
-        float circleRadius = wanderOffSet;
+    protected Vector3 wander(float wanderOffSet = 6.0f, float circleRadius = 5.0f) {
+        //Create the 'circle' for a wander position to be in
+        Vector3 circleCenter = velocity;
+        circleCenter.Normalize();
+        circleCenter *= wanderOffSet;
 
         //Init the displacement force (direction to wander to)
-        Vector3 displacement = new Vector3();
+        Vector3 displacement = new Vector3(0, 0, 1);
         //Get an angle anywhere from 0 - 360
         float angle = Random.Range(0, 360);
         //Displace the vector by the angle
         displacement.x = circleRadius * Mathf.Cos(angle);
         displacement.z = circleRadius * Mathf.Sin(angle);
 
-        //Return the new wander force
-        return circleCenter + displacement;
+        //Normalize the new steering force
+        Vector3 wanderForce = circleCenter + displacement;
+        wanderForce.Normalize();
+        wanderForce *= speed * Time.deltaTime;
+
+        //Return the new force
+        return wanderForce;
     }
 
     /// <summary>
