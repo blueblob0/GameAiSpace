@@ -71,9 +71,10 @@ public class AlienAI : MonoBehaviour {
     /// Returns the steering force for persuing the target
     /// </summary>
     /// <param name="target">The agent to seek</param>
-    /// <param name="t">How far ahead (Time) to persue</param>
     /// <returns></returns>
-    protected Vector3 persue(AlienAI target, float t = 50.0f) {
+    protected Vector3 persue(AlienAI target) {
+        //How far ahead (as time) to persue the target
+        float t = Vector3.Distance(target.transform.position, transform.position) / (speed * Time.deltaTime);
         //Get the future position of the agent
         Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
         //Return the seek steering of the future position
@@ -91,6 +92,20 @@ public class AlienAI : MonoBehaviour {
 
         //Return the steering force of the desired velocity
         return desiredVelocity - velocity;
+    }
+
+    /// <summary>
+    /// Returns the steering force to eveade the target
+    /// </summary>
+    /// <param name="target">Target to evade</param>
+    /// <returns></returns>
+    protected Vector3 evade(AlienAI target) {
+        //How far ahead (as time) to to evade the target
+        float t = Vector3.Distance(target.transform.position, transform.position) / (speed * Time.deltaTime);
+        //Get the future position of the agent
+        Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
+        //Return the flee steering of the future position
+        return flee(futurePosition);
     }
 
     /// <summary>
