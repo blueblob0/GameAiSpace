@@ -9,7 +9,7 @@ public class AlienAI : MonoBehaviour {
 
     //Set in inspector
     public ushort speed = 1;
-    public ushort steeringForce = 5;
+    public ushort mass = 10;
 
     //The target of the agent
     private GameObject target;
@@ -47,13 +47,14 @@ public class AlienAI : MonoBehaviour {
         } else {
             then += Time.deltaTime;
         }
-        //--------------------------
 
         displayDebugLines();
+        //--------------------------
 
         //Get a steering force
         if(target) {
             steering = seek(target.transform.position);
+            steering /= mass;
         }
 
         //Add to the velocity
@@ -130,7 +131,7 @@ public class AlienAI : MonoBehaviour {
         //Desired velocity
         Debug.DrawLine(transform.position, transform.position + (desiredVelocity.normalized * 5), Color.blue);
         //Steering
-        Debug.DrawLine(transform.position, transform.position + (steering.normalized * 5), Color.red);
+        Debug.DrawLine(transform.position + (velocity.normalized * 5), transform.position + (steering.normalized * 5), Color.red);
         //Velocity
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 5), Color.green);
     }
