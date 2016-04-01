@@ -42,14 +42,7 @@ public class AlienAI : MonoBehaviour {
         displayDebugLines();
         //--------------------------
 
-        //Get a steering force
-        if(target) {
-            steering = seek(target.transform.position);
-        } else {
-            steering = wander();
-        }
-
-        //Get a smooth turn
+        //Make the steering smooth
         steering /= mass;
 
         //Add to the velocity
@@ -67,7 +60,7 @@ public class AlienAI : MonoBehaviour {
     /// Makes the agent seek the target
     /// </summary>
     /// <param name="targetWorldPos">The world position of the target to seek</param>
-    /// <returns>Returns the steering force</returns>
+    /// <returns>Returns the steering force of the desired direction</returns>
     protected Vector3 seek(Vector3 targetWorldPos) {
         //Set the diesried velocity to the direction of the target
         desiredVelocity = calculateSpeed(targetWorldPos - transform.position);
@@ -80,7 +73,7 @@ public class AlienAI : MonoBehaviour {
     /// Makes the agent flee from the target
     /// </summary>
     /// <param name="targetWorldPos">World position of the target to flee from</param>
-    /// <returns></returns>
+    /// <returns>Returns the steering force of the desired direction</returns>
     protected Vector3 flee(Vector3 targetWorldPos) {
         //Set the diesried velocity to the away from the target
         desiredVelocity = calculateSpeed(transform.position - targetWorldPos);
@@ -94,7 +87,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <param name="wanderOffSet">How far forward to set the wander pos</param>
     /// <param name="circleRadius">How big the displacement vector can be</param>
-    /// <returns></returns>
+    /// <returns>The wander (steering) force</returns>
     protected Vector3 wander(float wanderOffSet = 6.0f, float circleRadius = 5.0f) {
         //Create the 'circle' for a wander position to be in
         Vector3 circleCenter = calculateSpeed(velocity);
@@ -112,6 +105,14 @@ public class AlienAI : MonoBehaviour {
 
         //Return the new force
         return wanderForce;
+    }
+
+    /// <summary>
+    /// Sets the steering vector for the agent to use
+    /// </summary>
+    /// <param name="steeringVector">Steering Vector</param>
+    protected void setSteering(Vector3 steeringVector) {
+        steering = steeringVector;
     }
 
     /// <summary>
