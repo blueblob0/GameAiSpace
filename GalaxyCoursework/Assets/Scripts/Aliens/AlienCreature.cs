@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 /* The super class that will handle all the characteristics
  * of the alien creatures that will spawn, all the random spawning variables
- * like arms, legs, heads will happen here too, also all of the basic AI will happen here
+ * like arms, legs, heads will happen here too
  *
  * Each alien will have a unique set of arms/legs/heads (set in inspector) but will always spawn
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
