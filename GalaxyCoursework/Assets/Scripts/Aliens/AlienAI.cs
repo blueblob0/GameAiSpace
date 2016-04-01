@@ -141,6 +141,15 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Makes the agent stop
+    /// </summary>
+    protected void atopMovement() {
+        velocity = Vector3.zero;
+        desiredVelocity = Vector3.zero;
+        steering = Vector3.zero;
+    }
+
+    /// <summary>
     /// Calculates the length of the the vector based off of speed
     /// </summary>
     /// <param name="vec">Vector to calculate from</param>
@@ -156,7 +165,7 @@ public class AlienAI : MonoBehaviour {
         //Desired velocity
         Debug.DrawLine(transform.position, transform.position + (desiredVelocity.normalized * 5), Color.blue);
         //Steering
-        Debug.DrawLine(transform.position, transform.position + (steering.normalized * 5), Color.red);
+        Debug.DrawLine(transform.position + (desiredVelocity.normalized * 5), transform.position + (desiredVelocity.normalized * 5) + (steering.normalized * 5), Color.red);
         //Velocity
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 5), Color.green);
     }
