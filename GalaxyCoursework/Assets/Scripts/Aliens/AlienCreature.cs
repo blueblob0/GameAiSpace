@@ -6,6 +6,9 @@ using System.Collections.Generic;
  * of the alien creatures that will spawn, all the random spawning variables
  * like arms, legs, heads will happen here too
  *
+ * Although the AI is handled in a different class the interaction between other creatures will happen here
+ * i.e. finding a target, following a group ect.
+ *
  * Each alien will have a unique set of arms/legs/heads (set in inspector) but will always spawn
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
@@ -181,14 +184,14 @@ public class AlienCreature : AlienAI {
         return char.ToUpper(s[0]) + s.Substring(1);
     }
 
-    //public bool isSpawned(){
-    //    return spawned;
-    //}
+    public bool isSpawned() {
+        return spawned;
+    }
 
-    //public void hasBeenScaled(bool scaled){
-    //    isScaled = scaled;
-    //}
-    //public bool checkScaled(){
-    //    return isScaled;
-    //}
+    public void hasBeenScaled(bool scaled) {
+        isScaled = scaled;
+    }
+    public bool checkScaled() {
+        return isScaled;
+    }
 }
