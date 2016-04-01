@@ -11,6 +11,7 @@ public class AlienAI : MonoBehaviour {
     //Set in inspector
     public ushort speed = 5;
     public ushort mass = 15;
+    public ushort targetDetectRadius = 10;
 
     //The target of the agent
     private GameObject target;
@@ -34,6 +35,7 @@ public class AlienAI : MonoBehaviour {
         //Set up the collider
         targetCollider = GetComponent<SphereCollider>();
         targetCollider.isTrigger = true;
+        targetCollider.radius = targetDetectRadius;
     }
 	
 	// Update is called once per frame
