@@ -13,7 +13,6 @@ using System.Collections.Generic;
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
 
-[RequireComponent(typeof(SphereCollider))]
 public class AlienCreature : AlienAI {
 
     //Set in inspector
@@ -44,9 +43,6 @@ public class AlienCreature : AlienAI {
 
     //The script the body contains
     private AlienBody bodyScript;
-
-    //Used to detect targets
-    private SphereCollider targetCollider;
 
     //An array of potential name parts
     string[] nameParts = {"si", "la", "ti", "aa", "ul",
@@ -110,28 +106,6 @@ public class AlienCreature : AlienAI {
 
         //Call last to apply velocity updates
         base.Update();
-    }
-
-    /// <summary>
-    /// Gets called when a object enters the collider
-    /// </summary>
-    /// <param name="other">The collided object</param>
-    public void OnTriggerEnter(Collider other) {
-        //Make sure it is an AI agent and not this agent
-        if(other.GetComponent<AlienAI>() && other.gameObject != gameObject) {
-            target = other.gameObject;
-        }
-    }
-
-    /// <summary>
-    /// Gets called when an object exits a collider
-    /// </summary>
-    /// <param name="other">The collided object</param>
-    public void OnTriggerExit(Collider other) {
-        //Make sure its our target
-        if(other.gameObject == target) {
-            target = null;
-        }
     }
 
     /// <summary>
