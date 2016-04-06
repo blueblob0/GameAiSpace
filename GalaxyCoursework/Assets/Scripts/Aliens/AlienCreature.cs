@@ -32,6 +32,9 @@ public class AlienCreature : AlienAI {
     //How long has passed
     private float reproductionTimePassed;
 
+    //List of other creatures
+    private List<GameObject> otherCreatures = new List<GameObject>();
+
     //The creature's individual name
     private string creatureName = "NAME_SET_ON_START";
 
@@ -97,7 +100,7 @@ public class AlienCreature : AlienAI {
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
 
-        //Init to 0
+        //Init
         reproductionTimePassed = 0;
     }
 
@@ -151,6 +154,31 @@ public class AlienCreature : AlienAI {
 
         //Return the rotation
         transform.rotation = rot;
+
+        //Populate the list
+        otherCreatures = new List<GameObject>(creature.getCreatureList());
+        //Add the 'parent'
+        addCreature(creature.gameObject);
+        //Make sure it doesn't contain itself
+        otherCreatures.Remove(gameObject);
+    }
+
+    /// <summary>
+    /// Add a creature to this creature's list of known creatures
+    /// </summary>
+    /// <param name="newCreature">Creature to add</param>
+    public void addCreature(GameObject newCreature) {
+        if(!otherCreatures.Contains(newCreature) && newCreature != null && newCreature != gameObject) {
+            otherCreatures.Add(newCreature);
+        }
+    }
+
+    /// <summary>
+    /// Returns the list of creatures this creature has
+    /// </summary>
+    /// <returns></returns>
+    public List<GameObject> getCreatureList() {
+        return otherCreatures;
     }
 
     /// <summary>
@@ -286,8 +314,14 @@ public class AlienCreature : AlienAI {
     protected void reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
-        //Make sure it has the same limbs
+        //Copy this creature's values
         spawn.GetComponent<AlienCreature>().copyCreature(this);
+        //Add it onto the list
+        addCreature(spawn);
+        //Make the other creatures aware of this new creature
+        foreach(GameObject creature in otherCreatures) {
+            creature.GetComponent<AlienCreature>().addCreature(spawn);
+        }
     }
     
     /// <summary>
