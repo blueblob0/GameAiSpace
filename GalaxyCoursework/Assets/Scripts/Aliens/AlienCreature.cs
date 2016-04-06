@@ -16,18 +16,21 @@ using System.Collections.Generic;
 public class AlienCreature : AlienAI {
 
     //Set in inspector
-    public float reproductionRate;
+    public float reproductionChance;        //The chance of reproduction
+    public float reproductionCoolDown;      //How long between each reproduction attempt (seconds)
 
+    //Set in inspector
     public GameObject bodyPrefab;
     public GameObject headPrefab;
     public GameObject armPrefab;
     public GameObject legPrefab;
     public GameObject wingPrefab;
 
+    //Set in inspector
     public string creatureType = "NO_TYPE";
 
-    //The target of the agent
-    public GameObject target;
+    //How long has passed
+    public float reproductionTimePassed;
 
     //The creature's individual name
     private string creatureName = "NAME_SET_ON_START";
@@ -93,6 +96,9 @@ public class AlienCreature : AlienAI {
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
+
+        //Init to 0
+        reproductionTimePassed = 0;
     }
 
     /// <summary>
@@ -102,11 +108,18 @@ public class AlienCreature : AlienAI {
         //Wander around
         setSteering(wander());
 
-        //Debug-----
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            reproduce();
+        //Increment the time passed
+        reproductionTimePassed += Time.deltaTime;
+        //Check the cool down
+        if(reproductionTimePassed >= reproductionCoolDown) {
+            //Reset interval
+            reproductionTimePassed = 0;
+            //Try and reproduce
+            int chance = Random.Range(0, 100);
+            if(reproductionChance >= chance) {
+                reproduce();
+            }
         }
-        //----------
 
         //Call last to apply velocity updates
         base.Update();
