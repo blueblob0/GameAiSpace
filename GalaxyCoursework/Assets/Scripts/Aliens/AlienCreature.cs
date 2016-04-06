@@ -16,6 +16,12 @@ using System.Collections.Generic;
 public class AlienCreature : AlienAI {
 
     //Set in inspector
+    public float baseIntelligence;  //Base value, will increase per head
+    public float baseStrenth;       //Base value, will increase per arm
+    public float baseSpeed;         //Base value, will increase per leg
+    public float baseDodge;         //Base value, will increase per wing
+
+    //Set in inspector
     public float reproductionChance;        //The chance of reproduction
     public float reproductionCoolDown;      //How long between each reproduction attempt (seconds)
 
