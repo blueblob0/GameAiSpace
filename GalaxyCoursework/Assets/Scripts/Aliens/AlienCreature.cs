@@ -30,7 +30,7 @@ public class AlienCreature : AlienAI {
     public string creatureType = "NO_TYPE";
 
     //How long has passed
-    public float reproductionTimePassed;
+    private float reproductionTimePassed;
 
     //The creature's individual name
     private string creatureName = "NAME_SET_ON_START";
