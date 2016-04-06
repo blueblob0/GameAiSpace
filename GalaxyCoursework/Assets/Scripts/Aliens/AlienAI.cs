@@ -18,12 +18,17 @@ public class AlienAI : MonoBehaviour {
     private Vector3 steering;
     private Vector3 desiredVelocity;
 
+    private float wanderAngle;
+
     // Use this for initialization
     public virtual void Start () {
         //Init the velocity vectors
         velocity = transform.forward * speed * Time.deltaTime;
         steering = Vector3.zero;
         desiredVelocity = Vector3.zero;
+
+        //Get a random wander angle
+        wanderAngle = Random.Range(0, 360);
     }
 	
 	// Update is called once per frame
@@ -121,11 +126,11 @@ public class AlienAI : MonoBehaviour {
 
         //Init the displacement force (direction to wander to)
         Vector3 displacement = new Vector3(0, 0, 1);
-        //Get an angle anywhere from 0 - 360
-        float angle = Random.Range(0, 360);
-        //Displace the vector by the angle
-        displacement.x = circleRadius * Mathf.Cos(angle);
-        displacement.z = circleRadius * Mathf.Sin(angle);
+        //Displace the vector by the wanderAngle
+        displacement.x = circleRadius * Mathf.Cos(wanderAngle);
+        displacement.z = circleRadius * Mathf.Sin(wanderAngle);
+        //Move the angle slightly in a random direction
+        wanderAngle += Random.Range(-1, 1);
 
         //Normalize the new steering force to the speed
         desiredVelocity = calculateSpeed(circleCenter + displacement);
