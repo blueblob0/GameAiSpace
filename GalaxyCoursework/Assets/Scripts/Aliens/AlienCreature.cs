@@ -22,8 +22,8 @@ public class AlienCreature : AlienAI {
     public float baseDodge;         //Base value, will increase per wing
 
     //Set in inspector
-    public float reproductionChance;        //The chance of reproduction
-    public float reproductionCoolDown;      //How long between each reproduction attempt (seconds)
+    public float reproductionChance;    //The chance of reproduction
+    public float reproductionTimer;     //How long between each reproduction attempt (seconds)
 
     //Set in inspector
     public GameObject bodyPrefab;
@@ -120,7 +120,7 @@ public class AlienCreature : AlienAI {
         //Increment the time passed
         reproductionTimePassed += Time.deltaTime;
         //Check the cool down
-        if(reproductionTimePassed >= reproductionCoolDown) {
+        if(reproductionTimePassed >= reproductionTimer) {
             //Reset interval
             reproductionTimePassed = 0;
             //Try and reproduce
