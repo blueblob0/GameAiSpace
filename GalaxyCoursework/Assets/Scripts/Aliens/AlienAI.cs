@@ -138,6 +138,26 @@ public class AlienAI : MonoBehaviour {
         return desiredVelocity - velocity;
     }
 
+    protected Vector3 computeAllignment() {
+        //Empty for now
+        return Vector3.zero;
+    }
+
+    protected Vector3 computeCohesiont() {
+        //Empty for now
+        return Vector3.zero;
+    }
+
+    protected Vector3 computeSeperation() {
+        //Empty for now
+        return Vector3.zero;
+    }
+
+    protected Vector3 computeFlocking() {
+        //Empty for now
+        return Vector3.zero;
+    }
+
     /// <summary>
     /// Sets the steering vector for the agent to use
     /// </summary>
