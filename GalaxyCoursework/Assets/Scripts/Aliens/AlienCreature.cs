@@ -16,17 +16,21 @@ using System.Collections.Generic;
 public class AlienCreature : AlienAI {
 
     //Set in inspector
+    public float reproductionRate;
+
     public GameObject bodyPrefab;
     public GameObject headPrefab;
     public GameObject armPrefab;
     public GameObject legPrefab;
     public GameObject wingPrefab;
 
-    public string creatureName = "NAME_SET_ON_START";
     public string creatureType = "NO_TYPE";
 
     //The target of the agent
     public GameObject target;
+
+    //The creature's individual name
+    private string creatureName = "NAME_SET_ON_START";
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
@@ -34,15 +38,14 @@ public class AlienCreature : AlienAI {
     //Used to check if the creature is scaled
     private bool isScaled = false;
 
-    //The rot val of the arms
-    private float rotSpeedArm = 30;
-    private float armTotalRot = 0;
-    //The rot val of the legs
-    private float rotSpeedLeg = 30;
-    private float legTotalRot = 0;
-
     //The script the body contains
     private AlienBody bodyScript;
+
+    //Keep track of the limb count
+    private ushort headCount;
+    private ushort armCount;
+    private ushort legCount;
+    private ushort wingCount;
 
     //An array of potential name parts
     string[] nameParts = {"si", "la", "ti", "aa", "ul",
@@ -90,11 +93,6 @@ public class AlienCreature : AlienAI {
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
-
-        //Set up the collider
-        targetCollider = GetComponent<SphereCollider>();
-        targetCollider.isTrigger = true;
-        targetCollider.radius = targetDetectRadius;
     }
 
     /// <summary>
@@ -104,8 +102,74 @@ public class AlienCreature : AlienAI {
         //Wander around
         setSteering(wander());
 
+        //Debug-----
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            reproduce();
+        }
+        //----------
+
         //Call last to apply velocity updates
         base.Update();
+    }
+
+    /// <summary>
+    /// Delete this creature's limb count and replace them with the copied creature
+    /// </summary>
+    /// <param name="creature"></param>
+    public void copyCreature(AlienCreature creature) {
+        //Make sure the creature type is the same
+        if(creatureType != creature.creatureType) {
+            return;
+        }
+
+        //Store, then reset the rot
+        Quaternion rot = transform.rotation;
+        transform.rotation = Quaternion.identity;
+
+        //Reset the spawned in limbs
+        spawned = false;
+        int count = transform.childCount;
+        for(int i = 0; i < count; i++) {
+            Destroy(transform.GetChild(i).gameObject);
+        }
+
+        //Create a new creature with the script provided
+        createCreature(creature.getHeadCount(), creature.getArmCount(), creature.getLegCount(), creature.getWingCount());
+
+        //Return the rotation
+        transform.rotation = rot;
+    }
+
+    /// <summary>
+    /// Returns the current amount of heads this creature has
+    /// </summary>
+    /// <returns></returns>
+    public ushort getHeadCount() {
+        return headCount;
+    }
+
+    /// <summary>
+    /// Returns the current amount of arms this creature has
+    /// </summary>
+    /// <returns></returns>
+    public ushort getArmCount() {
+        return armCount;
+    }
+
+    /// <summary>
+    /// Returns the current amount of legs this creature has
+    /// </summary>
+    /// <returns></returns>
+    public ushort getLegCount() {
+        return legCount;
+    }
+
+    /// <summary>
+    /// Returns the current amount of wings this creature has
+    /// </summary>
+    /// <returns></returns>
+    public ushort getWingCount() {
+        return wingCount;
     }
 
     /// <summary>
@@ -116,6 +180,11 @@ public class AlienCreature : AlienAI {
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
     protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
         if(!spawned) {
+            //Set the limb counts
+            headCount = maxHeads;
+            armCount = maxArms;
+            legCount = maxLegs;
+
             //Spawn in the body
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
             body.transform.SetParent(transform);
@@ -198,6 +267,16 @@ public class AlienCreature : AlienAI {
         }
     }
 
+    /// <summary>
+    /// Attempts to make another copy of this object
+    /// </summary>
+    protected void reproduce() {
+        //Create a copy of this gameObject
+        GameObject spawn = GameObject.Instantiate(gameObject);
+        //Make sure it has the same limbs
+        spawn.GetComponent<AlienCreature>().copyCreature(this);
+    }
+    
     /// <summary>
     /// Makes the first letter of the string upper case then returns that string
     /// </summary>
