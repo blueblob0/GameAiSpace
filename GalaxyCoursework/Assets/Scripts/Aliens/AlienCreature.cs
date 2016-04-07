@@ -34,7 +34,7 @@ public class AlienCreature : AlienAI {
     //The species of creature
     private string creatureSpecies = "NO_SPECIES";
     //The creature's individual name
-    private string creatureName = "NO_NAMET";
+    private string creatureName = "NO_NAME";
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
