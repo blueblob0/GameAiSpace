@@ -137,8 +137,14 @@ public class AlienCreature : AlienAI {
     /// Update the creature to peform movement ect.
     /// </summary>
     public override void Update() {
+        base.Update();
+
         //Wander around
-        setSteering(wander());
+        addSteeringForce(wander());
+        if(otherCreatures.Count > 0) {
+            //Compute the flocking
+            addSteeringForce(computeFlocking(otherCreatures.ToArray()));
+        }
 
         //Increment the time passed
         reproductionTimePassed += Time.deltaTime;
@@ -155,9 +161,6 @@ public class AlienCreature : AlienAI {
                 reproductionTimePassed += Random.Range(1, 11);
             }
         }
-
-        //Call last to apply velocity updates
-        base.Update();
     }
 
     /// <summary>
