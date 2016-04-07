@@ -149,36 +149,40 @@ public class AlienCreature : AlienAI {
         //    }
         //}
 
+        if(Input.anyKeyDown) {
+            StartCoroutine(reproduce());
+        }
+
         //Call last to apply velocity updates
         base.Update();
     }
 
     /// <summary>
-    /// Delete this creature's limb count and replace them with the copied creature
+    /// Delete this creature and replace it with a copy
     /// </summary>
-    /// <param name="creature"></param>
+    /// <param name="creature">Creature to copy</param>
     public void copyCreature(AlienCreature creature) {
-        //Make sure the creature type is the same
-        if(creatureSpecies != creature.getSpecies()) {
-            return;
-        }
-
         //Store, then reset the rot
         Quaternion rot = transform.rotation;
         transform.rotation = Quaternion.identity;
 
-        //Reset the spawned in limbs
-        spawned = false;
+        //Delete the body
         int count = transform.childCount;
         for(int i = 0; i < count; i++) {
             Destroy(transform.GetChild(i).gameObject);
         }
 
-        //Create a new creature with the script provided
-        //createCreature(creature.getHeadCount(), creature.getArmCount(), creature.getLegCount(), creature.getWingCount());
+        //Add the body of the parent creature
+        GameObject newBody = GameObject.Instantiate(creature.getDuplicateBody());
+        newBody.transform.SetParent(transform);
+        newBody.transform.localPosition = Vector3.zero;
 
-        //Return the rotation
+        //Return the rotation to its default
         transform.rotation = rot;
+
+        //Change the species to parent
+        creatureSpecies = creature.getSpecies();
+        name = creatureSpecies + " : " + creatureName;
 
         //Populate the list
         otherCreatures = new List<GameObject>(creature.getCreatureList());
@@ -189,17 +193,7 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
-    /// Add a creature to this creature's list of known creatures
-    /// </summary>
-    /// <param name="newCreature">Creature to add</param>
-    public void addCreature(GameObject newCreature) {
-        if(!otherCreatures.Contains(newCreature) && newCreature != null && newCreature != gameObject) {
-            otherCreatures.Add(newCreature);
-        }
-    }
-
-    /// <summary>
-    /// Returns the species of the craeture
+    /// Returns the creatue's species
     /// </summary>
     /// <returns></returns>
     public string getSpecies() {
@@ -207,7 +201,15 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
-    /// Returns the list of creatures this creature has
+    /// Returns the body of this creature and its limbs
+    /// </summary>
+    /// <returns></returns>
+    public GameObject getDuplicateBody() {
+        return transform.GetChild(0).gameObject;
+    }
+
+    /// <summary>
+    /// Returns the list containing other known creatures
     /// </summary>
     /// <returns></returns>
     public List<GameObject> getCreatureList() {
@@ -215,35 +217,13 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
-    /// Returns the current amount of heads this creature has
+    /// Add a creature to this creature's list of known creatures
     /// </summary>
-    /// <returns></returns>
-    public ushort getHeadCount() {
-        return headCount;
-    }
-
-    /// <summary>
-    /// Returns the current amount of arms this creature has
-    /// </summary>
-    /// <returns></returns>
-    public ushort getArmCount() {
-        return armCount;
-    }
-
-    /// <summary>
-    /// Returns the current amount of legs this creature has
-    /// </summary>
-    /// <returns></returns>
-    public ushort getLegCount() {
-        return legCount;
-    }
-
-    /// <summary>
-    /// Returns the current amount of wings this creature has
-    /// </summary>
-    /// <returns></returns>
-    public ushort getWingCount() {
-        return wingCount;
+    /// <param name="newCreature">Creature to add</param>
+    public void addCreature(GameObject newCreature) {
+        if(!otherCreatures.Contains(newCreature) && newCreature != null && newCreature != gameObject) {
+            otherCreatures.Add(newCreature);
+        }
     }
 
     /// <summary>
@@ -349,9 +329,11 @@ public class AlienCreature : AlienAI {
     /// <summary>
     /// Attempts to make another copy of this object
     /// </summary>
-    private void reproduce() {
+    private IEnumerator reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
+        //Wait a frame for the spawn to happen before copying
+        yield return null;
         //Copy this creature's values
         spawn.GetComponent<AlienCreature>().copyCreature(this);
         //Add it onto the list
