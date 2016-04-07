@@ -94,7 +94,7 @@ public class AlienCreature : AlienAI {
 
         //Set the name
         creatureName = "";
-        int nameLength = Random.Range(2, 3);
+        int nameLength = Random.Range(2, 4);
         for(int i = 0; i < nameLength; i++) {
             creatureName += nameParts[Random.Range(0, nameParts.Length)];
         }
@@ -254,7 +254,7 @@ public class AlienCreature : AlienAI {
     /// <param name="maxArms">The maximum amount of arms the creature can have</param>
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
     /// <param name="maxWings">The maximum amount of wings the creature can have</param>
-    protected void createCreature(GameObject bodyPrefab, ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
+    private void createCreature(GameObject bodyPrefab, ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
         if(!spawned) {
             //Set the limb counts
             headCount = maxHeads;
@@ -276,12 +276,7 @@ public class AlienCreature : AlienAI {
                     GameObject headSpot = body.transform.GetChild(j).gameObject;
                     if(headSpot.name == "Head" + i && headSpot.transform.childCount == 0) {
                         //Spawn in the head
-                        GameObject head = GameObject.Instantiate<GameObject>(headToUse);
-                        //Set the parent
-                        head.transform.SetParent(headSpot.transform);
-                        //Make sure it is at 0,0,0 in relation to the parent
-                        head.transform.localPosition = Vector3.zero;
-                        head.transform.localRotation = Quaternion.identity;
+                        spawnLimb(headSpot.transform, headToUse);
                     }
                 }
             }
@@ -296,12 +291,7 @@ public class AlienCreature : AlienAI {
                     GameObject armSpot = body.transform.GetChild(j).gameObject;
                     if(armSpot.name == "Arm" + i && armSpot.transform.childCount == 0) {
                         //Spawn in the arm
-                        GameObject arm = GameObject.Instantiate<GameObject>(armToUse);
-                        //Set the parent
-                        arm.transform.SetParent(armSpot.transform);
-                        //Make sure it is at 0,0,0 in relation to the parent
-                        arm.transform.localPosition = Vector3.zero;
-                        arm.transform.localRotation = Quaternion.identity;
+                        spawnLimb(armSpot.transform, armToUse);
                     }
                 }
             }
@@ -316,12 +306,7 @@ public class AlienCreature : AlienAI {
                     GameObject legSpot = body.transform.GetChild(j).gameObject;
                     if(legSpot.name == "Leg" + i && legSpot.transform.childCount == 0) {
                         //Spawn in the leg
-                        GameObject leg = GameObject.Instantiate<GameObject>(legToUse);
-                        //Set the parent
-                        leg.transform.SetParent(legSpot.transform);
-                        //Make sure it is at 0,0,0 in relation to the parent
-                        leg.transform.localPosition = Vector3.zero;
-                        leg.transform.localRotation = Quaternion.identity;
+                        spawnLimb(legSpot.transform, legToUse);
                     }
                 }
             }
@@ -335,13 +320,8 @@ public class AlienCreature : AlienAI {
                     //Check if the spot is a 'Wing' spot and that it is free
                     GameObject wingSpot = body.transform.GetChild(j).gameObject;
                     if(wingSpot.name == "Wing" + i && wingSpot.transform.childCount == 0) {
-                        //Spawn in the wing
-                        GameObject wing = GameObject.Instantiate<GameObject>(wingToUse);
-                        //Set the parent
-                        wing.transform.SetParent(wingSpot.transform);
-                        //Make sure it is at 0,0,0 in relation to the parent
-                        wing.transform.localPosition = Vector3.zero;
-                        wing.transform.localRotation = Quaternion.identity;
+                        //Spawn the wing
+                        spawnLimb(wingSpot.transform, wingToUse);
                     }
                 }
             }
@@ -352,9 +332,24 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
+    /// Spawns a limb on the creature
+    /// </summary>
+    /// <param name="parent">The transform to attack the limb to</param>
+    /// <param name="limbPrefab">The prefab to instantiate</param>
+    private void spawnLimb(Transform parent, GameObject limbPrefab) {
+        //Spawn in the wing
+        GameObject limb = GameObject.Instantiate<GameObject>(limbPrefab);
+        //Set the parent
+        limb.transform.SetParent(parent);
+        //Make sure it is at 0,0,0 in relation to the parent
+        limb.transform.localPosition = Vector3.zero;
+        limb.transform.localRotation = Quaternion.identity;
+    }
+
+    /// <summary>
     /// Attempts to make another copy of this object
     /// </summary>
-    protected void reproduce() {
+    private void reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
         //Copy this creature's values
