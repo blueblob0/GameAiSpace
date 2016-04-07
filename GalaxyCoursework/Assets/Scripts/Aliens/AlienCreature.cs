@@ -32,17 +32,16 @@ public class AlienCreature : AlienAI {
     public GameObject[] legPrefabs;
     public GameObject[] wingPrefabs;
 
-    //Set in inspector
-    public string creatureType = "NO_TYPE";
-
     //How long has passed
     private float reproductionTimePassed;
 
     //List of other creatures
     private List<GameObject> otherCreatures = new List<GameObject>();
 
+    //The species of creature
+    private string creatureSpecies = "NO_SPECIES";
     //The creature's individual name
-    private string creatureName = "NAME_SET_ON_START";
+    private string creatureName = "NO_NAMET";
 
     //Make sure the creature doesn't spawn in again
     private bool spawned = false;
@@ -60,15 +59,19 @@ public class AlienCreature : AlienAI {
     private ushort wingCount;
 
     //An array of potential name parts
-    string[] nameParts = {"si", "la", "ti", "aa", "ul",
-                          "er", "ta", "ei", "ae", "ui",
-                          "lo", "ka", "pi", "cc", "sc",
-                          "br", "fj", "or", "nj", "st",
-                          "th", "yu", "pt", "kl", "cl",
-                          "ph", "pho", "ri", "we", "gh",
-                          "io", "ao", "nm", "mm", "nn",
-                          "jy", "fv", "vv", "tb", "lk",
-                          "ri", "ru", "lar", "ij"};
+    string[] nameParts = {"si", "la",  "ti",  "aa", "ul",
+                          "er", "ta",  "ei",  "ae", "ui",
+                          "lo", "ka",  "pi",  "cc", "sc",
+                          "br", "fj",  "or",  "nj", "st",
+                          "th", "yu",  "pt",  "kl", "cl",
+                          "ph", "pho", "ri",  "we", "gh",
+                          "io", "ao",  "nm",  "mm", "nn",
+                          "jy", "fv",  "vv",  "tb", "lk",
+                          "ri", "ru",  "lar", "ij"};
+
+    //An array of potential species parts
+    string[] speciesParts = {"hu", "man", "xe", "mo", "zi",
+                             "yu", "lo",  "pa", "th", "ad"};
 
     /// <summary>
     /// Will spawn the creature into the game world
@@ -76,15 +79,28 @@ public class AlienCreature : AlienAI {
     public override void Start() {
         base.Start();
 
+        //Set the species
+        creatureSpecies = "";
+        int speciesLength = Random.Range(2, 6);
+        string firstHalf = "";
+        string secondHalf = "";
+        for(int i = 0; i < speciesLength; i++) {
+            firstHalf += speciesParts[Random.Range(0, speciesParts.Length)];
+        }
+        for(int i = 0; i < speciesLength; i++) {
+            secondHalf += speciesParts[Random.Range(0, speciesParts.Length)];
+        }
+        creatureSpecies = upperCaseFirst(firstHalf) + " " + upperCaseFirst(secondHalf);
+
         //Set the name
         creatureName = "";
-        int nameLength = Random.Range(2, 5);
+        int nameLength = Random.Range(2, 3);
         for(int i = 0; i < nameLength; i++) {
             creatureName += nameParts[Random.Range(0, nameParts.Length)];
         }
         creatureName = upperCaseFirst(creatureName);
-        //Set the name in the inspector
-        name = creatureType + ": " + creatureName;
+        //Set the object name
+        name = creatureSpecies + ": " + creatureName;
 
         //Get the object's rotation, easier to spawn everything the same direction
         Quaternion rot = transform.rotation;
@@ -143,7 +159,7 @@ public class AlienCreature : AlienAI {
     /// <param name="creature"></param>
     public void copyCreature(AlienCreature creature) {
         //Make sure the creature type is the same
-        if(creatureType != creature.creatureType) {
+        if(creatureSpecies != creature.getSpecies()) {
             return;
         }
 
@@ -180,6 +196,14 @@ public class AlienCreature : AlienAI {
         if(!otherCreatures.Contains(newCreature) && newCreature != null && newCreature != gameObject) {
             otherCreatures.Add(newCreature);
         }
+    }
+
+    /// <summary>
+    /// Returns the species of the craeture
+    /// </summary>
+    /// <returns></returns>
+    public string getSpecies() {
+        return creatureSpecies;
     }
 
     /// <summary>
