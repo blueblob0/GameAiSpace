@@ -45,10 +45,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Aliens\AgressiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienAI.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienBody.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienCreature.cs" />
      <Compile Include="Assets\Scripts\Aliens\CreatureSpawner.cs" />
+     <Compile Include="Assets\Scripts\Aliens\PassiveAlien.cs" />
      <Compile Include="Assets\Scripts\BlackHole.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
