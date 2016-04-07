@@ -11,7 +11,17 @@ public class AlienAI : MonoBehaviour {
     public ushort speed = 5;
     public ushort mass = 15;
 
-    public ushort flockingDistance = 300;
+    //How far away to flock
+    private int flockingDistance = 300;
+
+    //How much each steering behaviour will affect the flocking steering
+    private float allignmentWeight;
+    private float cohesiontWeight;
+    private float seperationWeight;
+    //Variables to control how long to wait for weight changing
+    private float weightChangeWait;
+    private float weightChangePass;
+
 
     //The velocity vector
     private Vector3 velocity;
@@ -30,6 +40,15 @@ public class AlienAI : MonoBehaviour {
 
         //Get a random wander angle
         wanderAngle = Random.Range(0, 360);
+
+        //Init weights
+        allignmentWeight = 1;
+        cohesiontWeight  = 1;
+        seperationWeight = 1;
+
+        //Init timer
+        weightChangeWait = Random.Range(3, 10);
+        weightChangePass = 0;
     }
 	
 	// Update is called once per frame
@@ -37,6 +56,17 @@ public class AlienAI : MonoBehaviour {
         //DEBUG---------------------
         displayDebugLines();
         //--------------------------
+
+        //Adjust the weights on the flocking
+        if(weightChangePass >= weightChangeWait) {
+            weightChangePass = 0;
+            weightChangeWait = Random.Range(3, 10);
+
+            allignmentWeight = Random.value * 3;
+            cohesiontWeight = Random.value * 3;
+            seperationWeight = Random.value * 3;
+        }
+        weightChangePass += Time.deltaTime;
 
         //Make the steering smooth
         steering /= mass;
@@ -270,18 +300,18 @@ public class AlienAI : MonoBehaviour {
         Vector3 seperation  = computeSeperation(otherCreatures);
 
         //Set the desired velocity
-        desiredVelocity = calculateSpeed(allignment + cohesion + seperation);
+        desiredVelocity = calculateSpeed(allignment * allignmentWeight + cohesion * cohesiontWeight + seperation * seperationWeight);
 
-        //Empty for now
+        //Return the steering force
         return desiredVelocity - velocity;
     }
 
     /// <summary>
-    /// Sets the steering vector for the agent to use
+    /// Increments the steering vector for the agent to use
     /// </summary>
-    /// <param name="steeringVector">Steering Vector</param>
-    protected void setSteering(Vector3 steeringVector) {
-        steering = steeringVector;
+    /// <param name="steeringVector">New steering force</param>
+    protected void addSteeringForce(Vector3 steeringVector) {
+        steering += steeringVector;
     }
 
     /// <summary>
