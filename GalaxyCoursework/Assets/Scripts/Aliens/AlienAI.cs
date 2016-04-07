@@ -11,6 +11,8 @@ public class AlienAI : MonoBehaviour {
     public ushort speed = 5;
     public ushort mass = 15;
 
+    public ushort flockingDistance = 300;
+
     //The velocity vector
     private Vector3 velocity;
     //Used to apply steering
@@ -138,24 +140,140 @@ public class AlienAI : MonoBehaviour {
         return desiredVelocity - velocity;
     }
 
-    protected Vector3 computeAllignment() {
-        //Empty for now
-        return Vector3.zero;
+    /// <summary>
+    /// Returns a velocity vector for the creature's allignment to other creatures
+    /// </summary>
+    /// <param name="otherCreatures">Array of other creatures</param>
+    /// <returns></returns>
+    protected Vector3 computeAllignment(GameObject[] otherCreatures) {
+        //Init the return value
+        Vector3 velocity = Vector3.zero;
+        //Keep track of the neighbours
+        int neighbourCount = 0;
+
+        //Loop through the other creatures
+        for(int i = 0; i < otherCreatures.Length; i++) {
+            //Make sure it isn't computing with itself
+            if(otherCreatures[i] != gameObject) {
+                //Make sure it is within the flocking ranging
+                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= flockingDistance) {
+                    //Add on the agent's velocity 
+                    velocity += otherCreatures[i].GetComponent<AlienAI>().getvelocity();
+                    //Increase neighbour count
+                    neighbourCount++;
+                }
+            }
+        }
+
+        //If there were not any neighbours then return zero
+        if(neighbourCount == 0) {
+            return Vector3.zero;
+        }
+
+        //Get the velocity based off of the center of mass
+        velocity /= neighbourCount;
+
+        //Normalize and return
+        velocity.Normalize();
+        return velocity;
     }
 
-    protected Vector3 computeCohesiont() {
-        //Empty for now
-        return Vector3.zero;
+    /// <summary>
+    /// Returns a velocity vector for the creature's cohesion to other creatures
+    /// </summary>
+    /// <param name="otherCreatures">Array of other creatures</param>
+    /// <returns></returns>
+    protected Vector3 computeCohesion(GameObject[] otherCreatures) {
+        //Init the return value
+        Vector3 velocity = Vector3.zero;
+        //Keep track of the neighbours
+        int neighbourCount = 0;
+
+        //Loop through the other creatures
+        for(int i = 0; i < otherCreatures.Length; i++) {
+            //Make sure it isn't computing with itself
+            if(otherCreatures[i] != gameObject) {
+                //Make sure it is within the flocking ranging
+                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= flockingDistance) {
+                    //Add on the agent's position
+                    velocity += otherCreatures[i].transform.position;
+                    //Increase neighbour count
+                    neighbourCount++;
+                }
+            }
+        }
+
+        //If there were not any neighbours then return zero
+        if(neighbourCount == 0) {
+            return Vector3.zero;
+        }
+
+        //Get the position of the center of mass
+        velocity /= neighbourCount;
+        velocity = velocity - transform.position;
+
+        //Normalize and return
+        velocity.Normalize();
+        return velocity;
     }
 
-    protected Vector3 computeSeperation() {
-        //Empty for now
-        return Vector3.zero;
+    /// <summary>
+    /// Returns a velocity vector for the creature's seperation to other creatures
+    /// </summary>
+    /// <param name="otherCreatures">Array of other creatures</param>
+    /// <returns></returns>
+    protected Vector3 computeSeperation(GameObject[] otherCreatures) {
+        //Init the return value
+        Vector3 velocity = Vector3.zero;
+        //Keep track of the neighbours
+        int neighbourCount = 0;
+
+        //Loop through the other creatures
+        for(int i = 0; i < otherCreatures.Length; i++) {
+            //Make sure it isn't computing with itself
+            if(otherCreatures[i] != gameObject) {
+                //Make sure it is within the flocking ranging
+                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= flockingDistance) {
+                    //Add on the distacne from the agent
+                    velocity += otherCreatures[i].transform.position - transform.position;
+                    //Increase neighbour count
+                    neighbourCount++;
+                }
+            }
+        }
+
+        //If there were not any neighbours then return zero
+        if(neighbourCount == 0) {
+            return Vector3.zero;
+        }
+
+        //Get the velocity based off of the center of mass
+        velocity /= neighbourCount;
+
+        //Negate the vector to make sure the agent steers away
+        velocity *= -1;
+
+        //Normalize and return
+        velocity.Normalize();
+        return velocity;
     }
 
-    protected Vector3 computeFlocking() {
+    /// <summary>
+    /// Computes the flocking behaviours bassed off of the three steering algs and returns the steering force
+    /// </summary>
+    /// <param name="otherCreatures">Array of other creatures</param>
+    /// <returns></returns>
+    protected Vector3 computeFlocking(GameObject[] otherCreatures) {
+        //Get the three steering behaviours
+        Vector3 allignment  = computeAllignment(otherCreatures);
+        Vector3 cohesion    = computeCohesion(otherCreatures);
+        Vector3 seperation  = computeSeperation(otherCreatures);
+
+        //Set the desired velocity
+        desiredVelocity = calculateSpeed(allignment + cohesion + seperation);
+
         //Empty for now
-        return Vector3.zero;
+        return desiredVelocity - velocity;
     }
 
     /// <summary>
