@@ -146,6 +146,9 @@ public class AlienCreature : AlienAI {
             int chance = Random.Range(0, 100);
             if(reproductionChance >= chance) {
                 StartCoroutine(reproduce());
+
+                //Add on a random number so reproduction isnt synced
+                reproductionTimePassed += Random.Range(1, 11);
             }
         }
 
