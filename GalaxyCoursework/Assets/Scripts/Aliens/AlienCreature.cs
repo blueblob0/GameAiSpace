@@ -16,21 +16,21 @@ using System.Collections.Generic;
 public class AlienCreature : AlienAI {
 
     //Set in inspector
-    public float baseIntelligence;  //Base value, will increase per head
-    public float baseStrenth;       //Base value, will increase per arm
-    public float baseSpeed;         //Base value, will increase per leg
-    public float baseDodge;         //Base value, will increase per wing
+    //public float baseIntelligence;  //Base value, will increase per head
+    //public float baseStrenth;       //Base value, will increase per arm
+    //public float baseSpeed;         //Base value, will increase per leg
+    //public float baseDodge;         //Base value, will increase per wing
 
     //Set in inspector
     public float reproductionChance;    //The chance of reproduction
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
 
     //Set in inspector
-    public GameObject bodyPrefab;
-    public GameObject headPrefab;
-    public GameObject armPrefab;
-    public GameObject legPrefab;
-    public GameObject wingPrefab;
+    public GameObject[] bodyPrefabs;
+    public GameObject[] headPrefabs;
+    public GameObject[] armPrefabs;
+    public GameObject[] legPrefabs;
+    public GameObject[] wingPrefabs;
 
     //Set in inspector
     public string creatureType = "NO_TYPE";
@@ -91,8 +91,11 @@ public class AlienCreature : AlienAI {
         //Reset it to 0
         transform.rotation = Quaternion.identity;
 
+        //Select the body to be used
+        GameObject bodyToUse = bodyPrefabs[Random.Range(0, bodyPrefabs.Length)];
+
         //Add the body script
-        bodyScript = bodyPrefab.GetComponent<AlienBody>();
+        bodyScript = bodyToUse.GetComponent<AlienBody>();
 
         //Get the maximum number of spawn spots
         ushort maxHead = (ushort)bodyScript.getHeadSpotCount();
@@ -101,7 +104,7 @@ public class AlienCreature : AlienAI {
         ushort maxWing = (ushort)bodyScript.getWingSpotCount();
 
         //Create the creature
-        createCreature((ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1), (ushort)Random.Range(2, maxWing + 1));
+        createCreature(bodyToUse, (ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1), (ushort)Random.Range(2, maxWing + 1));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
@@ -117,18 +120,18 @@ public class AlienCreature : AlienAI {
         //Wander around
         setSteering(wander());
 
-        //Increment the time passed
-        reproductionTimePassed += Time.deltaTime;
-        //Check the cool down
-        if(reproductionTimePassed >= reproductionTimer) {
-            //Reset interval
-            reproductionTimePassed = 0;
-            //Try and reproduce
-            int chance = Random.Range(0, 100);
-            if(reproductionChance >= chance) {
-                reproduce();
-            }
-        }
+        ////Increment the time passed
+        //reproductionTimePassed += Time.deltaTime;
+        ////Check the cool down
+        //if(reproductionTimePassed >= reproductionTimer) {
+        //    //Reset interval
+        //    reproductionTimePassed = 0;
+        //    //Try and reproduce
+        //    int chance = Random.Range(0, 100);
+        //    if(reproductionChance >= chance) {
+        //        reproduce();
+        //    }
+        //}
 
         //Call last to apply velocity updates
         base.Update();
@@ -156,7 +159,7 @@ public class AlienCreature : AlienAI {
         }
 
         //Create a new creature with the script provided
-        createCreature(creature.getHeadCount(), creature.getArmCount(), creature.getLegCount(), creature.getWingCount());
+        //createCreature(creature.getHeadCount(), creature.getArmCount(), creature.getLegCount(), creature.getWingCount());
 
         //Return the rotation
         transform.rotation = rot;
@@ -222,10 +225,12 @@ public class AlienCreature : AlienAI {
     /// <summary>
     /// Spawns in the creature
     /// </summary>
+    /// <param name="body">The body to attach the limbs to</param>
     /// <param name="maxHeads">The maximum amount of heads the creature can have</param>
     /// <param name="maxArms">The maximum amount of arms the creature can have</param>
     /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
-    protected void createCreature(ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
+    /// <param name="maxWings">The maximum amount of wings the creature can have</param>
+    protected void createCreature(GameObject bodyPrefab, ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
         if(!spawned) {
             //Set the limb counts
             headCount = maxHeads;
@@ -237,6 +242,8 @@ public class AlienCreature : AlienAI {
             body.transform.SetParent(transform);
             body.transform.localPosition = Vector3.zero;
 
+            //Get the head to use
+            GameObject headToUse = headPrefabs[Random.Range(0, headPrefabs.Length)];
             //Spawn in the Head(s)
             for(int i = 0; i < maxHeads; i++) {
                 //Get the body's children
@@ -245,7 +252,7 @@ public class AlienCreature : AlienAI {
                     GameObject headSpot = body.transform.GetChild(j).gameObject;
                     if(headSpot.name == "Head" + i && headSpot.transform.childCount == 0) {
                         //Spawn in the head
-                        GameObject head = GameObject.Instantiate<GameObject>(headPrefab);
+                        GameObject head = GameObject.Instantiate<GameObject>(headToUse);
                         //Set the parent
                         head.transform.SetParent(headSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
@@ -255,6 +262,8 @@ public class AlienCreature : AlienAI {
                 }
             }
 
+            //Get the head to use
+            GameObject armToUse = armPrefabs[Random.Range(0, armPrefabs.Length)];
             //Spawn in the Arms
             for(int i = 0; i < maxArms; i++) {
                 //Get the body's children
@@ -263,7 +272,7 @@ public class AlienCreature : AlienAI {
                     GameObject armSpot = body.transform.GetChild(j).gameObject;
                     if(armSpot.name == "Arm" + i && armSpot.transform.childCount == 0) {
                         //Spawn in the arm
-                        GameObject arm = GameObject.Instantiate<GameObject>(armPrefab);
+                        GameObject arm = GameObject.Instantiate<GameObject>(armToUse);
                         //Set the parent
                         arm.transform.SetParent(armSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
@@ -273,6 +282,8 @@ public class AlienCreature : AlienAI {
                 }
             }
 
+            //Get the head to use
+            GameObject legToUse = legPrefabs[Random.Range(0, legPrefabs.Length)];
             //Spawn in the Legs
             for(int i = 0; i < maxLegs; i++) {
                 //Get the body's children
@@ -281,7 +292,7 @@ public class AlienCreature : AlienAI {
                     GameObject legSpot = body.transform.GetChild(j).gameObject;
                     if(legSpot.name == "Leg" + i && legSpot.transform.childCount == 0) {
                         //Spawn in the leg
-                        GameObject leg = GameObject.Instantiate<GameObject>(legPrefab);
+                        GameObject leg = GameObject.Instantiate<GameObject>(legToUse);
                         //Set the parent
                         leg.transform.SetParent(legSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
@@ -291,6 +302,8 @@ public class AlienCreature : AlienAI {
                 }
             }
 
+            //Get the head to use
+            GameObject wingToUse = wingPrefabs[Random.Range(0, wingPrefabs.Length)];
             //Spawn in the wings
             for(int i = 0; i < maxWings; i++) {
                 //Get the body's children
@@ -299,7 +312,7 @@ public class AlienCreature : AlienAI {
                     GameObject wingSpot = body.transform.GetChild(j).gameObject;
                     if(wingSpot.name == "Wing" + i && wingSpot.transform.childCount == 0) {
                         //Spawn in the wing
-                        GameObject wing = GameObject.Instantiate<GameObject>(wingPrefab);
+                        GameObject wing = GameObject.Instantiate<GameObject>(wingToUse);
                         //Set the parent
                         wing.transform.SetParent(wingSpot.transform);
                         //Make sure it is at 0,0,0 in relation to the parent
