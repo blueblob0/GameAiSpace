@@ -22,18 +22,11 @@ public class AlienCreature : AlienAI {
     //public float baseDodge;         //Base value, will increase per wing
 
     //Set in inspector
-    public float reproductionChance;    //The chance of reproduction
-    public float reproductionTimer;     //How long between each reproduction attempt (seconds)
-
-    //Set in inspector
     public GameObject[] bodyPrefabs;
     public GameObject[] headPrefabs;
     public GameObject[] armPrefabs;
     public GameObject[] legPrefabs;
     public GameObject[] wingPrefabs;
-
-    //How long has passed
-    private float reproductionTimePassed;
 
     //List of other creatures
     private List<GameObject> otherCreatures = new List<GameObject>();
@@ -48,6 +41,13 @@ public class AlienCreature : AlienAI {
 
     //Used to check if the creature is scaled
     private bool isScaled = false;
+
+    //The chance of reproduction
+    private float reproductionChance;
+    //How long between each reproduction attempt (seconds)
+    private float reproductionTimer;
+    //How long has passed
+    private float reproductionTimePassed;
 
     //The script the body contains
     private AlienBody bodyScript;
@@ -78,6 +78,10 @@ public class AlienCreature : AlienAI {
     /// </summary>
     public override void Start() {
         base.Start();
+
+        //Get some random reproduction values
+        reproductionChance = Random.Range(25, 71);
+        reproductionTimer = Random.Range(30, 150);
 
         //Set the species
         creatureSpecies = "";
