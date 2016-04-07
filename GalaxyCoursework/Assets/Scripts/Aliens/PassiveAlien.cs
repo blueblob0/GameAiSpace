@@ -2,7 +2,10 @@
 using System.Collections;
 
 /*
- *  An alien creature with passive characteristics
+ * An alien creature with passive characteristics
+ *
+ * The agent will not seek out attacks
+ * The agent will fight back or flee
  */
 public class PassiveAlien : AlienCreature {
 

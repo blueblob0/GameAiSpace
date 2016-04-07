@@ -3,6 +3,9 @@ using System.Collections;
 
 /*
  * An alien creature with agressive characteristics
+ *
+ * The agent will seek out targets to attack
+ * The agent will always fight back
  */
 public class AgressiveAlien : AlienCreature {
 
