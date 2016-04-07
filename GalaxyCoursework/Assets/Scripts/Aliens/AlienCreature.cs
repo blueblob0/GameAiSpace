@@ -185,7 +185,7 @@ public class AlienCreature : AlienAI {
 
         //Change the species to parent
         creatureSpecies = creature.getSpecies();
-        name = creatureSpecies + " : " + creatureName;
+        name = creatureSpecies + ": " + creatureName;
 
         //Populate the list
         otherCreatures = new List<GameObject>(creature.getCreatureList());
