@@ -136,21 +136,17 @@ public class AlienCreature : AlienAI {
         //Wander around
         setSteering(wander());
 
-        ////Increment the time passed
-        //reproductionTimePassed += Time.deltaTime;
-        ////Check the cool down
-        //if(reproductionTimePassed >= reproductionTimer) {
-        //    //Reset interval
-        //    reproductionTimePassed = 0;
-        //    //Try and reproduce
-        //    int chance = Random.Range(0, 100);
-        //    if(reproductionChance >= chance) {
-        //        reproduce();
-        //    }
-        //}
-
-        if(Input.anyKeyDown) {
-            StartCoroutine(reproduce());
+        //Increment the time passed
+        reproductionTimePassed += Time.deltaTime;
+        //Check the cool down
+        if(reproductionTimePassed >= reproductionTimer) {
+            //Reset interval
+            reproductionTimePassed = 0;
+            //Try and reproduce
+            int chance = Random.Range(0, 100);
+            if(reproductionChance >= chance) {
+                StartCoroutine(reproduce());
+            }
         }
 
         //Call last to apply velocity updates
