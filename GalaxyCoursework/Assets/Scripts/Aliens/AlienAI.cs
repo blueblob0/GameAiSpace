@@ -63,8 +63,8 @@ public class AlienAI : MonoBehaviour {
             weightChangeWait = Random.Range(3, 10);
 
             allignmentWeight = Random.value * 3;
-            cohesiontWeight = Random.value * 3;
-            seperationWeight = Random.value * 3;
+            cohesiontWeight = Random.value * 5;
+            seperationWeight = Random.value * 5;
         }
         weightChangePass += Time.deltaTime;
 
