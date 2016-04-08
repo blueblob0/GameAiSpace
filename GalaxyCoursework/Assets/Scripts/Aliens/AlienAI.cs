@@ -12,12 +12,16 @@ public class AlienAI : MonoBehaviour {
     public ushort mass = 15;
 
     //How far away to flock
-    private int flockingDistance = 300;
+    //private int flockingDistance = 300;
 
-    //How much each steering behaviour will affect the flocking steering
+    //How much each steering behaviour will affect the total flocking steering
     private float allignmentWeight;
     private float cohesiontWeight;
     private float seperationWeight;
+    //Distances on how far to compute the specific steering behaviours
+    private float allignmentDistance;
+    private float cohesionDistance;
+    private float seperationDistance;
     //Variables to control how long to wait for weight changing
     private float weightChangeWait;
     private float weightChangePass;
@@ -46,6 +50,11 @@ public class AlienAI : MonoBehaviour {
         cohesiontWeight  = 1;
         seperationWeight = 1;
 
+        //Init distances
+        allignmentDistance = 8;
+        cohesionDistance = 12;
+        seperationDistance = 10;
+
         //Init timer
         weightChangeWait = Random.Range(3, 10);
         weightChangePass = 0;
@@ -62,9 +71,9 @@ public class AlienAI : MonoBehaviour {
             weightChangePass = 0;
             weightChangeWait = Random.Range(3, 10);
 
-            allignmentWeight = Random.value * 3;
-            cohesiontWeight = Random.value * 5;
-            seperationWeight = Random.value * 5;
+            allignmentWeight = Random.value;
+            cohesiontWeight = Random.value;
+            seperationWeight = Random.value;
         }
         weightChangePass += Time.deltaTime;
 
@@ -185,8 +194,8 @@ public class AlienAI : MonoBehaviour {
         for(int i = 0; i < otherCreatures.Length; i++) {
             //Make sure it isn't computing with itself
             if(otherCreatures[i] != gameObject) {
-                //Make sure it is within the flocking ranging
-                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= flockingDistance) {
+                //Make sure it is within the allignment range
+                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= allignmentDistance) {
                     //Add on the agent's velocity 
                     velocity += otherCreatures[i].GetComponent<AlienAI>().getvelocity();
                     //Increase neighbour count
@@ -223,8 +232,8 @@ public class AlienAI : MonoBehaviour {
         for(int i = 0; i < otherCreatures.Length; i++) {
             //Make sure it isn't computing with itself
             if(otherCreatures[i] != gameObject) {
-                //Make sure it is within the flocking ranging
-                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= flockingDistance) {
+                //Make sure it is within the cohesion range
+                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) > cohesionDistance) {
                     //Add on the agent's position
                     velocity += otherCreatures[i].transform.position;
                     //Increase neighbour count
@@ -262,8 +271,8 @@ public class AlienAI : MonoBehaviour {
         for(int i = 0; i < otherCreatures.Length; i++) {
             //Make sure it isn't computing with itself
             if(otherCreatures[i] != gameObject) {
-                //Make sure it is within the flocking ranging
-                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= flockingDistance) {
+                //Make sure it is within the seperation range
+                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= seperationDistance) {
                     //Add on the distacne from the agent
                     velocity += otherCreatures[i].transform.position - transform.position;
                     //Increase neighbour count
