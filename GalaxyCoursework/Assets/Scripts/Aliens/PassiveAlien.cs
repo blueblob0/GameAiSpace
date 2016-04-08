@@ -4,7 +4,7 @@ using System.Collections;
 /*
  * An alien creature with passive characteristics
  *
- * The agent will not seek out attacks
+ * The agent will not seek out targets to attack
  * The agent will almost never fight back
  */
 public class PassiveAlien : AlienCreature {
