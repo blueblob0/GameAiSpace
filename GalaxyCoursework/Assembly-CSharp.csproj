@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Aliens\AlienAI.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienBody.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienCreature.cs" />
+     <Compile Include="Assets\Scripts\Aliens\AssertiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\CreatureSpawner.cs" />
      <Compile Include="Assets\Scripts\Aliens\PassiveAlien.cs" />
      <Compile Include="Assets\Scripts\BlackHole.cs" />
