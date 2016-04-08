@@ -139,12 +139,19 @@ public class AlienCreature : AlienAI {
     public override void Update() {
         base.Update();
 
-        //Wander around
-        addSteeringForce(wander());
         if(otherCreatures.Count > 0) {
             //Compute the flocking
             addSteeringForce(computeFlocking(otherCreatures.ToArray()));
+        }// else {
+            //Wander around
+            addSteeringForce(wander());
+        //}
+
+        //DEBUG-------------------------------------
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            StartCoroutine(reproduce());
         }
+        //------------------------------------------
 
         //Increment the time passed
         reproductionTimePassed += Time.deltaTime;
@@ -162,6 +169,7 @@ public class AlienCreature : AlienAI {
             }
         }
     }
+
 
     /// <summary>
     /// Delete this creature and replace it with a copy
