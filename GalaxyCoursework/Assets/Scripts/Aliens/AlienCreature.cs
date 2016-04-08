@@ -338,6 +338,8 @@ public class AlienCreature : AlienAI {
     private IEnumerator reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
+        //Make the spawn apear in a random position near the creature
+        spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
         //Wait a frame for the spawn to happen before copying
         yield return null;
         //Copy this creature's values
