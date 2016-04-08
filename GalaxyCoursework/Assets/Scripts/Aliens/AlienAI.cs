@@ -8,8 +8,10 @@ using System.Collections;
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
-    public ushort speed = 5;
-    public ushort mass = 15;
+    public ushort acceleration = 0; //Unused for now
+    public ushort currentSpeed = 5; //How far the agent is current moving
+    public ushort maxSpeed = 0;     //Unsued for now
+    public ushort mass = 15;        //How heavy the agent is (this makes the steering more smooth)
 
     //How far away to flock
     //private int flockingDistance = 300;
@@ -38,7 +40,7 @@ public class AlienAI : MonoBehaviour {
     // Use this for initialization
     public virtual void Start () {
         //Init the velocity vectors
-        velocity = transform.forward * speed * Time.deltaTime;
+        velocity = transform.forward * currentSpeed * Time.deltaTime;
         steering = Vector3.zero;
         desiredVelocity = Vector3.zero;
 
@@ -119,7 +121,7 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     protected Vector3 persue(AlienAI target) {
         //How far ahead (as time) to persue the target
-        float t = Vector3.Distance(target.transform.position, transform.position) / (speed * Time.deltaTime);
+        float t = Vector3.Distance(target.transform.position, transform.position) / (currentSpeed * Time.deltaTime);
         //Get the future position of the agent
         Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
         //Return the seek steering of the future position
@@ -146,7 +148,7 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     protected Vector3 evade(AlienAI target) {
         //How far ahead (as time) to to evade the target
-        float t = Vector3.Distance(target.transform.position, transform.position) / (speed * Time.deltaTime);
+        float t = Vector3.Distance(target.transform.position, transform.position) / (currentSpeed * Time.deltaTime);
         //Get the future position of the agent
         Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
         //Return the flee steering of the future position
@@ -338,7 +340,7 @@ public class AlienAI : MonoBehaviour {
     /// <param name="vec">Vector to calculate from</param>
     /// <returns></returns>
     private Vector3 calculateSpeed(Vector3 vec) {
-        return vec.normalized * speed * Time.deltaTime;
+        return vec.normalized * currentSpeed * Time.deltaTime;
     }
 
     /// <summary>
