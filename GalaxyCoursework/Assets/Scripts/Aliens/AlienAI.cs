@@ -8,13 +8,12 @@ using System.Collections;
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
-    public ushort acceleration = 0; //Unused for now
-    public ushort currentSpeed = 5; //How far the agent is current moving
-    public ushort maxSpeed = 0;     //Unsued for now
-    public ushort mass = 15;        //How heavy the agent is (this makes the steering more smooth)
+    public float acceleration = 0.1f;   //How quickly the speed changes
+    public float currentSpeed = 5;     //How far the agent is current moving
+    public float maxSpeed = 10;        //The fastest this agent can go
+    public float mass = 15;            //How heavy the agent is (this makes the steering more smooth)
 
-    //How far away to flock
-    //private int flockingDistance = 300;
+    private float targetSpeed;         //The speed the agent wants to go
 
     //How much each steering behaviour will affect the total flocking steering
     private float allignmentWeight;
@@ -27,7 +26,6 @@ public class AlienAI : MonoBehaviour {
     //Variables to control how long to wait for weight changing
     private float weightChangeWait;
     private float weightChangePass;
-
 
     //The velocity vector
     private Vector3 velocity;
@@ -60,6 +58,8 @@ public class AlienAI : MonoBehaviour {
         //Init timer
         weightChangeWait = Random.Range(3, 10);
         weightChangePass = 0;
+
+        targetSpeed = currentSpeed;
     }
 	
 	// Update is called once per frame
@@ -91,6 +91,13 @@ public class AlienAI : MonoBehaviour {
         //Update the position and look 'forward'
         transform.rotation = Quaternion.LookRotation(velocity);
         transform.position += velocity;
+
+        //Adjust the speed values
+        if(currentSpeed < targetSpeed) {
+            currentSpeed += acceleration;
+        } else if(currentSpeed > targetSpeed) {
+            currentSpeed -= acceleration;
+        }
     }
 
     /// <summary>
@@ -99,6 +106,17 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     public Vector3 getvelocity() {
         return velocity;
+    }
+
+    private void setTargetSpeed(float value) {
+        //Make sure the target speed is never an impossible value
+        if(value > maxSpeed) {
+            targetSpeed = maxSpeed;
+        } else if(value < 0) {
+            targetSpeed = 0;
+        } else {
+            targetSpeed = value;
+        }
     }
 
     /// <summary>
