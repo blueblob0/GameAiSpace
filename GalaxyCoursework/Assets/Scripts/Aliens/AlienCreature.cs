@@ -13,6 +13,8 @@ using System.Collections.Generic;
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
 
+[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class AlienCreature : AlienAI {
 
     //Set in inspector
@@ -27,6 +29,13 @@ public class AlienCreature : AlienAI {
     public GameObject[] armPrefabs;
     public GameObject[] legPrefabs;
     public GameObject[] wingPrefabs;
+
+    //List of potential targets
+    protected List<AlienCreature> nearTargets = new List<AlienCreature>();
+    //The agents current target
+    protected AlienCreature target;
+    //The collider reference
+    private SphereCollider targetDetectCollider;
 
     //List of other creatures
     private List<GameObject> otherCreatures = new List<GameObject>();
@@ -131,6 +140,11 @@ public class AlienCreature : AlienAI {
 
         //Init
         reproductionTimePassed = 0;
+
+        //Set the collider size
+        targetDetectCollider = GetComponent<SphereCollider>();
+        targetDetectCollider.radius = 30;
+        targetDetectCollider.isTrigger = true;
     }
 
     /// <summary>
@@ -138,14 +152,6 @@ public class AlienCreature : AlienAI {
     /// </summary>
     public override void Update() {
         base.Update();
-
-        if(otherCreatures.Count > 0) {
-            //Compute the flocking
-            addSteeringForce(computeFlocking(otherCreatures.ToArray()));
-        }// else {
-            //Wander around
-            addSteeringForce(wander());
-        //}
 
         //DEBUG-------------------------------------
         if(Input.GetKeyDown(KeyCode.Space)) {
@@ -238,6 +244,27 @@ public class AlienCreature : AlienAI {
         if(!otherCreatures.Contains(newCreature) && newCreature != null && newCreature != gameObject) {
             otherCreatures.Add(newCreature);
         }
+    }
+
+    /// <summary>
+    /// Called when an object enters the collider
+    /// </summary>
+    /// <param name="other"></param>
+    public void OnTriggerEnter(Collider other) {
+        if(other.gameObject != gameObject && !otherCreatures.Contains(other.gameObject)) {
+            AlienCreature targetScript = other.GetComponent<AlienCreature>();
+            if(!nearTargets.Contains(targetScript)) {
+                nearTargets.Add(targetScript);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Called when an object leaves the collider
+    /// </summary>
+    /// <param name="other"></param>
+    public void OnTriggerExit(Collider other) {
+        nearTargets.Remove(other.GetComponent<AlienCreature>());
     }
 
     /// <summary>
