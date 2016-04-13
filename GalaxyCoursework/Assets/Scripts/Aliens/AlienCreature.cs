@@ -176,7 +176,6 @@ public class AlienCreature : AlienAI {
         }
     }
 
-
     /// <summary>
     /// Delete this creature and replace it with a copy
     /// </summary>
@@ -286,6 +285,9 @@ public class AlienCreature : AlienAI {
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
             body.transform.SetParent(transform);
             body.transform.localPosition = Vector3.zero;
+
+            //Make the body a random colour
+            body.transform.FindChild("Body").GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, Random.value);
 
             //Get the head to use
             GameObject headToUse = headPrefabs[Random.Range(0, headPrefabs.Length)];
