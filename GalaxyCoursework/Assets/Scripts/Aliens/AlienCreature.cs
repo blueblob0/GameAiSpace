@@ -251,7 +251,7 @@ public class AlienCreature : AlienAI {
     /// <param name="other"></param>
     public void OnTriggerEnter(Collider other) {
         if(other.gameObject != gameObject) {
-            checkIfTarget(other.gameObject);
+            StartCoroutine(checkIfTarget(other.gameObject));
         }
     }
 
