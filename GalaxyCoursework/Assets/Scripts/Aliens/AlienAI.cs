@@ -11,7 +11,7 @@ public class AlienAI : MonoBehaviour {
     public float acceleration = 0.1f;   //How quickly the speed changes
     public float currentSpeed = 5;     //How far the agent is current moving
     public float maxSpeed = 10;        //The fastest this agent can go
-    public float mass = 15;            //How heavy the agent is (this makes the steering more smooth)
+    public float mass = 20;            //How heavy the agent is (this makes the steering more smooth)
 
     private float targetSpeed;         //The speed the agent wants to go
 
@@ -127,7 +127,6 @@ public class AlienAI : MonoBehaviour {
     protected Vector3 seek(Vector3 targetWorldPos) {
         //Set the diesried velocity to the direction of the target
         desiredVelocity = calculateSpeed(targetWorldPos - transform.position);
-
         //Return the steering force of the desired velocity
         return desiredVelocity - velocity;
     }
@@ -154,7 +153,6 @@ public class AlienAI : MonoBehaviour {
     protected Vector3 flee(Vector3 targetWorldPos) {
         //Set the diesried velocity to the away from the target
         desiredVelocity = calculateSpeed(transform.position - targetWorldPos);
-
         //Return the steering force of the desired velocity
         return desiredVelocity - velocity;
     }
