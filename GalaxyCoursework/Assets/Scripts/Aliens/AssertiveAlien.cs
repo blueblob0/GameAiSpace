@@ -11,13 +11,20 @@ public class AssertiveAlien : AlienCreature {
 
     //Empty for now
 
-	//// Use this for initialization
-	//void Start () {
-	
-	//}
-	
-	//// Update is called once per frame
-	//void Update () {
-	
-	//}
+    //// Use this for initialization
+    //void Start () {
+
+    //}
+
+    // Update is called once per frame
+    public override void Update() {
+        base.Update();
+
+        if(getCreatureList().Count > 0) {
+            //Compute the flocking
+            addSteeringForce(computeFlocking(getCreatureList().ToArray()));
+        }
+        //Wander around
+        addSteeringForce(wander());
+    }
 }

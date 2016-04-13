@@ -16,8 +16,15 @@ public class PassiveAlien : AlienCreature {
 	
 	//}
 	
-	//// Update is called once per frame
-	//void Update () {
-	
-	//}
+	// Update is called once per frame
+	public override void Update () {
+        base.Update();
+
+        if(getCreatureList().Count > 0) {
+            //Compute the flocking
+            addSteeringForce(computeFlocking(getCreatureList().ToArray()));
+        }
+        //Wander around
+        addSteeringForce(wander());
+    }
 }
