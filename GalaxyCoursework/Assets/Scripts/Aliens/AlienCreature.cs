@@ -250,11 +250,8 @@ public class AlienCreature : AlienAI {
     /// </summary>
     /// <param name="other"></param>
     public void OnTriggerEnter(Collider other) {
-        if(other.gameObject != gameObject && !otherCreatures.Contains(other.gameObject)) {
-            AlienCreature targetScript = other.GetComponent<AlienCreature>();
-            if(!nearTargets.Contains(targetScript)) {
-                nearTargets.Add(targetScript);
-            }
+        if(other.gameObject != gameObject) {
+            checkIfTarget(other.gameObject);
         }
     }
 
@@ -264,6 +261,27 @@ public class AlienCreature : AlienAI {
     /// <param name="other"></param>
     public void OnTriggerExit(Collider other) {
         nearTargets.Remove(other.GetComponent<AlienCreature>());
+    }
+
+    /// <summary>
+    /// Called to check if the target can be added to the list.
+    /// Needs to be an enumerator because of how reproduction works
+    /// </summary>
+    /// <param name="potentialTarget">Game object to check</param>
+    /// <returns></returns>
+    private IEnumerator checkIfTarget(GameObject potentialTarget) {
+        //Wait one frame to avoid the reproduction bug
+        yield return null;
+
+        //check the target
+        AlienCreature targetScript = potentialTarget.GetComponent<AlienCreature>();
+        if(targetScript != null) {
+            if(!string.Equals(targetScript.getSpecies(), getSpecies())) {
+                if(!nearTargets.Contains(targetScript)) {
+                    nearTargets.Add(targetScript);
+                }
+            }
+        }
     }
 
     /// <summary>
