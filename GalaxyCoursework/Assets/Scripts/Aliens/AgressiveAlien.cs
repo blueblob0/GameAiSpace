@@ -21,12 +21,26 @@ public class AgressiveAlien : AlienCreature {
         base.Update();
 
 
-        if(target)
-        if(getCreatureList().Count > 0) {
-            //Compute the flocking
-            addSteeringForce(computeFlocking(getCreatureList().ToArray()));
+        /*
+        basic procedure:
+        check if any targets are seeking/attacking this agent
+        respond
+        check to attack any target
+        flock with group
+        */
+
+        if(target == null) {
+            if(getCreatureList().Count > 0) {
+                //Compute the flocking
+                addSteeringForce(computeFlocking(getCreatureList().ToArray()));
+            }
+            //Wander around
+            addSteeringForce(wander());
+            if(nearTargets.Count > 0) {
+                target = nearTargets[0];
+            }
+        } else {
+            addSteeringForce(persue(target));
         }
-        //Wander around
-        addSteeringForce(wander());
     }
 }

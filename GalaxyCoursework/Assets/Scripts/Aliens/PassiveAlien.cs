@@ -20,11 +20,19 @@ public class PassiveAlien : AlienCreature {
 	public override void Update () {
         base.Update();
 
-        if(getCreatureList().Count > 0) {
-            //Compute the flocking
-            addSteeringForce(computeFlocking(getCreatureList().ToArray()));
+        if(target == null) {
+            if(getCreatureList().Count > 0) {
+                //Compute the flocking
+                addSteeringForce(computeFlocking(getCreatureList().ToArray()));
+            }
+            //Wander around
+            addSteeringForce(wander());
+
+            if(nearTargets.Count > 0) {
+                target = nearTargets[0];
+            }
+        } else {
+            addSteeringForce(evade(target));
         }
-        //Wander around
-        addSteeringForce(wander());
     }
 }
