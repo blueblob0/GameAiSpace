@@ -20,7 +20,14 @@ public class Star: CelestialBody
         miniSun.SetActive(false);
         base.Start();
         planetsSpawned = false;
-        //mass = 100;
+        //mass = 100;       
+    }
+   
+    /// <summary>
+    /// Function for making planets this is called by the genration algrithum when the size of the sun is set
+    /// </summary>
+    public void GeneratePlanets()
+    {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
         numPlanets = Random.Range(0, 100);
@@ -49,7 +56,7 @@ public class Star: CelestialBody
         {
             numPlanets = Random.Range(11, 14); //11 12 13
         }
-       // Debug.Log(numPlanets);
+        // Debug.Log(numPlanets);
         planetsLoc = new SataliteDetails[numPlanets];
         float hold = transform.lossyScale.x / 2;
         hold = 0.05f;
@@ -60,16 +67,13 @@ public class Star: CelestialBody
 
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
             planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos);
-            
+
             hold = planetsLoc[i].distFromBody;
         }
 
-        
+
 
     }
-   
-    // Update is called once per frame
-
 
     public void IncreaseMass(int plus)
     {
@@ -136,14 +140,15 @@ public class Star: CelestialBody
             int massa = other.GetComponent<Star>().Mass;
             if (massa <= mass)
             {
-                controler.stars.Remove(other.gameObject);
+                controler.DestroyStar(other.gameObject);
                 IncreaseMass(massa);
-                Destroy(other.gameObject);
-                // Debug.Log(mass);
             }
         }
         
     }
+
+
+
 
 
 

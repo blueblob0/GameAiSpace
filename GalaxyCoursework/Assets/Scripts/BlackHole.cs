@@ -3,33 +3,76 @@ using System.Collections;
 
 public class BlackHole : CelestialBody
 {
-
+    public int count =25;
+    public bool move = true;
+    bool check = false;
 	// Use this for initialization
 	protected override void  Start ()
     {
         base.Start();
-        mass = 100;
-       
-
-        
+        mass = 1000; 
         transform.localScale = Vector3.one * (mass );
+
+        if (!controler)
+        {
+            controler = FindObjectOfType<CreateGalaxy>();
+        }
+
+        //make sure we remove planets starting inside the balckhole 
+        Collider[] hitColliders =Physics.OverlapSphere(transform.position, transform.lossyScale.x);
+        for(int i = 0;i< hitColliders.Length;i++)
+        {
+            if (hitColliders[i].gameObject != gameObject)
+            {
+                //remove from the list so we dont try and acces a bull gameobjecct 
+                controler.DestroyStar(hitColliders[i].gameObject);
+               
+            }
+
+
+
+        }
+
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (mass > 0)
+        if (move)
         {
-            foreach (GameObject s in controler.stars)
-            {
-
-                float force = 100 * mass/ s.GetComponent<Star>().mass; // / Vector3.Distance(transform.position, s.transform.position * s.GetComponent<Star>().mass);
-                s.transform.position = Vector3.MoveTowards(s.transform.position, transform.position, force * Time.deltaTime);
-                // Debug.Log(force); 
-            }
+            UpdateTowardsBlackHole();
 
         }
-        
+
     }
+    //move every sun towards the backhole
+    public void MoveTowardsBlackHole()
+    {
+
+        while(count > 0)
+        {
+            controler.moveStars(transform.position, mass);
+                       
+        }
+    }
+    public void UpdateTowardsBlackHole()
+    {
+
+        if (count > 0)
+        {
+            controler.moveStars(transform.position, mass);
+        }
+        else if(!check)
+        {
+            check = true;
+            
+
+
+        }
+
+
+    }
+
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -43,19 +86,14 @@ public class BlackHole : CelestialBody
         {
             controler = FindObjectOfType<CreateGalaxy>();
         }
-
        
-        controler.stars.Remove(other.gameObject);
-        //Debug.Log(other);
-        //Debug.Log(other.GetComponent<CelestialBody>());
-        //mass += other.GetComponent<CelestialBody>().Mass;
+        //mass -= other.GetComponent<CelestialBody>().Mass;
+        //going to try removing count isntead of mass as big stars isntatly remove the black hole 
+        //count--;
 
-        //transform.localScale = Vector3.one * (mass );
+        count -= Mathf.CeilToInt(Mathf.Log10(other.GetComponent<CelestialBody>().Mass));
 
-        //Debug.Log(mass);
-        mass -= other.GetComponent<CelestialBody>().Mass;
-
-        Destroy(other.gameObject);
+        controler.DestroyStar(other.gameObject);
     }
 
 
