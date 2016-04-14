@@ -78,7 +78,7 @@ public class BlackHole : CelestialBody
 
         }
 
-        Debug.LogError("stop"  + " " + i + " " + count);
+        //Debug.LogError("stop"  + " " + i + " " + count);
     }
 
 
