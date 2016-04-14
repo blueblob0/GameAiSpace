@@ -26,7 +26,7 @@ public class CameraMove : MonoBehaviour {
     // Use this for initialization
     void Start () {
         maxSpeed = 1.0f * CreateGalaxy.starMuti;
-        Debug.Log(maxSpeed);
+        //Debug.Log(maxSpeed);
         velocity = Vector3.zero;
         left = false;
         right = false;

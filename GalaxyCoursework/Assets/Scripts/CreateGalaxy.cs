@@ -3,10 +3,12 @@ using System.Collections.Generic;
 
 public class CreateGalaxy : MonoBehaviour
 {
-    public const int starMuti = 50;
+    public const int starMuti = 50; 
+    public const string removeName = "ToRemove";
     public int numStars = 100;
     private List<GameObject> stars = new List<GameObject>();
     public string starPrefabName = "StarPrefab";
+
     // private int spaceBetween = StarMuti*10;
     /// <summary>
     /// the center of the Galaxy might be usefull if you have mutiple galaxys 
@@ -71,7 +73,7 @@ public class CreateGalaxy : MonoBehaviour
                         float holdx = centerpos.x + (radiusIncrease * row) * Mathf.Cos(angle * Mathf.Deg2Rad);
                         float holdz = centerpos.z + (radiusIncrease * row) * Mathf.Sin(angle * Mathf.Deg2Rad);
 
-                        float sample = Random.Range(0.4f, 1.2f); // The size of the star to generate 
+                        float sample = Random.Range(0.5f, 0.9f); // The size of the star to generate 
                         GameObject Stara = null;
                         if (sample > 0)
                         {
@@ -107,7 +109,7 @@ public class CreateGalaxy : MonoBehaviour
         }
 
         //then move the suns towards the blackhole
-       // black.MoveTowardsBlackHole();
+        black.MoveTowardsBlackHole();
 
 
 
@@ -317,9 +319,38 @@ public class CreateGalaxy : MonoBehaviour
             s.transform.position = Vector3.MoveTowards(s.transform.position, moveTo, force * Time.deltaTime);
         }
 
+        GameObject[] tempArray = stars.ToArray(); 
+
+            
+
+        foreach (GameObject s in tempArray)
+        {
+            s.GetComponent<Star>().RemoveStarsInStar();
+        }
+
 
 
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void CheckStarBlackHole()
+    {
+        float testMass = 100;        
+        foreach (GameObject g in stars)
+        {
+            if(g.GetComponent<Star>().mass> testMass)
+            {
+                Debug.Log(g.GetComponent<Star>().mass);
+            }
+
+        }
+    }
+
+  
+
 
 
 

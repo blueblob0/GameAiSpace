@@ -17,10 +17,18 @@ public class Star: CelestialBody
     // Use this for initialization
     protected override void Start()
     {
+        if(CreateGalaxy.removeName == name)
+        {
+            return;
+        }
+
         miniSun.SetActive(false);
         base.Start();
         planetsSpawned = false;
-        //mass = 100;       
+        //mass = 100;      
+
+        //for now do this now will change later 
+        GeneratePlanets();
     }
    
     /// <summary>
@@ -100,6 +108,11 @@ public class Star: CelestialBody
 
     void OnTriggerEnter(Collider other)
     {
+        //if its going to be removed the star should have no effect  
+        if (CreateGalaxy.removeName == name)
+        {
+            return;
+        }
         if (other.tag =="MainCamera")
         {
             //Decrease Speed for moving around soloar system
@@ -148,12 +161,51 @@ public class Star: CelestialBody
     }
 
 
+    /// <summary>
+    /// \USed for when stars collide during the start time as oncollision does not work here 
+    /// </summary>
+    public void RemoveStarsInStar()
+    {
+
+        if (CreateGalaxy.removeName == name)
+        {
+            return;
+        }
+        if (!controler)
+        {
+            controler = FindObjectOfType<CreateGalaxy>();
+        }
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            if (hitColliders[i].gameObject != gameObject && hitColliders[i].name != CreateGalaxy.removeName && hitColliders[i].GetComponent<Star>())
+            {                
+
+                int massa = hitColliders[i].GetComponent<Star>().Mass;
+                if (massa <= mass)
+                {
+                    hitColliders[i].name = CreateGalaxy.removeName;
+                    controler.DestroyStar(hitColliders[i].gameObject);
+                    IncreaseMass(massa);
+                }
+               
+            }
+        }
+    }
+
+
+
+
 
 
 
 
     void OnTriggerExit(Collider other)
     {
+        if (CreateGalaxy.removeName == name)
+        {
+            return;
+        }
         if (other.tag == "MainCamera")
         {
             miniSun.SetActive(false);
