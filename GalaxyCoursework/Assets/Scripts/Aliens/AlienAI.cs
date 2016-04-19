@@ -114,6 +114,10 @@ public class AlienAI : MonoBehaviour {
         return velocity;
     }
 
+    /// <summary>
+    /// Sets the target speed
+    /// </summary>
+    /// <param name="value">Target speed</param>
     private void setTargetSpeed(float value) {
         //Make sure the target speed is never an impossible value
         if(value > maxSpeed) {
