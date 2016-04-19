@@ -89,8 +89,10 @@ public class AlienAI : MonoBehaviour {
         velocity = calculateSpeed(velocity);
 
         //Update the position and look 'forward'
-        transform.rotation = Quaternion.LookRotation(velocity);
-        transform.position += velocity;
+        if(currentSpeed > 0) {
+            transform.rotation = Quaternion.LookRotation(velocity);
+            transform.position += velocity;
+        }
 
         //Adjust the speed values
         if(currentSpeed < targetSpeed) {
@@ -347,7 +349,7 @@ public class AlienAI : MonoBehaviour {
     protected void stopMovement() {
         desiredVelocity = Vector3.zero;
         steering = Vector3.zero;
-        currentSpeed = 0;
+        targetSpeed = 0;
     }
 
     /// <summary>
