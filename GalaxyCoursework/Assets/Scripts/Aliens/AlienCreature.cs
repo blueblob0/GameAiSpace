@@ -281,6 +281,38 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
+    /// Returns this creatures intelligence modifier
+    /// </summary>
+    /// <returns></returns>
+    public float getIntelligence() {
+        return intelligenceModifier;
+    }
+
+    /// <summary>
+    /// Returns this creatures strength modifier
+    /// </summary>
+    /// <returns></returns>
+    public float getStrength() {
+        return strengthModifier;
+    }
+
+    /// <summary>
+    /// Returns this creatures speed modifier
+    /// </summary>
+    /// <returns></returns>
+    public float getSpeedModifier() {
+        return speedModifier;
+    }
+
+    /// <summary>
+    /// Returns this creatures dodge chance modifier
+    /// </summary>
+    /// <returns></returns>
+    public float getDdogeChance() {
+        return dodgeModifier;
+    }
+
+    /// <summary>
     /// Tries to damage this creature, has a chance to miss bassed off of dodge
     /// </summary>
     /// <param name="amount">The incomming damage amount</param>
