@@ -100,6 +100,10 @@ public class AlienAI : MonoBehaviour {
         } else if(currentSpeed > targetSpeed) {
             currentSpeed -= acceleration;
         }
+        //0 off the speed
+        if(targetSpeed <= 0 && currentSpeed <= 0.1f) {
+            currentSpeed = 0;
+        }
     }
 
     /// <summary>
