@@ -352,9 +352,9 @@ public class AlienCreature : AlienAI {
         //Wait one frame to avoid the reproduction bug
         yield return null;
 
-        //check the target
-        AlienCreature targetScript = potentialTarget.GetComponent<AlienCreature>();
-        if(targetScript != null) {
+        //Check the target
+        if(potentialTarget != null && potentialTarget.GetComponent<AlienCreature>() != null) {
+            AlienCreature targetScript = potentialTarget.GetComponent<AlienCreature>();
             if(!string.Equals(targetScript.getSpecies(), getSpecies())) {
                 if(!nearTargets.Contains(targetScript)) {
                     nearTargets.Add(targetScript);
