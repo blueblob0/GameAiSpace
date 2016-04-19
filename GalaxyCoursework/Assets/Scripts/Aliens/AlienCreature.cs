@@ -17,17 +17,6 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
 public class AlienCreature : AlienAI {
 
-    //How much damage the agent can take before dying
-    private float health;
-    //The accuracy of wether to flee or engage
-    private float intelligenceModifier;  //Will increase per head
-    //How much damage the agent deals
-    private float strengthModifier;      //Will increase per arm
-    //How fast the agent moves
-    private float speedModifier;         //Will increase per leg
-    //Likley hood of avoid damage
-    private float dodgeModifier;         //Will increase per wing
-
     //Set in inspector
     public GameObject[] bodyPrefabs;
     public GameObject[] headPrefabs;
@@ -44,6 +33,20 @@ public class AlienCreature : AlienAI {
 
     //List of other creatures
     private List<GameObject> otherCreatures = new List<GameObject>();
+
+    //How much damage the agent can take before dying
+    private float health;
+    //The accuracy of wether to flee or engage
+    private float intelligenceModifier;  //Will increase per head
+    //How much damage the agent deals
+    private float strengthModifier;      //Will increase per arm
+    //How fast the agent moves
+    private float speedModifier;         //Will increase per leg
+    //Likley hood of avoid damage
+    private float dodgeModifier;         //Will increase per wing
+
+    //If the agent can attack
+    private bool canAttack;
 
     //The species of creature
     private string creatureSpecies = "NO_SPECIES";
@@ -99,6 +102,8 @@ public class AlienCreature : AlienAI {
         strengthModifier = 20;
         speedModifier = 5;
         dodgeModifier = 20;
+
+        canAttack = true;
 
         //Get some random reproduction values
         reproductionChance = Random.Range(25, 71);
@@ -325,7 +330,7 @@ public class AlienCreature : AlienAI {
     public void receiveDamage(float amount) {
         float val = Random.value * 100;
         if(val > dodgeModifier) {
-            if(health - val > 0) {
+            if(health - amount > 0) {
                 health -= amount;
             } else {
                 health = 0;
@@ -334,12 +339,21 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
-    /// Damages the target creature
+    /// Helper function to start the corutine to damage creatures
     /// </summary>
     /// <param name="creature">The creature to damage</param>
     protected void damageCreature(AlienCreature creature) {
+        if(canAttack){
+            StartCoroutine(applyDamage(creature));
+        }
+    }
+
+    private IEnumerator applyDamage(AlienCreature creature) {
+        canAttack = false;
         float damage = (5 + strengthModifier) / 3;
         creature.receiveDamage(damage);
+        yield return new WaitForSeconds(1.5f); //random value for now
+        canAttack = true;
     }
 
     /// <summary>
