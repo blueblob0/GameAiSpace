@@ -20,6 +20,7 @@ public class PassiveAlien : AlienCreature {
 	public override void Update () {
         base.Update();
 
+        //DEBUG-----------------------------------------------------------------
         if(target == null) {
             if(getCreatureList().Count > 0) {
                 //Compute the flocking
@@ -34,5 +35,6 @@ public class PassiveAlien : AlienCreature {
         } else {
             addSteeringForce(evade(target));
         }
+        //----------------------------------------------------------------------
     }
 }

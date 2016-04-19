@@ -20,11 +20,13 @@ public class AssertiveAlien : AlienCreature {
     public override void Update() {
         base.Update();
 
+        //DEBUG-----------------------------------------------------------------
         if(getCreatureList().Count > 0) {
             //Compute the flocking
             addSteeringForce(computeFlocking(getCreatureList().ToArray()));
         }
         //Wander around
         addSteeringForce(wander());
+        //----------------------------------------------------------------------
     }
 }

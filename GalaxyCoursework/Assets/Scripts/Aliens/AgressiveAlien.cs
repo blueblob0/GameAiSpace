@@ -29,6 +29,8 @@ public class AgressiveAlien : AlienCreature {
         flock with group
         */
 
+
+        //DEBUG-----------------------------------------------------------------
         if(target == null) {
             if(getCreatureList().Count > 0) {
                 //Compute the flocking
@@ -42,5 +44,6 @@ public class AgressiveAlien : AlienCreature {
         } else {
             addSteeringForce(persue(target));
         }
+        //---------------------------------------------------------------------
     }
 }
