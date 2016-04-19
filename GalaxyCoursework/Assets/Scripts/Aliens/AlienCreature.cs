@@ -17,11 +17,16 @@ using System.Collections.Generic;
 [RequireComponent(typeof(Rigidbody))]
 public class AlienCreature : AlienAI {
 
-    //Set in inspector
-    //public float baseIntelligence;  //Base value, will increase per head
-    //public float baseStrenth;       //Base value, will increase per arm
-    //public float baseSpeed;         //Base value, will increase per leg
-    //public float baseDodge;         //Base value, will increase per wing
+    //How much damage the agent can take before dying
+    private float health;
+    //The accuracy of wether to flee or engage
+    private float intelligenceModifier;  //Will increase per head
+    //How much damage the agent deals
+    private float strengthModifier;      //Will increase per arm
+    //How fast the agent moves
+    private float speedModifier;         //Will increase per leg
+    //Likley hood of avoid damage
+    private float dodgeModifier;         //Will increase per wing
 
     //Set in inspector
     public GameObject[] bodyPrefabs;
@@ -87,6 +92,13 @@ public class AlienCreature : AlienAI {
     /// </summary>
     public override void Start() {
         base.Start();
+
+        //Set the stat values
+        health = 100;
+        intelligenceModifier = 40;
+        strengthModifier = 20;
+        speedModifier = 5;
+        dodgeModifier = 20;
 
         //Get some random reproduction values
         reproductionChance = Random.Range(25, 71);
@@ -158,6 +170,11 @@ public class AlienCreature : AlienAI {
             StartCoroutine(reproduce());
         }
         //------------------------------------------
+
+        //Check the health
+        if(health <= 0) {
+            Destroy(gameObject);
+        }
 
         //Increment the time passed
         reproductionTimePassed += Time.deltaTime;
@@ -264,6 +281,30 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
+    /// Tries to damage this creature, has a chance to miss bassed off of dodge
+    /// </summary>
+    /// <param name="amount">The incomming damage amount</param>
+    public void receiveDamage(float amount) {
+        float val = Random.value * 100;
+        if(val > dodgeModifier) {
+            if(health - val > 0) {
+                health -= amount;
+            } else {
+                health = 0;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Damages the target creature
+    /// </summary>
+    /// <param name="creature">The creature to damage</param>
+    protected void damageCreature(AlienCreature creature) {
+        float damage = (5 + strengthModifier) / 3;
+        creature.receiveDamage(damage);
+    }
+
+    /// <summary>
     /// Called to check if the target can be added to the list.
     /// Needs to be an enumerator because of how reproduction works
     /// </summary>
@@ -321,8 +362,10 @@ public class AlienCreature : AlienAI {
                     }
                 }
             }
+            //Increase intelligence based off of head count
+            intelligenceModifier += maxHeads * 10;
 
-            //Get the head to use
+            //Get the arm to use
             GameObject armToUse = armPrefabs[Random.Range(0, armPrefabs.Length)];
             //Spawn in the Arms
             for(int i = 0; i < maxArms; i++) {
@@ -336,8 +379,10 @@ public class AlienCreature : AlienAI {
                     }
                 }
             }
+            //Increase strength based off of the arm count
+            strengthModifier += maxArms * 5;
 
-            //Get the head to use
+            //Get the leg to use
             GameObject legToUse = legPrefabs[Random.Range(0, legPrefabs.Length)];
             //Spawn in the Legs
             for(int i = 0; i < maxLegs; i++) {
@@ -351,8 +396,10 @@ public class AlienCreature : AlienAI {
                     }
                 }
             }
+            //Increase speed based off of the leg count
+            speedModifier += maxLegs;
 
-            //Get the head to use
+            //Get the wing to use
             GameObject wingToUse = wingPrefabs[Random.Range(0, wingPrefabs.Length)];
             //Spawn in the wings
             for(int i = 0; i < maxWings; i++) {
@@ -366,6 +413,8 @@ public class AlienCreature : AlienAI {
                     }
                 }
             }
+            //Increase dodge based off of the wing count
+            dodgeModifier += wingCount * 2;
 
             //Creature has now been spawned
             spawned = true;
