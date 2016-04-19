@@ -118,7 +118,7 @@ public class AlienAI : MonoBehaviour {
     /// Sets the target speed
     /// </summary>
     /// <param name="value">Target speed</param>
-    private void setTargetSpeed(float value) {
+    protected void setTargetSpeed(float value) {
         //Make sure the target speed is never an impossible value
         if(value > maxSpeed) {
             targetSpeed = maxSpeed;
@@ -127,6 +127,22 @@ public class AlienAI : MonoBehaviour {
         } else {
             targetSpeed = value;
         }
+    }
+
+    /// <summary>
+    /// Changes the maximum speed to the amount
+    /// </summary>
+    /// <param name="amount"></param>
+    protected void changeMaxSpeed(float amount) {
+        maxSpeed = amount;
+    }
+
+    /// <summary>
+    /// Returns the maximum speed
+    /// </summary>
+    /// <returns></returns>
+    protected float getMaxSpeed() {
+        return maxSpeed;
     }
 
     /// <summary>
