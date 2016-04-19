@@ -341,6 +341,22 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
+    /// Returns a value on 0 - 100 if the agent should attack the creature, 100 being that it should definitley attack
+    /// </summary>
+    /// <param name="creature">The target</param>
+    /// <returns></returns>
+    protected float shouldAttack(AlienCreature creature) {
+        //The stats of this creature comprised into one variable
+        float stats;
+        //The stats of the other creature
+
+        //Off set by intelligence
+
+        //Return the likleyhood
+        return 0; //nothing for now
+    }
+
+    /// <summary>
     /// Helper function to start the corutine to damage creatures
     /// </summary>
     /// <param name="creature">The creature to damage</param>
@@ -350,6 +366,11 @@ public class AlienCreature : AlienAI {
         }
     }
 
+    /// <summary>
+    /// Applies the damage to the target
+    /// </summary>
+    /// <param name="creature"></param>
+    /// <returns></returns>
     private IEnumerator applyDamage(AlienCreature creature) {
         canAttack = false;
         float damage = (5 + strengthModifier) / 3;
