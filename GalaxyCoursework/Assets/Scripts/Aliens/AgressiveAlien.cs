@@ -42,7 +42,12 @@ public class AgressiveAlien : AlienCreature {
                 target = nearTargets[0];
             }
         } else {
-            addSteeringForce(persue(target));
+            if(Vector3.Distance(transform.position, target.transform.position) > 2) {
+                addSteeringForce(persue(target));
+            } else {
+                stopMovement();
+                damageCreature(target);
+            }
         }
         //---------------------------------------------------------------------
     }
