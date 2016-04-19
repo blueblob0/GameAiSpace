@@ -226,6 +226,12 @@ public class AlienCreature : AlienAI {
         addCreature(creature.gameObject);
         //Make sure it doesn't contain itself
         otherCreatures.Remove(gameObject);
+
+        //Set the modifiers
+        intelligenceModifier = creature.getIntelligence();
+        strengthModifier = creature.getStrength();
+        speedModifier = creature.getSpeedModifier();
+        dodgeModifier = creature.getDdogeChance();
     }
 
     /// <summary>
