@@ -366,7 +366,7 @@ public class AlienAI : MonoBehaviour {
         //Desired velocity
         Debug.DrawLine(transform.position, transform.position + (desiredVelocity.normalized * 5), Color.blue);
         //Steering
-        Debug.DrawLine(transform.position + (velocity.normalized * 5), transform.position + (velocity.normalized * 5) + (steering.normalized * 2), Color.red);
+        Debug.DrawLine(transform.position, transform.position + (steering.normalized * 2), Color.red);
         //Velocity
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 5), Color.green);
     }
