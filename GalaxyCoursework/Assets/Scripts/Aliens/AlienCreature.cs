@@ -341,19 +341,20 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
-    /// Returns a value on 0 - 100 if the agent should attack the creature, 100 being that it should definitley attack
+    /// Returns a value on if the agent should attack the creature, < 0 and its not recommended > 0 and it is recommended
     /// </summary>
     /// <param name="creature">The target</param>
     /// <returns></returns>
     protected float shouldAttack(AlienCreature creature) {
-        //The stats of this creature comprised into one variable
-        float stats;
-        //The stats of the other creature
-
+        //The stats of this creature comprised into one variable (weights applied)
+        float stats = getStrength() + getSpeedModifier();
+        //The stats of the other creature (weights applied)
+        float theriStats = creature.getStrength() + creature.getSpeedModifier();
         //Off set by intelligence
+        float chance = (stats - theriStats) + (getIntelligence() * 0.1f);
 
         //Return the likleyhood
-        return 0; //nothing for now
+        return chance;
     }
 
     /// <summary>
