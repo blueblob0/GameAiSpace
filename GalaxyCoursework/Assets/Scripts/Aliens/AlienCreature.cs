@@ -96,9 +96,6 @@ public class AlienCreature : AlienAI {
     public override void Start() {
         base.Start();
 
-        //Set the default state
-        currentState = State.Wandering;
-
         //Set the stat values
         health = 100;
         intelligenceModifier = 40;
