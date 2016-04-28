@@ -30,6 +30,7 @@ public class AlienAI : MonoBehaviour {
 
     //How much damage the agent can take before dying
     protected float health;
+    protected float maxHealth;
     //The accuracy of wether to flee or engage
     protected float intelligenceModifier;  //Will increase per head
     //How much damage the agent deals
@@ -46,7 +47,7 @@ public class AlienAI : MonoBehaviour {
 
     //How much each steering behaviour will affect the total flocking steering
     private float allignmentWeight;
-    private float cohesiontWeight;
+    private float cohesionWeight;
     private float seperationWeight;
     //Distances on how far to compute the specific steering behaviours
     private float allignmentDistance;
@@ -62,21 +63,36 @@ public class AlienAI : MonoBehaviour {
     private Vector3 steering;
     private Vector3 desiredVelocity;
 
-    private float wanderAngle;
+    //The main selector of the behavior tree
+    private Selector mainSelector;
+    //Tasks for the main selector
+    private EscapeSequence escape;
+    //fight
+    private IdleSelector idle;
 
     // Use this for initialization
     public virtual void Start () {
+        //Construct the main selector
+        mainSelector = new Selector(this);
+
+        //Construct the tasks
+        escape = new EscapeSequence(this);
+        //fight
+        idle = new IdleSelector(this);
+
+        //Add nodes in order of importance
+        mainSelector.addChild(escape);
+        //add fight
+        mainSelector.addChild(idle);
+
         //Init the velocity vectors
         velocity = transform.forward * currentSpeed * Time.deltaTime;
         steering = Vector3.zero;
         desiredVelocity = Vector3.zero;
 
-        //Get a random wander angle
-        wanderAngle = Random.Range(0, 360);
-
         //Init weights
         allignmentWeight = 1;
-        cohesiontWeight  = 1;
+        cohesionWeight  = 1;
         seperationWeight = 1;
 
         //Init distances
@@ -98,15 +114,18 @@ public class AlienAI : MonoBehaviour {
         //--------------------------
 
         //Adjust the weights on the flocking
-        if(weightChangePass >= weightChangeWait) {
-            weightChangePass = 0;
-            weightChangeWait = Random.Range(3, 10);
+        //if(weightChangePass >= weightChangeWait) {
+        //    weightChangePass = 0;
+        //    weightChangeWait = Random.Range(3, 10);
 
-            allignmentWeight = Random.value;
-            cohesiontWeight = Random.value;
-            seperationWeight = Random.value;
-        }
-        weightChangePass += Time.deltaTime;
+        //    allignmentWeight = Random.value;
+        //    cohesiontWeight = Random.value;
+        //    seperationWeight = Random.value;
+        //}
+        //weightChangePass += Time.deltaTime;
+
+        //Activate the selector
+        mainSelector.activate();
 
         //Make the steering smooth
         steering /= mass;
@@ -139,8 +158,120 @@ public class AlienAI : MonoBehaviour {
     /// Returns the velocity vector of the current agent
     /// </summary>
     /// <returns></returns>
-    public Vector3 getvelocity() {
+    public Vector3 getVelocity() {
         return velocity;
+    }
+
+    /// <summary>
+    /// Sets the desired volcity of this agent
+    /// </summary>
+    /// <param name="velocity"></param>
+    public void setDesiredVelocity(Vector3 velocity) {
+        desiredVelocity = velocity;
+    }
+
+    /// <summary>
+    /// Returns the desired velocity of this agent
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 getDesiredVelocity() {
+        return desiredVelocity;
+    }
+
+    /// <summary>
+    /// Returns the health of this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getHealth() {
+        return health;
+    }
+
+    /// <summary>
+    /// Returns the maximum health of this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+
+    /// <summary>
+    /// Returns the near target list
+    /// </summary>
+    /// <returns></returns>
+    public List<AlienCreature> getNearTargets() {
+        return nearTargets;
+    }
+
+    /// <summary>
+    /// Returns the target of this agent
+    /// </summary>
+    /// <returns></returns>
+    public AlienCreature getTarget() {
+        return target;
+    }
+
+    /// <summary>
+    /// Sets the target of this agent
+    /// </summary>
+    /// <param name="target">The target to set</param>
+    public void setTarget(AlienCreature target) {
+        this.target = target;
+    }
+
+    /// <summary>
+    /// Returns the list of other creatures
+    /// </summary>
+    /// <returns></returns>
+    public List<GameObject> getOtherCreatures() {
+        return otherCreatures;
+    }
+
+    /// <summary>
+    /// Returns the allignment weight for this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getAllignmentWeight() {
+        return allignmentWeight;
+    }
+
+    /// <summary>
+    /// Returns the distance to allign from
+    /// </summary>
+    /// <returns></returns>
+    public float getAllignmentDistance() {
+        return allignmentDistance;
+    }
+
+    /// <summary>
+    /// Returns the cohesion weight for this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getCohesionWeight() {
+        return cohesionWeight;
+    }
+
+    /// <summary>
+    /// Returns the distance to coherse from
+    /// </summary>
+    /// <returns></returns>
+    public float getCohesionDistance() {
+        return cohesionDistance;
+    }
+
+    /// <summary>
+    /// Returns the seperation weight for this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getSeperationWeight() {
+        return seperationWeight;
+    }
+
+    /// <summary>
+    /// Returns the distance to seperate from
+    /// </summary>
+    /// <returns></returns>
+    public float getSeperationDistance() {
+        return seperationDistance;
     }
 
     /// <summary>
@@ -195,204 +326,16 @@ public class AlienAI : MonoBehaviour {
         //How far ahead (as time) to persue the target
         float t = Vector3.Distance(target.transform.position, transform.position) / (currentSpeed * Time.deltaTime);
         //Get the future position of the agent
-        Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
+        Vector3 futurePosition = target.transform.position + (target.getVelocity() * t);
         //Return the seek steering of the future position
         return seek(futurePosition);
-    }
-
-    /// <summary>
-    /// Makes the agent flee from the target
-    /// </summary>
-    /// <param name="targetWorldPos">World position of the target to flee from</param>
-    /// <returns>Returns the steering force of the desired direction</returns>
-    protected Vector3 flee(Vector3 targetWorldPos) {
-        //Set the diesried velocity to the away from the target
-        desiredVelocity = calculateSpeed(transform.position - targetWorldPos);
-        //Return the steering force of the desired velocity
-        return desiredVelocity - velocity;
-    }
-
-    /// <summary>
-    /// Returns the steering force to eveade the target
-    /// </summary>
-    /// <param name="target">Target to evade</param>
-    /// <returns></returns>
-    protected Vector3 evade(AlienAI target) {
-        //How far ahead (as time) to to evade the target
-        float t = Vector3.Distance(target.transform.position, transform.position) / (currentSpeed * Time.deltaTime);
-        //Get the future position of the agent
-        Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
-        //Return the flee steering of the future position
-        return flee(futurePosition);
-    }
-
-    /// <summary>
-    /// Makes the agent wander around
-    /// </summary>
-    /// <param name="circleDistance">How far forward to set the wander pos</param>
-    /// <param name="circleRadius">How big the displacement vector can be</param>
-    /// <returns>The wander (steering) force</returns>
-    protected Vector3 wander(float circleDistance = 6.0f, float circleRadius = 5.0f) {
-        //Create the 'circle' for a wander position to be in
-        Vector3 circleCenter = velocity.normalized;
-        circleCenter *= circleDistance;
-
-        //Init the displacement force (direction to wander to)
-        Vector3 displacement = new Vector3(0, 0, 1);
-        //Displace the vector by the wanderAngle
-        displacement.x = circleRadius * Mathf.Cos(wanderAngle);
-        displacement.z = circleRadius * Mathf.Sin(wanderAngle);
-        //Move the angle slightly in a random direction
-        wanderAngle += Random.Range(-1, 1);
-
-        //Normalize the new steering force to the speed
-        desiredVelocity = calculateSpeed(circleCenter + displacement);
-
-        //Return the new force
-        return desiredVelocity - velocity;
-    }
-
-    /// <summary>
-    /// Returns a velocity vector for the creature's allignment to other creatures
-    /// </summary>
-    /// <param name="otherCreatures">Array of other creatures</param>
-    /// <returns></returns>
-    protected Vector3 computeAllignment(GameObject[] otherCreatures) {
-        //Init the return value
-        Vector3 velocity = Vector3.zero;
-        //Keep track of the neighbours
-        int neighbourCount = 0;
-
-        //Loop through the other creatures
-        for(int i = 0; i < otherCreatures.Length; i++) {
-            //Make sure it isn't computing with itself
-            if(otherCreatures[i] != gameObject) {
-                //Make sure it is within the allignment range
-                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= allignmentDistance) {
-                    //Add on the agent's velocity 
-                    velocity += otherCreatures[i].GetComponent<AlienAI>().getvelocity();
-                    //Increase neighbour count
-                    neighbourCount++;
-                }
-            }
-        }
-
-        //If there were not any neighbours then return zero
-        if(neighbourCount == 0) {
-            return Vector3.zero;
-        }
-
-        //Get the velocity based off of the center of mass
-        velocity /= neighbourCount;
-
-        //Normalize and return
-        velocity.Normalize();
-        return velocity;
-    }
-
-    /// <summary>
-    /// Returns a velocity vector for the creature's cohesion to other creatures
-    /// </summary>
-    /// <param name="otherCreatures">Array of other creatures</param>
-    /// <returns></returns>
-    protected Vector3 computeCohesion(GameObject[] otherCreatures) {
-        //Init the return value
-        Vector3 velocity = Vector3.zero;
-        //Keep track of the neighbours
-        int neighbourCount = 0;
-
-        //Loop through the other creatures
-        for(int i = 0; i < otherCreatures.Length; i++) {
-            //Make sure it isn't computing with itself
-            if(otherCreatures[i] != gameObject) {
-                //Make sure it is within the cohesion range
-                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) > cohesionDistance) {
-                    //Add on the agent's position
-                    velocity += otherCreatures[i].transform.position;
-                    //Increase neighbour count
-                    neighbourCount++;
-                }
-            }
-        }
-
-        //If there were not any neighbours then return zero
-        if(neighbourCount == 0) {
-            return Vector3.zero;
-        }
-
-        //Get the position of the center of mass
-        velocity /= neighbourCount;
-        velocity = velocity - transform.position;
-
-        //Normalize and return
-        velocity.Normalize();
-        return velocity;
-    }
-
-    /// <summary>
-    /// Returns a velocity vector for the creature's seperation to other creatures
-    /// </summary>
-    /// <param name="otherCreatures">Array of other creatures</param>
-    /// <returns></returns>
-    protected Vector3 computeSeperation(GameObject[] otherCreatures) {
-        //Init the return value
-        Vector3 velocity = Vector3.zero;
-        //Keep track of the neighbours
-        int neighbourCount = 0;
-
-        //Loop through the other creatures
-        for(int i = 0; i < otherCreatures.Length; i++) {
-            //Make sure it isn't computing with itself
-            if(otherCreatures[i] != gameObject) {
-                //Make sure it is within the seperation range
-                if(Vector3.Distance(transform.position, otherCreatures[i].transform.position) <= seperationDistance) {
-                    //Add on the distacne from the agent
-                    velocity += otherCreatures[i].transform.position - transform.position;
-                    //Increase neighbour count
-                    neighbourCount++;
-                }
-            }
-        }
-
-        //If there were not any neighbours then return zero
-        if(neighbourCount == 0) {
-            return Vector3.zero;
-        }
-
-        //Get the velocity based off of the center of mass
-        velocity /= neighbourCount;
-
-        //Negate the vector to make sure the agent steers away
-        velocity *= -1;
-
-        //Normalize and return
-        velocity.Normalize();
-        return velocity;
-    }
-
-    /// <summary>
-    /// Computes the flocking behaviours bassed off of the three steering algs and returns the steering force
-    /// </summary>
-    /// <param name="otherCreatures">Array of other creatures</param>
-    /// <returns></returns>
-    protected Vector3 computeFlocking(GameObject[] otherCreatures) {
-        //Get the three steering behaviours
-        Vector3 allignment  = computeAllignment(otherCreatures);
-        Vector3 cohesion    = computeCohesion(otherCreatures);
-        Vector3 seperation  = computeSeperation(otherCreatures);
-
-        //Set the desired velocity
-        desiredVelocity = calculateSpeed(allignment * allignmentWeight + cohesion * cohesiontWeight + seperation * seperationWeight);
-
-        //Return the steering force
-        return desiredVelocity - velocity;
     }
 
     /// <summary>
     /// Increments the steering vector for the agent to use
     /// </summary>
     /// <param name="steeringVector">New steering force</param>
-    protected void addSteeringForce(Vector3 steeringVector) {
+    public void addSteeringForce(Vector3 steeringVector) {
         steering += steeringVector;
     }
 
@@ -410,7 +353,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <param name="vec">Vector to calculate from</param>
     /// <returns></returns>
-    private Vector3 calculateSpeed(Vector3 vec) {
+    public Vector3 calculateSpeed(Vector3 vec) {
         return vec.normalized * currentSpeed * Time.deltaTime;
     }
 

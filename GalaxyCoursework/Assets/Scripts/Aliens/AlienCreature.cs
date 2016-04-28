@@ -73,6 +73,7 @@ public class AlienCreature : AlienAI {
 
         //Set the stat values
         health = 100;
+        maxHealth = health;
         intelligenceModifier = 40;
         strengthModifier = 20;
         speedModifier = 5;
@@ -137,6 +138,24 @@ public class AlienCreature : AlienAI {
         targetDetectCollider = GetComponent<SphereCollider>();
         targetDetectCollider.radius = 30;
         targetDetectCollider.isTrigger = true;
+    }
+
+    /// <summary>
+    /// Called when an object enters the collider
+    /// </summary>
+    /// <param name="other"></param>
+    public void OnTriggerEnter(Collider other) {
+        if(other.gameObject != gameObject) {
+            StartCoroutine(checkIfTarget(other.gameObject));
+        }
+    }
+
+    /// <summary>
+    /// Called when an object leaves the collider
+    /// </summary>
+    /// <param name="other"></param>
+    public void OnTriggerExit(Collider other) {
+        nearTargets.Remove(other.GetComponent<AlienCreature>());
     }
 
     /// <summary>
@@ -250,23 +269,7 @@ public class AlienCreature : AlienAI {
         }
     }
 
-    /// <summary>
-    /// Called when an object enters the collider
-    /// </summary>
-    /// <param name="other"></param>
-    public void OnTriggerEnter(Collider other) {
-        if(other.gameObject != gameObject) {
-            StartCoroutine(checkIfTarget(other.gameObject));
-        }
-    }
-
-    /// <summary>
-    /// Called when an object leaves the collider
-    /// </summary>
-    /// <param name="other"></param>
-    public void OnTriggerExit(Collider other) {
-        nearTargets.Remove(other.GetComponent<AlienCreature>());
-    }
+    
 
     /// <summary>
     /// Returns this creatures intelligence modifier
@@ -353,27 +356,6 @@ public class AlienCreature : AlienAI {
         creature.receiveDamage(damage);
         yield return new WaitForSeconds(1.5f); //random value for now
         canAttack = true;
-    }
-
-    /// <summary>
-    /// Called to check if the target can be added to the list.
-    /// Needs to be an enumerator because of how reproduction works
-    /// </summary>
-    /// <param name="potentialTarget">Game object to check</param>
-    /// <returns></returns>
-    private IEnumerator checkIfTarget(GameObject potentialTarget) {
-        //Wait one frame to avoid the reproduction bug
-        yield return null;
-
-        //Check the target
-        if(potentialTarget != null && potentialTarget.GetComponent<AlienCreature>() != null) {
-            AlienCreature targetScript = potentialTarget.GetComponent<AlienCreature>();
-            if(!string.Equals(targetScript.getSpecies(), getSpecies())) {
-                if(!nearTargets.Contains(targetScript)) {
-                    nearTargets.Add(targetScript);
-                }
-            }
-        }
     }
 
     /// <summary>
@@ -522,6 +504,28 @@ public class AlienCreature : AlienAI {
         // Return char and concat substring.
         return char.ToUpper(s[0]) + s.Substring(1);
     }
+
+    /// <summary>
+    /// Called to check if the target can be added to the list.
+    /// Needs to be an enumerator because of how reproduction works
+    /// </summary>
+    /// <param name="potentialTarget">Game object to check</param>
+    /// <returns></returns>
+    private IEnumerator checkIfTarget(GameObject potentialTarget) {
+        //Wait one frame to avoid the reproduction bug
+        yield return null;
+
+        //Check the target
+        if(potentialTarget != null && potentialTarget.GetComponent<AlienCreature>() != null) {
+            AlienCreature targetScript = potentialTarget.GetComponent<AlienCreature>();
+            if(!string.Equals(targetScript.getSpecies(), getSpecies())) {
+                if(!nearTargets.Contains(targetScript)) {
+                    nearTargets.Add(targetScript);
+                }
+            }
+        }
+    }
+
 
     //REPLACE WITH BETTER FUNCTIONALITY (CreatureSpawner.cs)
     public bool isSpawned() {
