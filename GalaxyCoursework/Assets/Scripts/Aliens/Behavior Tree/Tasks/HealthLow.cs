@@ -2,6 +2,9 @@
 using System.Collections;
 using System;
 
+/*
+ * The task to check if this agent's health is low
+ */
 public class HealthLow : Task {
     //Reference to the agent using this behavior
     protected AlienAI agentRef;

@@ -2,6 +2,9 @@
 using System.Collections;
 using System;
 
+/*
+ * The task to check if an enemy is target this agent
+ */
 public class EnemyTargetingSelf : Task {
     //Reference to the agent using this behavior
     protected AlienAI agentRef;
