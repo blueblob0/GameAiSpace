@@ -36,7 +36,7 @@ public class Flock : Task {
                 //Make sure it is within the allignment range
                 if(Vector3.Distance(agentRef.transform.position, otherCreatures[i].transform.position) <= agentRef.getAllignmentDistance()) {
                     //Add on the agent's velocity 
-                    velocity += otherCreatures[i].GetComponent<AlienAI>().getvelocity();
+                    velocity += otherCreatures[i].GetComponent<AlienAI>().getVelocity();
                     //Increase neighbour count
                     neighbourCount++;
                 }
@@ -151,6 +151,6 @@ public class Flock : Task {
         agentRef.setDesiredVelocity(agentRef.calculateSpeed(allignment * agentRef.getAllignmentWeight() + cohesion * agentRef.getCohesionWeight() + seperation * agentRef.getSeperationWeight()));
 
         //Return the steering force
-        return agentRef.getDesiredVelocity() - agentRef.getvelocity();
+        return agentRef.getDesiredVelocity() - agentRef.getVelocity();
     }
 }

@@ -31,7 +31,7 @@ public class Wander : Task {
     /// <returns>The wander (steering) force</returns>
     protected Vector3 wander(float circleDistance = 6.0f, float circleRadius = 5.0f) {
         //Create the 'circle' for a wander position to be in
-        Vector3 circleCenter = agentRef.getvelocity().normalized;
+        Vector3 circleCenter = agentRef.getVelocity().normalized;
         circleCenter *= circleDistance;
 
         //Init the displacement force (direction to wander to)
@@ -46,6 +46,6 @@ public class Wander : Task {
         agentRef.setDesiredVelocity(agentRef.calculateSpeed(circleCenter + displacement));
 
         //Return the new force
-        return agentRef.getDesiredVelocity() - agentRef.getvelocity();
+        return agentRef.getDesiredVelocity() - agentRef.getVelocity();
     }
 }

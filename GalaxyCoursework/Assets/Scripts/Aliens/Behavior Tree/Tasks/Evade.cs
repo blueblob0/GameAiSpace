@@ -28,7 +28,7 @@ public class Evade : Task {
         //Set the diesried velocity to the away from the target
         agentRef.setDesiredVelocity(agentRef.calculateSpeed(agentRef.transform.position - targetWorldPos));
         //Return the steering force of the desired velocity
-        return agentRef.getDesiredVelocity() - agentRef.getvelocity();
+        return agentRef.getDesiredVelocity() - agentRef.getVelocity();
     }
 
     /// <summary>
@@ -40,7 +40,7 @@ public class Evade : Task {
         //How far ahead (as time) to to evade the target
         float t = Vector3.Distance(target.transform.position, agentRef.transform.position) / (agentRef.currentSpeed * Time.deltaTime);
         //Get the future position of the agent
-        Vector3 futurePosition = target.transform.position + (target.getvelocity() * t);
+        Vector3 futurePosition = target.transform.position + (target.getVelocity() * t);
         //Return the flee steering of the future position
         return flee(futurePosition);
     }
