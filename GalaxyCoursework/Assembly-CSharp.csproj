@@ -52,7 +52,6 @@
      <Compile Include="Assets\Scripts\Aliens\AssertiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\CreatureSpawner.cs" />
      <Compile Include="Assets\Scripts\Aliens\PassiveAlien.cs" />
-     <Compile Include="Assets\Scripts\Aliens\State Machine\FSM.cs" />
      <Compile Include="Assets\Scripts\BlackHole.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
