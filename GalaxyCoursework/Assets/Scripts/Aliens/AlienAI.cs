@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /*
  * This class basically holds all the steering algs for the creatures
@@ -7,15 +8,41 @@ using System.Collections;
  * THIS WILL BE CHANGED TO INCOPERATE THE BEHAVIOR TREE
  */
 
+[RequireComponent(typeof(SphereCollider))]
+[RequireComponent(typeof(Rigidbody))]
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
-    public float acceleration = 0.1f;   //How quickly the speed changes
-    public float currentSpeed = 5;     //How far the agent is current moving
+    public float acceleration = 0.1f;  //How quickly the speed changes
+    public float currentSpeed = 5;     //How fast the agent is current moving
     public float maxSpeed = 10;        //The fastest this agent can go
     public float mass = 20;            //How heavy the agent is (this makes the steering more smooth)
 
-    private float targetSpeed;         //The speed the agent wants to go
+    //List of potential targets
+    protected List<AlienCreature> nearTargets = new List<AlienCreature>();
+    //The agents current target
+    protected AlienCreature target;
+    //The collider reference
+    protected SphereCollider targetDetectCollider;
+
+    //List of other creatures
+    protected List<GameObject> otherCreatures = new List<GameObject>();
+
+    //How much damage the agent can take before dying
+    protected float health;
+    //The accuracy of wether to flee or engage
+    protected float intelligenceModifier;  //Will increase per head
+    //How much damage the agent deals
+    protected float strengthModifier;      //Will increase per arm
+    //How fast the agent moves
+    protected float speedModifier;         //Will increase per leg
+    //Likley hood of avoid damage
+    protected float dodgeModifier;         //Will increase per wing
+
+    //If the agent can attack
+    protected bool canAttack;
+    //The speed the agent wants to go
+    private float targetSpeed;         
 
     //How much each steering behaviour will affect the total flocking steering
     private float allignmentWeight;

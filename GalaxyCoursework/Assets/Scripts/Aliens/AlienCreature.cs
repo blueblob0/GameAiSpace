@@ -13,8 +13,7 @@ using System.Collections.Generic;
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
 
-[RequireComponent(typeof(SphereCollider))]
-[RequireComponent(typeof(Rigidbody))]
+
 public class AlienCreature : AlienAI {
 
     //Set in inspector
@@ -23,30 +22,6 @@ public class AlienCreature : AlienAI {
     public GameObject[] armPrefabs;
     public GameObject[] legPrefabs;
     public GameObject[] wingPrefabs;
-
-    //List of potential targets
-    protected List<AlienCreature> nearTargets = new List<AlienCreature>();
-    //The agents current target
-    protected AlienCreature target;
-    //The collider reference
-    private SphereCollider targetDetectCollider;
-
-    //List of other creatures
-    private List<GameObject> otherCreatures = new List<GameObject>();
-
-    //How much damage the agent can take before dying
-    private float health;
-    //The accuracy of wether to flee or engage
-    private float intelligenceModifier;  //Will increase per head
-    //How much damage the agent deals
-    private float strengthModifier;      //Will increase per arm
-    //How fast the agent moves
-    private float speedModifier;         //Will increase per leg
-    //Likley hood of avoid damage
-    private float dodgeModifier;         //Will increase per wing
-
-    //If the agent can attack
-    private bool canAttack;
 
     //The species of creature
     private string creatureSpecies = "NO_SPECIES";
