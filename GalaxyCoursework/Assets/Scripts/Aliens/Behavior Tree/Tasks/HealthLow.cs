@@ -15,6 +15,6 @@ public class HealthLow : Task {
 
     public bool activate() {
         //True if health is below 30%
-        return agentRef.getHealth() <= agentRef.getHealth() * 0.3;
+        return agentRef.getHealth() <= agentRef.getMaxHealth() * 0.3;
     }
 }
