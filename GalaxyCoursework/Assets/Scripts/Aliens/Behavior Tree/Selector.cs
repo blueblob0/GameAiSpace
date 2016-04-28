@@ -7,8 +7,16 @@ using System.Collections.Generic;
  * Selector for the behavior tree
  */
 public class Selector : Task {
+    //Reference to the agent using this behavior
+    protected AlienAI agentRef;
+
     //The children this sequencer activates
     private List<Task> children;
+
+    //constructor
+    public Selector(AlienAI agent) {
+        agentRef = agent;
+    }
 
     public bool activate() {
         //Loop through each child node and activate them
