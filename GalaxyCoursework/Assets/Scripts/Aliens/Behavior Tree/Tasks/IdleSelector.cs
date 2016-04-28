@@ -7,8 +7,8 @@ using System.Collections;
 public class IdleSelector : Selector {
 
     //The tasks for this behavior
-    FlockSequence flock;
-    Wander wander;
+    private FlockSequence flock;
+    private Wander wander;
 
     public IdleSelector(AlienAI agent) : base(agent) {
         //Construct tasks

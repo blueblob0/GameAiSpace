@@ -7,8 +7,8 @@ using System.Collections;
 public class FlockSequence : Sequence {
 
     //The tasks that make this sequence
-    AlliesNear near;
-    Flock flock;
+    private AlliesNear near;
+    private Flock flock;
 
     //constructor
     public FlockSequence(AlienAI agent) : base(agent) {
