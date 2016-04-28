@@ -3,6 +3,8 @@ using System.Collections;
 
 /*
  * This class basically holds all the steering algs for the creatures
+ *
+ * THIS WILL BE CHANGED TO INCOPERATE THE BEHAVIOR TREE
  */
 
 public class AlienAI : MonoBehaviour {
