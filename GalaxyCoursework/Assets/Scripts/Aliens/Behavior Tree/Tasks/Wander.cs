@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System;
 
 /*
  * The task to make agents wander
@@ -20,7 +19,8 @@ public class Wander : Task {
     private float wanderAngle;
 
     public bool activate() {
-        throw new NotImplementedException();
+        agentRef.addSteeringForce(wander());
+        return true;
     }
 
     /// <summary>
