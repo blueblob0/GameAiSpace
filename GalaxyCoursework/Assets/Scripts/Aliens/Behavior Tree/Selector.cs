@@ -15,7 +15,10 @@ public class Selector : Task {
 
     //constructor
     public Selector(AlienAI agent) {
+        //Set the agent
         agentRef = agent;
+        //Initialize the list
+        children = new List<Task>();
     }
 
     public bool activate() {

@@ -15,7 +15,10 @@ public class Sequence : Task {
 
     //constructor
     public Sequence(AlienAI agent) {
+        //Set the agent
         agentRef = agent;
+        //Initialize the list
+        children = new List<Task>();
     }
 
     public bool activate() {
