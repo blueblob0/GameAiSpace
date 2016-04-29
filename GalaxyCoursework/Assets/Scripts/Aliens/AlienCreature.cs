@@ -449,7 +449,9 @@ public class AlienCreature : AlienAI {
         addCreature(spawn);
         //Make the other creatures aware of this new creature
         foreach(GameObject creature in otherCreatures) {
-            creature.GetComponent<AlienCreature>().addCreature(spawn);
+            if(creature != null) {
+                creature.GetComponent<AlienCreature>().addCreature(spawn);
+            }
         }
     }
     
