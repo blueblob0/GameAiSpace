@@ -14,7 +14,7 @@ public class Pursue : Task {
 
     public bool activate() {
         //Pursue the target
-        pursueSteering(agentRef.getTarget());
+        agentRef.addSteeringForce(pursueSteering(agentRef.getTarget()));
         return true;
     }
 
