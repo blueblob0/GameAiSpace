@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*
- * This class basically holds all the steering algs for the creatures
- *
- * THIS WILL BE CHANGED TO INCOPERATE THE BEHAVIOR TREE
+ * This class is used to control the behavior tree for each agent
  */
 
 [RequireComponent(typeof(SphereCollider))]
@@ -316,19 +314,6 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
-    /// Applies the damage to the target
-    /// </summary>
-    /// <param name="creature"></param>
-    /// <returns></returns>
-    private IEnumerator applyDamage(AlienAI creature) {
-        canAttack = false;
-        float damage = (5 + strengthModifier) / 3;
-        creature.receiveDamage(damage);
-        yield return new WaitForSeconds(1.5f); //random value for now
-        canAttack = true;
-    }
-
-    /// <summary>
     /// Sets the target speed
     /// </summary>
     /// <param name="value">Target speed</param>
@@ -344,36 +329,11 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
-    /// Changes the maximum speed to the amount
-    /// </summary>
-    /// <param name="amount"></param>
-    protected void changeMaxSpeed(float amount) {
-        maxSpeed = amount;
-    }
-
-    /// <summary>
-    /// Returns the maximum speed
-    /// </summary>
-    /// <returns></returns>
-    protected float getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    /// <summary>
     /// Increments the steering vector for the agent to use
     /// </summary>
     /// <param name="steeringVector">New steering force</param>
     public void addSteeringForce(Vector3 steeringVector) {
         steering += steeringVector;
-    }
-
-    /// <summary>
-    /// Makes the agent stop
-    /// </summary>
-    protected void stopMovement() {
-        desiredVelocity = Vector3.zero;
-        steering = Vector3.zero;
-        targetSpeed = 0;
     }
 
     /// <summary>
@@ -383,6 +343,27 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     public Vector3 calculateSpeed(Vector3 vec) {
         return vec.normalized * currentSpeed * Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Changes the maximum speed to the amount
+    /// </summary>
+    /// <param name="amount"></param>
+    protected void changeMaxSpeed(float amount) {
+        maxSpeed = amount;
+    }
+
+    /// <summary>
+    /// Applies the damage to the target
+    /// </summary>
+    /// <param name="creature"></param>
+    /// <returns></returns>
+    private IEnumerator applyDamage(AlienAI creature) {
+        canAttack = false;
+        float damage = (5 + strengthModifier) / 3;
+        creature.receiveDamage(damage);
+        yield return new WaitForSeconds(1.5f); //random value for now
+        canAttack = true;
     }
 
     /// <summary>

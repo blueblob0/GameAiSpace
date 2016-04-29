@@ -6,9 +6,6 @@ using System.Collections.Generic;
  * of the alien creatures that will spawn, all the random spawning variables
  * like arms, legs, heads will happen here too
  *
- * Although the AI is handled in a different class the interaction between other creatures will happen here
- * i.e. finding a target, following a group ect.
- *
  * Each alien will have a unique set of arms/legs/heads (set in inspector) but will always spawn
  * between 1 & 10 for example, then these creatures can be 'copied' to populate a planet
  */
@@ -140,6 +137,8 @@ public class AlienCreature : AlienAI {
         targetDetectCollider.isTrigger = true;
     }
 
+    //Had to put these 2 functions here to make it easier to check for species
+
     /// <summary>
     /// Called when an object enters the collider
     /// </summary>
@@ -232,7 +231,7 @@ public class AlienCreature : AlienAI {
         speedModifier = creature.getSpeedModifier();
         dodgeModifier = creature.getDdogeChance();
         //Increase the max speed
-        changeMaxSpeed(getMaxSpeed() + speedModifier);
+        changeMaxSpeed(getMaximumSpeed() + speedModifier);
     }
 
     /// <summary>
@@ -268,8 +267,6 @@ public class AlienCreature : AlienAI {
             otherCreatures.Add(newCreature);
         }
     }
-
-    
 
     /// <summary>
     /// Returns this creatures intelligence modifier
@@ -394,7 +391,7 @@ public class AlienCreature : AlienAI {
             //Increase speed based off of the leg count (for the reproducted aliens)
             speedModifier += maxLegs;
             //Increase the max speed
-            changeMaxSpeed(getMaxSpeed() + speedModifier);
+            changeMaxSpeed(getMaximumSpeed() + speedModifier);
 
             //Get the wing to use
             GameObject wingToUse = wingPrefabs[Random.Range(0, wingPrefabs.Length)];
