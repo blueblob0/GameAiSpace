@@ -32,7 +32,7 @@ public class Flock : Task {
         //Loop through the other creatures
         for(int i = 0; i < otherCreatures.Length; i++) {
             //Make sure it isn't computing with itself
-            if(otherCreatures[i] != agentRef.gameObject) {
+            if(otherCreatures[i] != null && otherCreatures[i] != agentRef.gameObject) {
                 //Make sure it is within the allignment range
                 if(Vector3.Distance(agentRef.transform.position, otherCreatures[i].transform.position) <= agentRef.getAllignmentDistance()) {
                     //Add on the agent's velocity 
@@ -70,7 +70,7 @@ public class Flock : Task {
         //Loop through the other creatures
         for(int i = 0; i < otherCreatures.Length; i++) {
             //Make sure it isn't computing with itself
-            if(otherCreatures[i] != agentRef.gameObject) {
+            if(otherCreatures[i] != null && otherCreatures[i] != agentRef.gameObject) {
                 //Make sure it is within the cohesion range
                 if(Vector3.Distance(agentRef.transform.position, otherCreatures[i].transform.position) > agentRef.getCohesionDistance()) {
                     //Add on the agent's position
@@ -109,7 +109,7 @@ public class Flock : Task {
         //Loop through the other creatures
         for(int i = 0; i < otherCreatures.Length; i++) {
             //Make sure it isn't computing with itself
-            if(otherCreatures[i] != agentRef.gameObject) {
+            if(otherCreatures[i] != null && otherCreatures[i] != agentRef.gameObject) {
                 //Make sure it is within the seperation range
                 if(Vector3.Distance(agentRef.transform.position, otherCreatures[i].transform.position) <= agentRef.getSeperationDistance()) {
                     //Add on the distacne from the agent
