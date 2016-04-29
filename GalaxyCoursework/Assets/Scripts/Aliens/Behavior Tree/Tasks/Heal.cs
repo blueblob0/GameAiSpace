@@ -4,7 +4,7 @@ using System.Collections;
 /*
  * The task to replish health
  */
-public class Heal : MonoBehaviour {
+public class Heal : Task {
     //Reference to the agent using this behavior
     protected AlienAI agentRef;
     //constructor
