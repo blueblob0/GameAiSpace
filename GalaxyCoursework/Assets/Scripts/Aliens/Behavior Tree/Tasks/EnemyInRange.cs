@@ -2,6 +2,9 @@
 using System.Collections;
 using System;
 
+/*
+ * Task to check if an enemy is in range
+ */
 public class EnemyInRange : Task {
     //Reference to the agent using this behavior
     protected AlienAI agentRef;
