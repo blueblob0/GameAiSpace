@@ -68,16 +68,6 @@ public class AlienCreature : AlienAI {
     public override void Start() {
         base.Start();
 
-        //Set the stat values
-        health = 100;
-        maxHealth = health;
-        intelligenceModifier = 40;
-        strengthModifier = 20;
-        speedModifier = 5;
-        dodgeModifier = 20;
-
-        canAttack = true;
-
         //Get some random reproduction values
         reproductionChance = Random.Range(25, 71);
         reproductionTimer = Random.Range(30, 150);

@@ -83,6 +83,16 @@ public class AlienAI : MonoBehaviour {
         mainSelector.addChild(fight);
         mainSelector.addChild(idle);
 
+        //Set the stat values
+        health = 100;
+        maxHealth = health;
+        intelligenceModifier = 40;
+        strengthModifier = 20;
+        speedModifier = 5;
+        dodgeModifier = 20;
+
+        canAttack = true;
+
         //Init the velocity vectors
         velocity = transform.forward * currentSpeed * Time.deltaTime;
         steering = Vector3.zero;
