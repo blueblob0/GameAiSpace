@@ -114,15 +114,15 @@ public class AlienAI : MonoBehaviour {
         //--------------------------
 
         //Adjust the weights on the flocking
-        //if(weightChangePass >= weightChangeWait) {
-        //    weightChangePass = 0;
-        //    weightChangeWait = Random.Range(3, 10);
+        if(weightChangePass >= weightChangeWait) {
+            weightChangePass = 0;
+            weightChangeWait = Random.Range(3, 10);
 
-        //    allignmentWeight = Random.value;
-        //    cohesiontWeight = Random.value;
-        //    seperationWeight = Random.value;
-        //}
-        //weightChangePass += Time.deltaTime;
+            allignmentWeight = Random.value;
+            cohesionWeight = Random.value;
+            seperationWeight = Random.value;
+        }
+        weightChangePass += Time.deltaTime;
 
         //Activate the selector
         mainSelector.activate();
@@ -200,6 +200,14 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     public float getCurrentSpeed() {
         return currentSpeed;
+    }
+
+    /// <summary>
+    /// Returns the maximum speed this agent can go
+    /// </summary>
+    /// <returns></returns>
+    public float getMaximumSpeed() {
+        return maxSpeed;
     }
 
     /// <summary>
@@ -324,7 +332,7 @@ public class AlienAI : MonoBehaviour {
     /// Sets the target speed
     /// </summary>
     /// <param name="value">Target speed</param>
-    protected void setTargetSpeed(float value) {
+    public void setTargetSpeed(float value) {
         //Make sure the target speed is never an impossible value
         if(value > maxSpeed) {
             targetSpeed = maxSpeed;
