@@ -4,7 +4,7 @@ using System.Collections;
 /*
  * The task to get a target for the agent
  */
-public class GetTarget : MonoBehaviour {
+public class GetTarget : Task {
     //Reference to the agent using this behavior
     protected AlienAI agentRef;
     //constructor
