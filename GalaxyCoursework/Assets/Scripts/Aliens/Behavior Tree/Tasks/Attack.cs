@@ -13,6 +13,8 @@ public class Attack : Task {
     }
 
     public bool activate() {
+        //Stop movement
+        agentRef.setTargetSpeed(0);
         //Damage the creature then return
         agentRef.damageCreature(agentRef.getTarget());
         return true;
