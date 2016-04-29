@@ -134,6 +134,10 @@ public class AlienAI : MonoBehaviour {
         displayDebugLines();
         //--------------------------
 
+        //Make sure to remove 'dead' creatures from the list
+        otherCreatures.Remove(null);
+        nearTargets.Remove(null);
+
         //Adjust the weights on the flocking
         if(weightChangePass >= weightChangeWait) {
             weightChangePass = 0;
@@ -183,10 +187,6 @@ public class AlienAI : MonoBehaviour {
             energy = 0;
             changeMaxSpeed(3);
         }
-
-        //Make sure to remove 'dead' creatures from the list
-        otherCreatures.Remove(null);
-        nearTargets.Remove(null);
     }
 
     /// <summary>
