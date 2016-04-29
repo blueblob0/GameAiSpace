@@ -23,7 +23,7 @@ public class Flock : Task {
     /// </summary>
     /// <param name="otherCreatures">Array of other creatures</param>
     /// <returns></returns>
-    protected Vector3 computeAllignment(GameObject[] otherCreatures) {
+    private Vector3 computeAllignment(GameObject[] otherCreatures) {
         //Init the return value
         Vector3 velocity = Vector3.zero;
         //Keep track of the neighbours
@@ -61,7 +61,7 @@ public class Flock : Task {
     /// </summary>
     /// <param name="otherCreatures">Array of other creatures</param>
     /// <returns></returns>
-    protected Vector3 computeCohesion(GameObject[] otherCreatures) {
+    private Vector3 computeCohesion(GameObject[] otherCreatures) {
         //Init the return value
         Vector3 velocity = Vector3.zero;
         //Keep track of the neighbours
@@ -100,7 +100,7 @@ public class Flock : Task {
     /// </summary>
     /// <param name="otherCreatures">Array of other creatures</param>
     /// <returns></returns>
-    protected Vector3 computeSeperation(GameObject[] otherCreatures) {
+    private Vector3 computeSeperation(GameObject[] otherCreatures) {
         //Init the return value
         Vector3 velocity = Vector3.zero;
         //Keep track of the neighbours
@@ -141,7 +141,7 @@ public class Flock : Task {
     /// </summary>
     /// <param name="otherCreatures">Array of other creatures</param>
     /// <returns></returns>
-    protected Vector3 computeFlocking(GameObject[] otherCreatures) {
+    private Vector3 computeFlocking(GameObject[] otherCreatures) {
         //Get the three steering behaviours
         Vector3 allignment = computeAllignment(otherCreatures);
         Vector3 cohesion = computeCohesion(otherCreatures);

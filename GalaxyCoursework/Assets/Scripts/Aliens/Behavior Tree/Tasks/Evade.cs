@@ -24,7 +24,7 @@ public class Evade : Task {
     /// </summary>
     /// <param name="targetWorldPos">World position of the target to flee from</param>
     /// <returns>Returns the steering force of the desired direction</returns>
-    protected Vector3 flee(Vector3 targetWorldPos) {
+    private Vector3 flee(Vector3 targetWorldPos) {
         //Set the diesried velocity to the away from the target
         agentRef.setDesiredVelocity(agentRef.calculateSpeed(agentRef.transform.position - targetWorldPos));
         //Return the steering force of the desired velocity
@@ -36,7 +36,7 @@ public class Evade : Task {
     /// </summary>
     /// <param name="target">Target to evade</param>
     /// <returns></returns>
-    protected Vector3 evade(AlienAI target) {
+    private Vector3 evade(AlienAI target) {
         //How far ahead (as time) to to evade the target
         float t = Vector3.Distance(target.transform.position, agentRef.transform.position) / (agentRef.currentSpeed * Time.deltaTime);
         //Get the future position of the agent

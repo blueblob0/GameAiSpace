@@ -29,7 +29,7 @@ public class Wander : Task {
     /// <param name="circleDistance">How far forward to set the wander pos</param>
     /// <param name="circleRadius">How big the displacement vector can be</param>
     /// <returns>The wander (steering) force</returns>
-    protected Vector3 wander(float circleDistance = 6.0f, float circleRadius = 5.0f) {
+    private Vector3 wander(float circleDistance = 6.0f, float circleRadius = 5.0f) {
         //Create the 'circle' for a wander position to be in
         Vector3 circleCenter = agentRef.getVelocity().normalized;
         circleCenter *= circleDistance;
