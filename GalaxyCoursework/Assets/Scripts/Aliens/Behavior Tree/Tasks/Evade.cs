@@ -14,6 +14,8 @@ public class Evade : Task {
     }
 
     public bool activate() {
+        //Move as fast as possible
+        agentRef.setTargetSpeed(agentRef.getMaximumSpeed());
         //Evade target
         agentRef.addSteeringForce(evade(agentRef.getTarget()));
         return true;

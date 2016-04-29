@@ -13,6 +13,8 @@ public class Pursue : Task {
     }
 
     public bool activate() {
+        //Move as fast as possible
+        agentRef.setTargetSpeed(agentRef.getMaximumSpeed());
         //Pursue the target
         agentRef.addSteeringForce(pursueSteering(agentRef.getTarget()));
         return true;
