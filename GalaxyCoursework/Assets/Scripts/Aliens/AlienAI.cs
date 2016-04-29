@@ -13,7 +13,8 @@ public class AlienAI : MonoBehaviour {
     //Set in inspector
     public float acceleration = 0.1f;  //How quickly the speed changes
     public float currentSpeed = 5;     //How fast the agent is current moving
-    public float maxSpeed = 10;        //The fastest this agent can go
+    public float maxSpeed = 10;        //The fastest this agent can currently go
+    public float trueMaxSpeed = 10;    //the fastest possible speed this agent can go at any time
     public float mass = 20;            //How heavy the agent is (this makes the steering more smooth)
 
     //List of potential targets
@@ -41,7 +42,13 @@ public class AlienAI : MonoBehaviour {
     //If the agent can attack
     protected bool canAttack;
     //The speed the agent wants to go
-    private float targetSpeed;         
+    private float targetSpeed;
+
+    //Running fast will drain the energy
+    private float energy;
+    private float maxEnergy;
+    //At what speed to drain energy
+    private float energyThreshold;         
 
     //How much each steering behaviour will affect the total flocking steering
     private float allignmentWeight;
@@ -90,6 +97,9 @@ public class AlienAI : MonoBehaviour {
         strengthModifier = 20;
         speedModifier = 5;
         dodgeModifier = 20;
+        energy = 100;
+        maxEnergy = energy;
+        energyThreshold = 5;
 
         canAttack = true;
 
@@ -160,6 +170,20 @@ public class AlienAI : MonoBehaviour {
         if(targetSpeed <= 0 && currentSpeed <= 0.1f) {
             currentSpeed = 0;
         }
+
+        //Check to drain energy
+        if(currentSpeed > energyThreshold && energy > 0) {
+            energy -= 0.1f;
+        }
+        //When the energy runs out make sure to limit the speed
+        if(energy < 0) {
+            energy = 0;
+            changeMaxSpeed(3);
+        }
+
+        //Make sure to remove 'dead' creatures from the list
+        otherCreatures.Remove(null);
+        nearTargets.Remove(null);
     }
 
     /// <summary>
@@ -358,9 +382,13 @@ public class AlienAI : MonoBehaviour {
     /// <summary>
     /// Changes the maximum speed to the amount
     /// </summary>
-    /// <param name="amount"></param>
-    protected void changeMaxSpeed(float amount) {
+    /// <param name="amount">How much to change by</param>
+    /// <param name="setTrueMax">Whether or not to change the true max speed</param>
+    protected void changeMaxSpeed(float amount, bool setTrueMax = false) {
         maxSpeed = amount;
+        if(setTrueMax) {
+            trueMaxSpeed = amount;
+        }
     }
 
     /// <summary>
