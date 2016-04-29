@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/*
+ * Sequence to pursue targets
+ */
 public class PursueSequence : Sequence {
     //Tasks for this sequence
     private HaveTarget haveTarget;
