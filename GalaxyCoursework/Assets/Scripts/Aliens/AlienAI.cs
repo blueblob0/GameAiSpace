@@ -72,6 +72,7 @@ public class AlienAI : MonoBehaviour {
     private Selector mainSelector;
     //Tasks for the main selector
     private EscapeSequence escape;
+    private RecoupSelector recoup;
     private FightSelector fight;
     private IdleSelector idle;
 
@@ -82,11 +83,13 @@ public class AlienAI : MonoBehaviour {
 
         //Construct the tasks
         escape = new EscapeSequence(this);
+        recoup = new RecoupSelector(this);
         fight = new FightSelector(this);
         idle = new IdleSelector(this);
 
         //Add nodes in order of importance
         mainSelector.addChild(escape);
+        mainSelector.addChild(recoup);
         mainSelector.addChild(fight);
         mainSelector.addChild(idle);
 
@@ -238,6 +241,14 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     public float getEnergy() {
         return energy;
+    }
+
+    /// <summary>
+    /// Returns the maximum energy
+    /// </summary>
+    /// <returns></returns>
+    public float getMaxEnergy() {
+        return maxEnergy;
     }
 
     /// <summary>
