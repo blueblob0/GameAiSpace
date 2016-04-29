@@ -219,6 +219,42 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Increases the health of this agent
+    /// </summary>
+    /// <param name="amount"></param>
+    public void increaseHealth(float amount) {
+        if(health < maxHealth) {
+            if(health + amount > maxHealth) {
+                health = maxHealth;
+            } else {
+                health += amount;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns the current energy of this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getEnergy() {
+        return energy;
+    }
+
+    /// <summary>
+    /// Increases the agents energy by the amount
+    /// </summary>
+    /// <param name="amount"></param>
+    public void increaseEnergy(float amount) {
+        if(energy < maxEnergy) {
+            if(energy + amount > maxEnergy) {
+                energy = maxEnergy;
+            } else {
+                energy += amount;
+            }
+        }
+    }
+
+    /// <summary>
     /// Returns the maximum health of this agent
     /// </summary>
     /// <returns></returns>
