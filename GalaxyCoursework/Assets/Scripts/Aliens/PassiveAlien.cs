@@ -13,7 +13,7 @@ public class PassiveAlien : AlienCreature {
 	public override void Start () {
         base.Start();
 
-        stopMovement();
+        //stopMovement();
 	}
 	
 	// Update is called once per frame
