@@ -67,7 +67,7 @@ public class AlienAI : MonoBehaviour {
     private Selector mainSelector;
     //Tasks for the main selector
     private EscapeSequence escape;
-    //fight
+    private FightSelector fight;
     private IdleSelector idle;
 
     // Use this for initialization
@@ -77,12 +77,12 @@ public class AlienAI : MonoBehaviour {
 
         //Construct the tasks
         escape = new EscapeSequence(this);
-        //fight
+        fight = new FightSelector(this);
         idle = new IdleSelector(this);
 
         //Add nodes in order of importance
         mainSelector.addChild(escape);
-        //add fight
+        mainSelector.addChild(fight);
         mainSelector.addChild(idle);
 
         //Init the velocity vectors
