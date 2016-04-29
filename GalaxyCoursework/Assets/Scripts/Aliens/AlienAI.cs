@@ -21,7 +21,7 @@ public class AlienAI : MonoBehaviour {
     //List of potential targets
     protected List<AlienCreature> nearTargets = new List<AlienCreature>();
     //The agents current target
-    protected AlienCreature target;
+    protected AlienAI target;
     //The collider reference
     protected SphereCollider targetDetectCollider;
 
@@ -193,6 +193,14 @@ public class AlienAI : MonoBehaviour {
     public float getMaxHealth() {
         return maxHealth;
     }
+    
+    /// <summary>
+    /// Returns the current speed of this agent
+    /// </summary>
+    /// <returns></returns>
+    public float getCurrentSpeed() {
+        return currentSpeed;
+    }
 
     /// <summary>
     /// Returns the near target list
@@ -206,7 +214,7 @@ public class AlienAI : MonoBehaviour {
     /// Returns the target of this agent
     /// </summary>
     /// <returns></returns>
-    public AlienCreature getTarget() {
+    public AlienAI getTarget() {
         return target;
     }
 
@@ -214,7 +222,7 @@ public class AlienAI : MonoBehaviour {
     /// Sets the target of this agent
     /// </summary>
     /// <param name="target">The target to set</param>
-    public void setTarget(AlienCreature target) {
+    public void setTarget(AlienAI target) {
         this.target = target;
     }
 
@@ -275,6 +283,44 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Tries to damage this creature, has a chance to miss bassed off of dodge
+    /// </summary>
+    /// <param name="amount">The incomming damage amount</param>
+    public void receiveDamage(float amount) {
+        float val = Random.value * 100;
+        if(val > dodgeModifier) {
+            if(health - amount > 0) {
+                health -= amount;
+            } else {
+                health = 0;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Helper function to start the corutine to damage creatures
+    /// </summary>
+    /// <param name="creature">The creature to damage</param>
+    public void damageCreature(AlienAI creature) {
+        if(canAttack) {
+            StartCoroutine(applyDamage(creature));
+        }
+    }
+
+    /// <summary>
+    /// Applies the damage to the target
+    /// </summary>
+    /// <param name="creature"></param>
+    /// <returns></returns>
+    private IEnumerator applyDamage(AlienAI creature) {
+        canAttack = false;
+        float damage = (5 + strengthModifier) / 3;
+        creature.receiveDamage(damage);
+        yield return new WaitForSeconds(1.5f); //random value for now
+        canAttack = true;
+    }
+
+    /// <summary>
     /// Sets the target speed
     /// </summary>
     /// <param name="value">Target speed</param>
@@ -303,32 +349,6 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     protected float getMaxSpeed() {
         return maxSpeed;
-    }
-
-    /// <summary>
-    /// Makes the agent seek the target
-    /// </summary>
-    /// <param name="targetWorldPos">The world position of the target to seek</param>
-    /// <returns>Returns the steering force of the desired direction</returns>
-    protected Vector3 seek(Vector3 targetWorldPos) {
-        //Set the diesried velocity to the direction of the target
-        desiredVelocity = calculateSpeed(targetWorldPos - transform.position);
-        //Return the steering force of the desired velocity
-        return desiredVelocity - velocity;
-    }
-
-    /// <summary>
-    /// Returns the steering force for persuing the target
-    /// </summary>
-    /// <param name="target">The agent to seek</param>
-    /// <returns></returns>
-    protected Vector3 persue(AlienAI target) {
-        //How far ahead (as time) to persue the target
-        float t = Vector3.Distance(target.transform.position, transform.position) / (currentSpeed * Time.deltaTime);
-        //Get the future position of the agent
-        Vector3 futurePosition = target.transform.position + (target.getVelocity() * t);
-        //Return the seek steering of the future position
-        return seek(futurePosition);
     }
 
     /// <summary>

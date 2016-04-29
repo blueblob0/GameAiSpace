@@ -304,21 +304,6 @@ public class AlienCreature : AlienAI {
     }
 
     /// <summary>
-    /// Tries to damage this creature, has a chance to miss bassed off of dodge
-    /// </summary>
-    /// <param name="amount">The incomming damage amount</param>
-    public void receiveDamage(float amount) {
-        float val = Random.value * 100;
-        if(val > dodgeModifier) {
-            if(health - amount > 0) {
-                health -= amount;
-            } else {
-                health = 0;
-            }
-        }
-    }
-
-    /// <summary>
     /// Returns a value on if the agent should attack the creature, < 0 and its not recommended > 0 and it is recommended
     /// </summary>
     /// <param name="creature">The target</param>
@@ -333,30 +318,7 @@ public class AlienCreature : AlienAI {
 
         //Return the likleyhood
         return chance;
-    }
-
-    /// <summary>
-    /// Helper function to start the corutine to damage creatures
-    /// </summary>
-    /// <param name="creature">The creature to damage</param>
-    protected void damageCreature(AlienCreature creature) {
-        if(canAttack){
-            StartCoroutine(applyDamage(creature));
-        }
-    }
-
-    /// <summary>
-    /// Applies the damage to the target
-    /// </summary>
-    /// <param name="creature"></param>
-    /// <returns></returns>
-    private IEnumerator applyDamage(AlienCreature creature) {
-        canAttack = false;
-        float damage = (5 + strengthModifier) / 3;
-        creature.receiveDamage(damage);
-        yield return new WaitForSeconds(1.5f); //random value for now
-        canAttack = true;
-    }
+    }  
 
     /// <summary>
     /// Spawns in the creature
