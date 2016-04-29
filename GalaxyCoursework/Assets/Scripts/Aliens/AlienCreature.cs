@@ -221,7 +221,7 @@ public class AlienCreature : AlienAI {
         speedModifier = creature.getSpeedModifier();
         dodgeModifier = creature.getDdogeChance();
         //Increase the max speed
-        changeMaxSpeed(getMaximumSpeed() + speedModifier);
+        changeMaxSpeed(getMaximumSpeed() + speedModifier, true);
     }
 
     /// <summary>
@@ -381,7 +381,7 @@ public class AlienCreature : AlienAI {
             //Increase speed based off of the leg count (for the reproducted aliens)
             speedModifier += maxLegs;
             //Increase the max speed
-            changeMaxSpeed(getMaximumSpeed() + speedModifier);
+            changeMaxSpeed(getMaximumSpeed() + speedModifier, true);
 
             //Get the wing to use
             GameObject wingToUse = wingPrefabs[Random.Range(0, wingPrefabs.Length)];
