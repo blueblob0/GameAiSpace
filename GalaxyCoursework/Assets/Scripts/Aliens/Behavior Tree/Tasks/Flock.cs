@@ -14,6 +14,9 @@ public class Flock : Task {
     }
 
     public bool activate() {
+        //Set the speed
+        agentRef.setTargetSpeed(5);
+        //Flock
         agentRef.addSteeringForce(computeFlocking(agentRef.getOtherCreatures().ToArray()));
         return true;
     }

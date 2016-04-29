@@ -19,6 +19,9 @@ public class Wander : Task {
     private float wanderAngle;
 
     public bool activate() {
+        //Set the speed
+        agentRef.setTargetSpeed(5);
+        //Wander
         agentRef.addSteeringForce(wander());
         return true;
     }
