@@ -121,12 +121,53 @@ public class CreateGalaxy : MonoBehaviour
 
     private void CatogriseStars()
     {
-        /*
+        //types of star: tbd
+        //Neutron Star Over 50 Mass
+        //BlackHole Over 40 Mass
+        //otherwise:
+        //Singe Star 70% 
+        //Twin Star 20%
+        //Ternary star10%
+
+        int[] starCount = new int[5] { 0, 0, 0, 0, 0 };
+
         foreach (Star s in stars)
         {
-            Debug.Log(s.mass);
+            if (s.mass > 50)
+            {
+                starCount[0]++;
+            }
+            else if(s.mass > 40)
+            {
+                starCount[1]++;
+            }
+            else
+            {
+                int holdRand = Random.Range(0,100);
+                if (holdRand < 70)
+                {
+                    starCount[2]++;
+                }
+                else if(holdRand < 90)
+                {
+                    starCount[3]++;
+                }
+                else 
+                {
+                    starCount[4]++;
+                }
+            }
+
+            //Debug.Log(s.mass);
         }
-        */
+
+        for(int i=0;i< starCount.Length; i++)
+        {
+           // Debug.Log("Count "+ i + ": " +starCount[i]);
+
+        }
+
+
 
     }
   
