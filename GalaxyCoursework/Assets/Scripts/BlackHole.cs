@@ -37,7 +37,7 @@ public class BlackHole : CelestialBody
                 //going to try removing count isntead of mass as big stars isntatly remove the black hole 
                 //count--;
 
-                count -= Mathf.CeilToInt(Mathf.Log10(hitColliders[i].GetComponent<CelestialBody>().Mass));
+                count -= Mathf.CeilToInt(Mathf.Log10(hitColliders[i].GetComponent<CelestialBody>().mass));
                
                 Debug.Log(hitColliders[i].name);
                 hitColliders[i].name = CreateGalaxy.removeName;
@@ -72,7 +72,7 @@ public class BlackHole : CelestialBody
         while (count > 0 &&  i < 10000)
         {
             controler.moveStars(transform.position, mass);
-            RemoveStarsInsideBH(); //check for strs insdide and destroy
+            RemoveStarsInsideBH(); //check for stars inside and destroy
             i++;
            // Debug.Log(count);
 
@@ -88,8 +88,7 @@ public class BlackHole : CelestialBody
         if (!controler)
         {
             controler = FindObjectOfType<CreateGalaxy>();
-        }
-        bool first = true;
+        }        
 
         float timehold = Time.time;
         int i = 0;
@@ -145,7 +144,7 @@ public class BlackHole : CelestialBody
         //going to try removing count isntead of mass as big stars isntatly remove the black hole 
         //count--;
 
-        count -= Mathf.CeilToInt(Mathf.Log10(other.GetComponent<CelestialBody>().Mass));
+        count -= Mathf.CeilToInt(Mathf.Log10(other.GetComponent<CelestialBody>().mass));
 
         controler.DestroyStar(other.gameObject);
         

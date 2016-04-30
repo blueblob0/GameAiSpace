@@ -31,6 +31,7 @@ public class Star: CelestialBody
         GeneratePlanets();
     }
    
+
     /// <summary>
     /// Function for making planets this is called by the genration algrithum when the size of the sun is set
     /// </summary>
@@ -150,7 +151,7 @@ public class Star: CelestialBody
             {
                 controler = FindObjectOfType<CreateGalaxy>();
             }
-            int massa = other.GetComponent<Star>().Mass;
+            int massa = other.GetComponent<Star>().mass;
             if (massa <= mass)
             {
                 controler.DestroyStar(other.gameObject);
@@ -181,7 +182,7 @@ public class Star: CelestialBody
             if (hitColliders[i].gameObject != gameObject && hitColliders[i].name != CreateGalaxy.removeName && hitColliders[i].GetComponent<Star>())
             {                
 
-                int massa = hitColliders[i].GetComponent<Star>().Mass;
+                int massa = hitColliders[i].GetComponent<Star>().mass;
                 if (massa <= mass)
                 {
                     hitColliders[i].name = CreateGalaxy.removeName;
