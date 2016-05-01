@@ -72,7 +72,7 @@ public class AlienAI : MonoBehaviour {
     private Selector mainSelector;
     //Tasks for the main selector
     private EscapeSequence escape;
-    private RecoupSelector recoup;
+    private RecoupSequence recoup;
     private FightSelector fight;
     private IdleSelector idle;
 
@@ -83,7 +83,7 @@ public class AlienAI : MonoBehaviour {
 
         //Construct the tasks
         escape = new EscapeSequence(this);
-        recoup = new RecoupSelector(this);
+        recoup = new RecoupSequence(this);
         fight = new FightSelector(this);
         idle = new IdleSelector(this);
 
