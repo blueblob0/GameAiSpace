@@ -10,7 +10,7 @@ public class Planet : Satalite
     public string planetPrefabName = "MoonPrefab";
     const float dist = 0.03f;
     const float minDis = 0.06f;
-    float planetsize = 0.1f;
+    
 
 
     // Use this for initialization

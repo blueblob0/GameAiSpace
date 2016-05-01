@@ -1,12 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+//Class to hold the star and move it before we spawn it
+public class HoldStar
+{
+    public Vector3 starPos;
+    private int starMass;
+    public int StarMass
+    {
+        get{ return starMass; }
+    }   
+
+    public readonly int id;
+
+    public float radius()
+    {
+        return (starMass * CreateGalaxy.starMuti)/2;
+    }
+
+    public HoldStar(int StarMass, int Id, Vector3 StarPos)
+    {       
+        id = Id;
+        starPos = StarPos;
+        starMass = StarMass;
+    }
+
+    public void IncreaseMass( int addMass)
+    {
+        starMass += addMass;
+    }
+}
+
+
+
 public class CreateGalaxy : MonoBehaviour
 {
     public const int starMuti = 50; 
     public const string removeName = "ToRemove";
     public int numStars = 100;
-    private List<GameObject> stars = new List<GameObject>();
+    private List<HoldStar> holdStars = new List<HoldStar>();
+    private List<Star> realStars = new List<Star>();
     public string starPrefabName = "StarPrefab";
 
     // private int spaceBetween = StarMuti*10;
@@ -21,14 +54,15 @@ public class CreateGalaxy : MonoBehaviour
 
     //The way geenration will work
     //create suns
-    //create baclhole
+    //create balckhole
     //move the suns towards blackhole 
     //stop all suns
     //work out type of sun from size
     //then work out planets around sun
     //planets that can have life marked 
 
-       
+     //extra
+     //make stars just struts holding the location and mass and move based on that  
 
     // Use this for initialization
     void Start()
@@ -41,7 +75,7 @@ public class CreateGalaxy : MonoBehaviour
 
     void GenerateGalaxy()
     {
-        Vector3 starPos;
+        int theID = 0;
         int yPos = 0;
         int baseStarMass = 10;
         int radiusMax = 50;
@@ -73,21 +107,13 @@ public class CreateGalaxy : MonoBehaviour
                         float holdx = centerpos.x + (radiusIncrease * row) * Mathf.Cos(angle * Mathf.Deg2Rad);
                         float holdz = centerpos.z + (radiusIncrease * row) * Mathf.Sin(angle * Mathf.Deg2Rad);
 
-                        float sample = Random.Range(0.5f, 0.9f); // The size of the star to generate 
-                        GameObject Stara = null;
-                        if (sample > 0)
-                        {
-                            starPos = new Vector3(holdx * 10, yPos, holdz * 10);
-                            Stara = Instantiate(Resources.Load(starPrefabName)) as GameObject;
-                            Stara.transform.SetParent(transform);
-
-                            stars.Add(Stara);
-                            Stara.transform.position = starPos;
-
-                            Stara.GetComponent<Star>().SetMass(Mathf.CeilToInt(sample * baseStarMass));
-                            Stara.GetComponent<Star>().angle = angle;
-                            Stara.GetComponent<Star>().spiralAngel = spiralAngel[i];
-                        }
+                        float sample = Random.Range(0.5f, 0.9f); // The size of the star to generate                        
+                        
+                        HoldStar newStar = new HoldStar(Mathf.CeilToInt(sample * baseStarMass), theID, new Vector3(holdx * 10, yPos, holdz * 10));
+                                       
+                        theID++;
+                        holdStars.Add(newStar);
+                     
                         i = spiralAngel.Length;
                     }
                 }
@@ -95,7 +121,6 @@ public class CreateGalaxy : MonoBehaviour
             for (int i = 0; i < spiralAngel.Length; i++)
             {
                 spiralAngel[i] += radiusIncrease / (starMuti); // This moves the angle that the sun can spawn at along after each rotation
-
             }
 
         }
@@ -107,204 +132,152 @@ public class CreateGalaxy : MonoBehaviour
             ablack.transform.SetParent(transform);
             black = ablack.GetComponent<BlackHole>();
         }
-
         //then move the suns towards the blackhole
-        black.MoveTowardsBlackHole();
+        MoveTowardsBlackHole();
+
+        CatogriseStars();
+        Debug.Log(black.count);
+    }
+
+
+    private void CatogriseStars()
+    {
+        //types of star: tbd
+        //Neutron Star Over 50 Mass
+        //BlackHole Over 40 Mass
+        //otherwise:
+        //Singe Star 70% 
+        //Twin Star 20%
+        //Ternary star10%
+
+        int[] starCount = new int[5] { 0, 0, 0, 0, 0 };
+
+        foreach (HoldStar s in holdStars)
+        {
+            if (s.StarMass > 50)
+            {
+                starCount[0]++;
+            }
+            else if(s.StarMass > 40)
+            {
+                starCount[1]++;
+            }
+            else
+            {
+                int holdRand = Random.Range(0,100);
+                if (holdRand < 70)
+                {
+                    starCount[2]++;
+                }
+                else if(holdRand < 90)
+                {
+                    starCount[3]++;
+                }
+                else 
+                {
+                    starCount[4]++;
+                }
+            }
+
+            //Debug.Log(s.mass);
+        }
+
+        for(int i=0;i< starCount.Length; i++)
+        {
+            Debug.Log("Count "+ i + ": " +starCount[i]);
+
+        }
+
+        foreach(HoldStar s in holdStars)
+        {
+            MakeStar(s.starPos, s.StarMass);            
+           // Debug.Log(s.id);
+        }
 
 
 
     }
 
 
-
-
-    GameObject CheckStarAlreadyThere(int xcord, int zcord, float spaceBetween)
+   private void MakeStar(Vector3 starPos, int theMass)
     {
+        GameObject stara = (GameObject)Instantiate(Resources.Load(starPrefabName));
+       
+        stara.transform.SetParent(transform);
+        stara.transform.position = starPos;
+        Star theStar = stara.GetComponent<Star>();
 
-        foreach (GameObject s in stars)
-        {
-            // if theese are true than the 
-            // if(s.transform.position.x -spaceBetween >xcord || s.transform.position.x + spaceBetween < xcord){}
-
-            // if this is true then the planet is within the x of this
-            if (s.transform.position.x - spaceBetween < xcord && s.transform.position.x + spaceBetween > xcord)
-            {
-                if (s.transform.position.z - spaceBetween < zcord && s.transform.position.z + spaceBetween > zcord)
-                {
-                    // Debug.Log(s.transform.position.x + " " + xcord + " " + s.transform.position.z + " " + zcord);
-                    // if this is ever reached then there is an overlap
-                    return s;
-                }
-            }
-
-        }
-
-
-        return null;
+        realStars.Add(theStar);
+        theStar.SetMass(theMass);
 
     }
-
-    GameObject CheckStarAlreadyThere(float spaceBetween, Transform theStar)
+    
+    
+    //move every sun towards the backhole
+    public void MoveTowardsBlackHole()
     {
-
-        foreach (GameObject s in stars)
+        int i = 0;
+        while (black.count > 0 && i < 10000)
         {
-            if (s != theStar.gameObject)
-            {
-                // Debug.Log("1");
-                // if theese are true than the 
-                // if(s.transform.position.x -spaceBetween >xcord || s.transform.position.x + spaceBetween < xcord){}
-
-                // if this is true then the planet is within the x of this
-                if (s.transform.position.x - spaceBetween < theStar.position.x && s.transform.position.x + spaceBetween > theStar.position.x)
-                {
-                    if (s.transform.position.z - spaceBetween < theStar.position.z && s.transform.position.z + spaceBetween > theStar.position.z)
-                    {
-                        //Debug.Log(s.transform.position.x + " " + theStar.position.x + " " + s.transform.position.z + " " + theStar.position.z);
-                        // if this is ever reached then there is an overlap
-                        return s;
-                    }
-                }
-                Debug.LogError(s.transform.position.x + " " + theStar.position.x + " " + s.transform.position.z + " " + theStar.position.z + " " + spaceBetween);
-
-            }
-
+            moveStars(black.transform.position, black.mass);
+            RemoveStarsInsideBH(); //check for stars inside and destroy
+            i++;
         }
-
-
-        return null;
 
     }
-
-
-
-    void CheckStarNear(int xcord, int zcord)
+    /// <summary>
+    /// make sure we remove planets inside the balckhole 
+    /// </summary>
+    public void RemoveStarsInsideBH()
     {
-        int spaceNear = 100;
-        foreach (GameObject s in stars)
+        SphereCollider blackColl = black.GetComponent<SphereCollider>();
+
+        HoldStar[] tempArray = holdStars.ToArray();
+
+        //Collider[] hitColliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x);
+
+        for (int i = 0; i < tempArray.Length; i++)
         {
-            // if this is true then the planet is within the x of this
-            if (s.transform.position.x - spaceNear < xcord && s.transform.position.x + spaceNear > xcord)
-            {
-                if (s.transform.position.z - spaceNear < zcord && s.transform.position.z + spaceNear > zcord)
-                {
-                    s.name = "1";
-                    //Debug.Log(s.transform.position.x + " " + xcord + " " + s.transform.position.z + " " + zcord);
-                }
-            }
+            float dis = Vector3.Distance(black.transform.position, tempArray[i].starPos); // Get Distance Between two stars 
 
+            if (dis < ((black.mass/2) + tempArray[i].radius()))
+            {
+                //remove from the list so we dont try and acces a bull gameobjecct 
+                //going to try removing count isntead of mass as big stars isntatly remove the black hole 
+                //count--;
+                black.count -= Mathf.CeilToInt(Mathf.Log10(tempArray[i].StarMass));
+                holdStars.Remove(tempArray[i]);
+
+            }           
+            
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        float checkDist = -1;
-        //if (Input.GetKey("h") && testing)
-        if (testing)
-        {
-            bool checkmove = false;
-
-            //List<GameObject> star2 = new List<GameObject>(stars);
-            //List<GameObject> star2 = stars;
-            //star2 = stars;
-            foreach (GameObject s in stars)
-            {
-                Star sStar = s.GetComponent<Star>();
-                Collider[] hold = Physics.OverlapSphere(s.transform.position, 100 + sStar.mass / 1);
-
-                Vector3 holdPos = s.transform.position;
-                //Debug.Log("1");
-                // star2.Remove(s);
-                foreach (Collider sa in hold)
-                {
-                    //Debug.Log("2");
-                    Star saStar = sa.GetComponent<Star>();
-                    if (saStar)
-                    {
-
-
-                        // float force = 10000 * saStar.Mass / Vector3.Distance(sa.transform.position, s.transform.position * sStar.Mass);
-                        //s.transform.position = Vector3.MoveTowards(s.transform.position, sa.transform.position, force * Time.deltaTime);
-                        // Debug.Log(force);    
-                        //Debug.Log(s.transform.position);
-                        //Debug.Log(s.transform.position);
-                        //Debug.Log(sa.transform.position);
-                        float force = 1000 * sStar.Mass;
-
-                        Vector3 pos = sa.transform.position;
-                        pos *= saStar.Mass;
-                        force /= Vector3.Distance(s.transform.position, pos);
-                        sa.transform.position = Vector3.MoveTowards(sa.transform.position, s.transform.position, force * Time.deltaTime);
-                        // Debug.Log(force);    
-
-                    }
-
-                }
-
-                if (Vector3.Distance(holdPos, s.transform.position) > 0.0001f)
-                {
-                    checkmove = true;
-
-                }
-                else
-                {
-                    if (Vector3.Distance(holdPos, s.transform.position) > checkDist)
-                    {
-
-                        checkDist = Vector3.Distance(holdPos, s.transform.position);
-
-                    }
-
-
-                }
-
-            }
-
-            if (!checkmove)
-            {
-                checkmove = true;
-                //Debug.Log("No more move " + checkDist);
-            }
-
-
-            if (!checkmove)
-            {
-                testing = false;
-            }
-
-
-            if (black)
-            {
-
-                foreach (GameObject s in stars)
-                {
-
-                    float force = 1000 * black.mass / Vector3.Distance(black.transform.position, s.transform.position * s.GetComponent<Star>().mass);
-                    s.transform.position = Vector3.MoveTowards(s.transform.position, black.transform.position, force * Time.deltaTime);
-                    // Debug.Log(force); 
-                }
-
-            }
-
-        }
-
-        if (Input.GetKey("h") && !testing)
-        {
-            Debug.Log("No more move");
-        }
-
     }
 
     /// <summary>
-    /// Destory a star and handles clean up removing from the star list 
+    /// USed for when stars collide during the start time as oncollision does not work here 
     /// </summary>
-    /// <param name="toRemove">Star to be removed</param>
-    public void DestroyStar(GameObject toRemove)
+    public void RemoveStarsInStar(HoldStar theStar)
     {
-        stars.Remove(toRemove);
-        Destroy(toRemove);
+        HoldStar[] tempArray = holdStars.ToArray();
+
+        //Collider[] hitColliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x);
+
+        for (int i = 0; i < tempArray.Length; i++)
+        {
+            float dis = Vector3.Distance(theStar.starPos, tempArray[i].starPos); // Get Distance Between two stars 
+            
+            if (tempArray[i].id != theStar.id && dis < (theStar.radius()+ tempArray[i].radius()) && tempArray[i].StarMass <= theStar.StarMass)
+            {
+                theStar.IncreaseMass(tempArray[i].StarMass);
+                //Debug.Log(dis + " " + theStar.radius());
+                //Debug.Log(Vector3.one * theStar.StarMass * starMuti);
+                holdStars.Remove(tempArray[i]);
+                
+            }
+        }
+       
     }
+
 
     /// <summary>
     /// for moving all stars towards a point
@@ -313,46 +286,22 @@ public class CreateGalaxy : MonoBehaviour
     /// <param name="massAtPoint"></param>
     public void moveStars(Vector3 moveTo,float massAtPoint)
     {
-        foreach (GameObject s in stars)
+        for (int i = 0; i < holdStars.Count; i++)
         {
-            float force = 100 * massAtPoint / s.GetComponent<Star>().mass; // / Vector3.Distance(transform.position, s.transform.position * s.GetComponent<Star>().mass);
-            s.transform.position = Vector3.MoveTowards(s.transform.position, moveTo, force * Time.deltaTime);
+            float force = 10 * massAtPoint / holdStars[i].StarMass; // / Vector3.Distance(transform.position, s.transform.position * s.GetComponent<Star>().mass);
+
+            holdStars[i].starPos = Vector3.MoveTowards(holdStars[i].starPos, moveTo, force);// * Time.deltaTime);
         }
+      
 
-        GameObject[] tempArray = stars.ToArray(); 
-
-            
-
-        foreach (GameObject s in tempArray)
+        //We hold the list in an array temporerally so we can remove stars without error
+        //as you cant remove items from a list as you cycle through it 
+        HoldStar[] tempArray = holdStars.ToArray(); 
+        foreach (HoldStar s in tempArray)
         {
-            s.GetComponent<Star>().RemoveStarsInStar();
-        }
-
-
-
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public void CheckStarBlackHole()
-    {
-        float testMass = 100;        
-        foreach (GameObject g in stars)
-        {
-            if(g.GetComponent<Star>().mass> testMass)
-            {
-                Debug.Log(g.GetComponent<Star>().mass);
-            }
-
+            RemoveStarsInStar(s);
         }
     }
-
-  
-
-
-
 
 }
 

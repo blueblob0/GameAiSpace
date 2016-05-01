@@ -3,19 +3,11 @@ using System.Collections.Generic;
 
 public class CelestialBody : MonoBehaviour {
 
-    public int mass;
+    
     protected CreateGalaxy controler;
 
-
-    public int Mass
-    {
-        get
-        {
-            return mass;
-        }
-    }
-
-
+    public int mass;
+    
 
     // Use this for initialization
     protected virtual void Start () {
@@ -93,6 +85,7 @@ public class CelestialBody : MonoBehaviour {
         a.transform.position = starPos;
         return a;
     }
+
     /// <summary>
     /// spawing Satalite around things 
     /// </summary>
