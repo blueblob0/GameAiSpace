@@ -16,7 +16,7 @@ public class Heal : Task {
         //Stop movement
         agentRef.setTargetSpeed(0);
         //Increase energy
-        agentRef.increaseHealth(0.5f);
+        agentRef.increaseHealth(0.1f);
         return true;
     }
 }

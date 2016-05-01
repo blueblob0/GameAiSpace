@@ -17,7 +17,7 @@ public class Rest : Task {
         //Stop movement
         agentRef.setTargetSpeed(0);
         //Increase energy
-        agentRef.increaseEnergy(0.5f);
+        agentRef.increaseEnergy(0.1f);
         return true;
     }
 }
