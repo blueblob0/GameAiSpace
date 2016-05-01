@@ -171,7 +171,7 @@ public class AlienAI : MonoBehaviour {
         if(currentSpeed < targetSpeed) {
             currentSpeed += acceleration;
         } else if(currentSpeed > targetSpeed) {
-            currentSpeed -= acceleration;
+            currentSpeed -= acceleration * 2;
         }
         //0 off the speed
         if(targetSpeed <= 0 && currentSpeed <= 0.1f) {
