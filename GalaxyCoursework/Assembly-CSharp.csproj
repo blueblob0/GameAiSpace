@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\Aliens\AlienBody.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienCreature.cs" />
      <Compile Include="Assets\Scripts\Aliens\AssertiveAlien.cs" />
+     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Decorators\Inverse.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selector.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\FightSelector.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\IdleSelector.cs" />
@@ -61,6 +62,7 @@
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\GetTargetSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\HealSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\PursueSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\RecoupSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\RestSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Task.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\AlliesNear.cs" />
@@ -69,12 +71,14 @@
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnemyInSight.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnemyTargetingSelf.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnergyLow.cs" />
+     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnergyNotFull.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Evade.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Flock.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\GetTarget.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\HaveTarget.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Heal.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\HealthLow.cs" />
+     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\HealthNotFull.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Pursue.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Rest.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Wander.cs" />
