@@ -12,8 +12,8 @@ public class Star: CelestialBody
     public string planetPrefabName = "PlanetPrefab";
     const float dist = 0.04f;
     const float minDis = 0.02f;
-    public float angle;
-    public float spiralAngel;
+    //public float angle;
+    //public float spiralAngel;
     // Use this for initialization
     protected override void Start()
     {
@@ -97,7 +97,7 @@ public class Star: CelestialBody
     }
 
 
-
+    /*
     void OnDrawGizmos()
     {
         foreach (float f in spheres)
@@ -106,100 +106,13 @@ public class Star: CelestialBody
             Gizmos.DrawWireSphere(transform.position, f);
         }        
     }
-
+    */
     void OnTriggerEnter(Collider other)
     {
-        //if its going to be removed the star should have no effect  
-        if (CreateGalaxy.removeName == name)
-        {
-            return;
-        }
-        if (other.tag =="MainCamera")
-        {
-            //Decrease Speed for moving around soloar system
-            other.GetComponent<CameraMove>().DecreaseSpeed();
-
-           // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
-            //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
-
-            Debug.Log("hit");
-            miniSun.SetActive(true);
-            Color c = GetComponent<Renderer>().material.color;
-            c.a = 0;
-            GetComponent<Renderer>().material.color = c;
-            if (planetsSpawned)
-            {
-                for(int i = 0; i < planets.Length;i++)
-                {
-                    planets[i].SetActive(true);
-                }
-            }
-            else
-            {
-                planets = new GameObject[planetsLoc.Length];
-                
-                for (int i = 0; i < planetsLoc.Length; i++)
-                {
-                    planets[i] = SpawnSatalite(planetsLoc[i], planetPrefabName);                  
-                }
-                planetsSpawned = true;
-            }
-        }
-        else if (other.GetComponent<Star>())
-        {
-            if (!controler)
-            {
-                controler = FindObjectOfType<CreateGalaxy>();
-            }
-            int massa = other.GetComponent<Star>().mass;
-            if (massa <= mass)
-            {
-                controler.DestroyStar(other.gameObject);
-                IncreaseMass(massa);
-            }
-        }
+        Debug.Log("thing should not hit");
         
     }
-
-
-    /// <summary>
-    /// \USed for when stars collide during the start time as oncollision does not work here 
-    /// </summary>
-    public void RemoveStarsInStar()
-    {
-
-        if (CreateGalaxy.removeName == name)
-        {
-            return;
-        }
-        if (!controler)
-        {
-            controler = FindObjectOfType<CreateGalaxy>();
-        }
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x);
-        for (int i = 0; i < hitColliders.Length; i++)
-        {
-            if (hitColliders[i].gameObject != gameObject && hitColliders[i].name != CreateGalaxy.removeName && hitColliders[i].GetComponent<Star>())
-            {                
-
-                int massa = hitColliders[i].GetComponent<Star>().mass;
-                if (massa <= mass)
-                {
-                    hitColliders[i].name = CreateGalaxy.removeName;
-                    controler.DestroyStar(hitColliders[i].gameObject);
-                    IncreaseMass(massa);
-                }
-               
-            }
-        }
-    }
-
-
-
-
-
-
-
+    
 
     void OnTriggerExit(Collider other)
     {
