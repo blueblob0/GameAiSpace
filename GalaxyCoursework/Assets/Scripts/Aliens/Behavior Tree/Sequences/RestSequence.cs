@@ -6,17 +6,17 @@ using System.Collections;
  */
 public class RestSequence : Sequence {
     //Tasks for this sequence
-    private EnergyLow eLow;
+    private EnergyNotFull eNotFull;
     private Rest rest;
 
     //constructor
     public RestSequence(AlienAI agent) : base(agent) {
         //Construct the tasks
-        eLow = new EnergyLow(agent);
+        eNotFull = new EnergyNotFull(agent);
         rest = new Rest(agent);
 
         //Add the children, order is important
-        addChild(eLow);
+        addChild(eNotFull);
         addChild(rest);
     }
 }
