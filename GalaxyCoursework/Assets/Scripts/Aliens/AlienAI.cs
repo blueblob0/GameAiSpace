@@ -168,13 +168,15 @@ public class AlienAI : MonoBehaviour {
         //Normalise the desired velocity and add the speed
         velocity = calculateSpeed(velocity);
 
-        //Zero off the Y
-        velocity.y = 0;
-
         //Update the position and look 'forward'
         if(currentSpeed > 0) {
             transform.rotation = Quaternion.LookRotation(velocity);
-            controller.Move(velocity);
+            if(velocity != Vector3.zero) {
+                controller.Move(velocity);
+            } else {
+                //Give the agent a nudge to stop it getting stuck, bit of a doodgy work around
+                velocity.z = 1;
+            }
         }
 
         //Adjust the speed values
