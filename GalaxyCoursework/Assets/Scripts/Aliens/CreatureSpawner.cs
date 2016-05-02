@@ -57,7 +57,6 @@ public class CreatureSpawner : MonoBehaviour {
                 } else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
                     allScaled = false;
                 }
-
             }
         }
     }
