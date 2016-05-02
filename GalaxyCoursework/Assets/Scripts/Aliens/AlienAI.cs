@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 [RequireComponent(typeof(SphereCollider))]
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
@@ -43,6 +44,9 @@ public class AlienAI : MonoBehaviour {
     protected bool canAttack;
     //The speed the agent wants to go
     private float targetSpeed;
+
+    //Character controller ref
+    private CharacterController controller;
 
     //Running fast will drain the energy
     private float energy;
@@ -126,6 +130,9 @@ public class AlienAI : MonoBehaviour {
         weightChangePass = 0;
 
         targetSpeed = currentSpeed;
+
+        //Get the controllre
+        controller = GetComponent<CharacterController>();
     }
 	
 	// Update is called once per frame
@@ -163,8 +170,9 @@ public class AlienAI : MonoBehaviour {
 
         //Update the position and look 'forward'
         if(currentSpeed > 0) {
-            transform.rotation = Quaternion.LookRotation(velocity);
+            //transform.rotation = Quaternion.LookRotation(velocity);
             transform.position += velocity;
+            //controller.Move(velocity);
         }
 
         //Adjust the speed values
@@ -257,6 +265,9 @@ public class AlienAI : MonoBehaviour {
     /// <param name="amount"></param>
     public void increaseEnergy(float amount) {
         if(energy < maxEnergy) {
+            if(maxSpeed != trueMaxSpeed) {
+                maxSpeed = trueMaxSpeed;
+            }
             if(energy + amount > maxEnergy) {
                 energy = maxEnergy;
             } else {
