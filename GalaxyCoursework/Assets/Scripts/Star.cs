@@ -109,6 +109,56 @@ public class Star: CelestialBody
     */
     void OnTriggerEnter(Collider other)
     {
+        //if its going to be removed the star should have no effect  
+        if (CreateGalaxy.removeName == name)
+        {
+            return;
+        }
+        if (other.tag == "MainCamera")
+        {
+            //Decrease Speed for moving around soloar system
+            other.GetComponent<CameraMove>().DecreaseSpeed();
+
+            // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
+            //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
+
+           // Debug.Log("hit");
+            miniSun.SetActive(true);
+            Color c = GetComponent<Renderer>().material.color;
+            c.a = 0;
+            GetComponent<Renderer>().material.color = c;
+            if (planetsSpawned)
+            {
+                for (int i = 0; i < planets.Length; i++)
+                {
+                    planets[i].SetActive(true);
+                }
+            }
+            else
+            {
+                planets = new GameObject[planetsLoc.Length];
+
+                for (int i = 0; i < planetsLoc.Length; i++)
+                {
+                    planets[i] = SpawnSatalite(planetsLoc[i], planetPrefabName);
+                }
+                planetsSpawned = true;
+            }
+        }
+        /*else if (other.GetComponent<Star>())
+        {
+            if (!controler)
+            {
+                controler = FindObjectOfType<CreateGalaxy>();
+            }
+            int massa = other.GetComponent<Star>().mass;
+            if (massa <= mass)
+            {
+                controler.DestroyStar(other.gameObject);
+                IncreaseMass(massa);
+            }
+        }
+        */
         Debug.Log("thing should not hit");
         
     }
