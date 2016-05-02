@@ -170,9 +170,9 @@ public class AlienAI : MonoBehaviour {
 
         //Update the position and look 'forward'
         if(currentSpeed > 0) {
-            //transform.rotation = Quaternion.LookRotation(velocity);
-            transform.position += velocity;
-            //controller.Move(velocity);
+            transform.rotation = Quaternion.LookRotation(velocity);
+            //transform.position += velocity;
+            controller.Move(velocity);
         }
 
         //Adjust the speed values
