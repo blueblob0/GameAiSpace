@@ -171,6 +171,9 @@ public class AlienAI : MonoBehaviour {
                 steering = Vector3.zero;
             }
 
+            //Avoid radnom flying ones
+            velocity.y = 0;
+
             //Normalise the desired velocity and add the speed
             velocity = calculateSpeed(velocity);
 
