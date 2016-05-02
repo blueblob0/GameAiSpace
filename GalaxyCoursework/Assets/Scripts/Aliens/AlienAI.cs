@@ -159,24 +159,24 @@ public class AlienAI : MonoBehaviour {
         //Activate the selector
         mainSelector.activate();
 
-        //Make the steering smooth
-        steering /= mass;
-
-        //Add to the velocity
-        velocity += steering;
-
-        //Normalise the desired velocity and add the speed
-        velocity = calculateSpeed(velocity);
-
-        //Update the position and look 'forward'
+        //Only if the agent wants to move
         if(currentSpeed > 0) {
-            transform.rotation = Quaternion.LookRotation(velocity);
-            if(velocity != Vector3.zero) {
-                controller.Move(velocity);
+            //Make the steering smooth
+            steering /= mass;
+
+            //Add to the velocity
+            if(!float.IsNaN(steering.x) && !float.IsNaN(steering.y) && !float.IsNaN(steering.z)) {
+                velocity += steering;
             } else {
-                //Give the agent a nudge to stop it getting stuck, bit of a doodgy work around
-                velocity.z = 1;
+                steering = Vector3.zero;
             }
+
+            //Normalise the desired velocity and add the speed
+            velocity = calculateSpeed(velocity);
+
+            //Update the position and look 'forward'
+            transform.rotation = Quaternion.LookRotation(velocity);
+            controller.Move(velocity);
         }
 
         //Adjust the speed values
