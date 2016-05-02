@@ -321,6 +321,7 @@ public class AlienCreature : AlienAI {
             headCount = maxHeads;
             armCount = maxArms;
             legCount = maxLegs;
+            wingCount = maxWings;
 
             //Spawn in the body
             GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
