@@ -256,6 +256,12 @@ public class AlienAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	public virtual void Update () {
+        //DEBUG--------------------------
+        if(Input.GetKeyDown(KeyCode.Space)) {
+            StartCoroutine(reproduce());
+        }
+        //-------------------------------
+
         //Check the health
         if(health <= 0) {
             Destroy(gameObject);
