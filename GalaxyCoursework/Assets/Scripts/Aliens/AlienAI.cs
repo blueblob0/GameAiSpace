@@ -900,6 +900,8 @@ public class AlienAI : MonoBehaviour {
                 creature.GetComponent<AlienAI>().addCreature(spawn);
             }
         }
+        //Reset the timer
+        reproductionTimePassed = 0;
     }
 
     /// <summary>
