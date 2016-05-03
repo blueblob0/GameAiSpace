@@ -71,6 +71,8 @@ public class AlienAI : MonoBehaviour {
     private float reproductionTimer;
     //How long has passed
     private float reproductionTimePassed;
+    //The target to try and reproduce with
+    private AlienAI reproductionTarget;
 
     //Running fast will drain the energy
     private float energy;
@@ -192,6 +194,7 @@ public class AlienAI : MonoBehaviour {
 
         //Get some random reproduction values
         reproductionTimer = Random.Range(30, 150);
+        reproductionTarget = null;
 
         //Set the species
         creatureSpecies = "";
@@ -382,6 +385,22 @@ public class AlienAI : MonoBehaviour {
         dodgeModifier = creature.getDdogeChance();
         //Increase the max speed
         changeMaxSpeed(getMaximumSpeed() + speedModifier, true);
+    }
+
+    /// <summary>
+    /// Sets the reproduction target of this agent
+    /// </summary>
+    /// <param name="target"></param>
+    public void setReproductionTarget(AlienAI target) {
+        reproductionTarget = target;
+    }
+
+    /// <summary>
+    /// Returns the reproduction target of this agent
+    /// </summary>
+    /// <returns></returns>
+    public AlienAI getReproductionTarget() {
+        return reproductionTarget;
     }
 
     /// <summary>
