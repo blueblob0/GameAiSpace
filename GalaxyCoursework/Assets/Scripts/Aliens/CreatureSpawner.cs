@@ -12,6 +12,9 @@ public class CreatureSpawner : MonoBehaviour {
     //Set in inspector
     public GameObject[] creatureTypes;
 
+    //How much to scale the creatures by
+    public int scaleValue = 100;
+
     // Use this for initialization
     void Start() {
         StartCoroutine(spawnCreatures());
@@ -26,11 +29,8 @@ public class CreatureSpawner : MonoBehaviour {
 
         //Set the parent / local variables
         creature.transform.SetParent(gameObject.transform);
-        creature.transform.localPosition = Vector3.zero;
-        creature.transform.localScale /= 100;
-
-        //Temp
-        creature.GetComponent<AlienAI>().enabled = false;
+        creature.transform.localScale /= scaleValue;                                        //Scale the creature down
+        creature.transform.localPosition = Vector3.up * creature.transform.localScale.y * 3;    //Move the creature up
     }
 
     void Update() {
