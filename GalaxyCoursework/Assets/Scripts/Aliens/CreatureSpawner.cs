@@ -22,42 +22,44 @@ public class CreatureSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        //Init
-        allScaled = false;
-        spawnedCreatures = new List<GameObject>();
+        ////Init
+        //allScaled = false;
+        //spawnedCreatures = new List<GameObject>();
 
-        //Init the bool array
-        creatureSpawned = new bool[creatureTypes.Length];
-        //How many total types to spawn
-        int amountOfTypestoSpawn = Random.Range(1, creatureTypes.Length + 1);
-        //Loop through the array and start spawning creatures
-        for(int i = 0; i < amountOfTypestoSpawn; i++) {
-            if(!creatureSpawned[i]) {
-                //Instantiate the prefab
-                GameObject creature = Instantiate(creatureTypes[i]);
-                //Set the tranform
-                creature.transform.SetParent(transform);
-                creature.transform.localPosition = Vector3.zero;
-                creature.transform.localRotation = Quaternion.identity;
-                creature.transform.localScale = Vector3.one;
-                creatureSpawned[i] = true;
-                //Finally, add to list
-                spawnedCreatures.Add(creature);
-            }
-        }
+        ////Init the bool array
+        //creatureSpawned = new bool[creatureTypes.Length];
+        ////How many total types to spawn
+        //int amountOfTypestoSpawn = Random.Range(1, creatureTypes.Length + 1);
+        ////Loop through the array and start spawning creatures
+        //for(int i = 0; i < amountOfTypestoSpawn; i++) {
+        //    if(!creatureSpawned[i]) {
+        //        //Instantiate the prefab
+        //        GameObject creature = Instantiate(creatureTypes[i]);
+        //        //Set the tranform
+        //        creature.transform.SetParent(transform);
+        //        creature.transform.localPosition = Vector3.zero;
+        //        creature.transform.localRotation = Quaternion.identity;
+        //        creature.transform.localScale = Vector3.one;
+        //        creatureSpawned[i] = true;
+        //        //Finally, add to list
+        //        spawnedCreatures.Add(creature);
+        //    }
+        //}
+
+
     }
 
     void Update() {
-        if(!allScaled) {
-            allScaled = true;
-            for(int i = 0; i < spawnedCreatures.Count; i++) {
-                if(spawnedCreatures[i].GetComponent<AlienCreature>().isSpawned() && !spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
-                    spawnedCreatures[i].transform.localScale *= 0.1f;
-                    spawnedCreatures[i].GetComponent<AlienCreature>().hasBeenScaled(true);
-                } else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
-                    allScaled = false;
-                }
-            }
-        }
+        //if(!allScaled) {
+        //    allScaled = true;
+        //    for(int i = 0; i < spawnedCreatures.Count; i++) {
+        //        if(spawnedCreatures[i].GetComponent<AlienCreature>().isSpawned() && !spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
+        //            spawnedCreatures[i].transform.localScale *= 0.1f;
+        //            spawnedCreatures[i].GetComponent<AlienCreature>().hasBeenScaled(true);
+        //        } else if(!spawnedCreatures[i].GetComponent<AlienCreature>().checkScaled()) {
+        //            allScaled = false;
+        //        }
+        //    }
+        //}
     }
 }

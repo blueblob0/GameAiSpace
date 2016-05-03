@@ -480,14 +480,14 @@ public class AlienCreature : AlienAI {
 
 
     //REPLACE WITH BETTER FUNCTIONALITY (CreatureSpawner.cs)
-    public bool isSpawned() {
-        return spawned;
-    }
+    //public bool isSpawned() {
+    //    return spawned;
+    //}
 
-    public void hasBeenScaled(bool scaled) {
-        isScaled = scaled;
-    }
-    public bool checkScaled() {
-        return isScaled;
-    }
+    //public void hasBeenScaled(bool scaled) {
+    //    isScaled = scaled;
+    //}
+    //public bool checkScaled() {
+    //    return isScaled;
+    //}
 }
