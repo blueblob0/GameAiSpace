@@ -7,7 +7,7 @@ using System.Collections;
  * The agent will seek out targets to attack
  * The agent will always fight back
  */
-public class AgressiveAlien : AlienCreature {
+public class AgressiveAlien : AlienAI {
 
     //Empty for now
 

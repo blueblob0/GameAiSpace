@@ -7,7 +7,7 @@ using System.Collections;
  * The agent will not seek out targets to attack
  * The agent will almost never fight back
  */
-public class PassiveAlien : AlienCreature {
+public class PassiveAlien : AlienAI {
 
 	// Use this for initialization
 	public override void Start () {

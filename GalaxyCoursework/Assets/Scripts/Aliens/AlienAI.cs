@@ -27,7 +27,7 @@ public class AlienAI : MonoBehaviour {
     public GameObject[] wingPrefabs;
 
     //List of potential targets
-    protected List<AlienCreature> nearTargets = new List<AlienCreature>();
+    protected List<AlienAI> nearTargets = new List<AlienAI>();
     //The agents current target
     protected AlienAI target;
     //The collider reference
@@ -338,7 +338,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <param name="other"></param>
     public void OnTriggerExit(Collider other) {
-        nearTargets.Remove(other.GetComponent<AlienCreature>());
+        nearTargets.Remove(other.GetComponent<AlienAI>());
     }
 
     /// <summary>
@@ -570,7 +570,7 @@ public class AlienAI : MonoBehaviour {
     /// Returns the near target list
     /// </summary>
     /// <returns></returns>
-    public List<AlienCreature> getNearTargets() {
+    public List<AlienAI> getNearTargets() {
         return nearTargets;
     }
 
@@ -735,7 +735,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <param name="creature">The target</param>
     /// <returns></returns>
-    protected float shouldAttack(AlienCreature creature) {
+    protected float shouldAttack(AlienAI creature) {
         //The stats of this creature comprised into one variable (weights applied)
         float stats = getStrength() + getSpeedModifier();
         //The stats of the other creature (weights applied)
@@ -872,13 +872,13 @@ public class AlienAI : MonoBehaviour {
         //Wait a frame for the spawn to happen before copying
         yield return null;
         //Copy this creature's values
-        spawn.GetComponent<AlienCreature>().copyCreature(this);
+        spawn.GetComponent<AlienAI>().copyCreature(this);
         //Add it onto the list
         addCreature(spawn);
         //Make the other creatures aware of this new creature
         foreach(GameObject creature in otherCreatures) {
             if(creature != null) {
-                creature.GetComponent<AlienCreature>().addCreature(spawn);
+                creature.GetComponent<AlienAI>().addCreature(spawn);
             }
         }
     }
@@ -921,8 +921,8 @@ public class AlienAI : MonoBehaviour {
         yield return null;
 
         //Check the target
-        if(potentialTarget != null && potentialTarget.GetComponent<AlienCreature>() != null) {
-            AlienCreature targetScript = potentialTarget.GetComponent<AlienCreature>();
+        if(potentialTarget != null && potentialTarget.GetComponent<AlienAI>() != null) {
+            AlienAI targetScript = potentialTarget.GetComponent<AlienAI>();
             if(!string.Equals(targetScript.getSpecies(), getSpecies())) {
                 if(!nearTargets.Contains(targetScript)) {
                     nearTargets.Add(targetScript);
