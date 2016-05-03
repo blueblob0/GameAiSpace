@@ -113,6 +113,7 @@ public class AlienAI : MonoBehaviour {
     private EscapeSequence escape;
     private RecoupSequence recoup;
     private FightSelector fight;
+    private ReproduceSequence reproduceSq;
     private IdleSelector idle;
 
     //An array of potential name parts
@@ -143,12 +144,14 @@ public class AlienAI : MonoBehaviour {
         escape = new EscapeSequence(this);
         recoup = new RecoupSequence(this);
         fight = new FightSelector(this);
+        reproduceSq = new ReproduceSequence(this);
         idle = new IdleSelector(this);
 
         //Add nodes in order of importance
         mainSelector.addChild(escape);
         mainSelector.addChild(recoup);
         mainSelector.addChild(fight);
+        mainSelector.addChild(reproduceSq);
         mainSelector.addChild(idle);
 
         //Set the stat values
