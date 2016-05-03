@@ -87,7 +87,7 @@ public class Planet : Satalite
         }
         else
         {
-            Debug.Log(other.tag);
+           // Debug.Log(other.tag);
         }
     }
 

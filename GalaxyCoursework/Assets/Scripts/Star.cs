@@ -122,7 +122,7 @@ public class Star: CelestialBody
             // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
             //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
 
-           // Debug.Log("hit");
+            // Debug.Log("hit");
             miniSun.SetActive(true);
             Color c = GetComponent<Renderer>().material.color;
             c.a = 0;
