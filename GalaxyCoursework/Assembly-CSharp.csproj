@@ -56,12 +56,10 @@
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\IdleSelector.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\RecoupSelector.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\AttackSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\EscapeSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\FlockSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\GetTargetSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\HealSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\PursueSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\RecoupSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\RestSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Task.cs" />
