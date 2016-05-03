@@ -15,7 +15,7 @@ public class EnemyTargetingSelf : Task {
 
     public bool activate() {
         //Loop through near targets
-        foreach(AlienCreature target in agentRef.getNearTargets()) {
+        foreach(AlienAI target in agentRef.getNearTargets()) {
             //If any of the near targets are targetting this agent
             if(target.getTarget() != null && target.getTarget() == agentRef) {
                 //Set the target and return true
