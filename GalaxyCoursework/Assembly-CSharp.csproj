@@ -48,14 +48,16 @@
      <Compile Include="Assets\Scripts\Aliens\AgressiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienAI.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienBody.cs" />
-     <Compile Include="Assets\Scripts\Aliens\AlienCreature.cs" />
      <Compile Include="Assets\Scripts\Aliens\AssertiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Decorators\Inverse.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selector.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\FightSelector.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\IdleSelector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\PursueAttackSelector.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\RecoupSelector.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\AttackTargetSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\EngageTargetSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\EscapeSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\FlockSequence.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\GetTargetSequence.cs" />
