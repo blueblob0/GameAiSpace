@@ -48,6 +48,9 @@ public class AlienAI : MonoBehaviour {
     //Character controller ref
     private CharacterController controller;
 
+    //How much to scale the speed down by (when on planets)
+    private float speedScale;
+
     //Running fast will drain the energy
     private float energy;
     private float maxEnergy;
@@ -133,6 +136,9 @@ public class AlienAI : MonoBehaviour {
 
         //Get the controllre
         controller = GetComponent<CharacterController>();
+
+        //Set the default value
+        speedScale = 1;
     }
 	
 	// Update is called once per frame
@@ -201,6 +207,18 @@ public class AlienAI : MonoBehaviour {
         if(energy < 0) {
             energy = 0;
             changeMaxSpeed(3);
+        }
+    }
+
+    /// <summary>
+    /// Call to set the scale for speed (gets dvidided by amount)
+    /// </summary>
+    /// <param name="scale">Scale for speed, can't be beloew 1</param>
+    public void setSpeedScale(float scale) {
+        if(scale < 1) {
+            return;
+        } else {
+            speedScale = scale;
         }
     }
 
@@ -441,7 +459,7 @@ public class AlienAI : MonoBehaviour {
     /// <param name="vec">Vector to calculate from</param>
     /// <returns></returns>
     public Vector3 calculateSpeed(Vector3 vec) {
-        return vec.normalized * currentSpeed * Time.deltaTime;
+        return ((vec.normalized * currentSpeed) / speedScale) * Time.deltaTime;
     }
 
     /// <summary>
