@@ -2,15 +2,15 @@
 using System.Collections;
 
 /*
- * Sequence for checking if the agent is ready
+ * The main sequence for reproduction
  */
-public class ReadyToReproduceSequence : Sequence {
+public class ReproduceSequence : Sequence {
     //Tasks for this sequence
     private ReadyToReproduce ready;
     private AllyReproductionReadySequence allyReady;
 
     //constructor
-    public ReadyToReproduceSequence(AlienAI agent) : base(agent) {
+    public ReproduceSequence(AlienAI agent) : base(agent) {
         //Construct the tasks in this sequences
         ready = new ReadyToReproduce(agent);
         allyReady = new AllyReproductionReadySequence(agent);
