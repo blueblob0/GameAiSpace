@@ -14,7 +14,7 @@ public class CreatureSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        //StartCoroutine(spawnCreatures());
+        StartCoroutine(spawnCreatures());
     }
 
     private IEnumerator spawnCreatures() {
