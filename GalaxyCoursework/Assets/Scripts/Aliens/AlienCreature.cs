@@ -31,8 +31,6 @@ public class AlienCreature : AlienAI {
     //Used to check if the creature is scaled
     private bool isScaled = false;
 
-    //The chance of reproduction
-    private float reproductionChance;
     //How long between each reproduction attempt (seconds)
     private float reproductionTimer;
     //How long has passed
@@ -69,7 +67,6 @@ public class AlienCreature : AlienAI {
         base.Start();
 
         //Get some random reproduction values
-        reproductionChance = Random.Range(25, 71);
         reproductionTimer = Random.Range(30, 150);
 
         //Set the species
@@ -165,19 +162,8 @@ public class AlienCreature : AlienAI {
         }
 
         //Increment the time passed
-        reproductionTimePassed += Time.deltaTime;
-        //Check the cool down
-        if(reproductionTimePassed >= reproductionTimer) {
-            //Reset interval
-            reproductionTimePassed = 0;
-            //Try and reproduce
-            int chance = Random.Range(0, 100);
-            if(reproductionChance >= chance) {
-                StartCoroutine(reproduce());
-
-                //Add on a random number so reproduction isnt synced
-                reproductionTimePassed += Random.Range(1, 11);
-            }
+        if(reproductionTimePassed < reproductionTimer) {
+            reproductionTimePassed += Time.deltaTime;
         }
     }
 
@@ -281,6 +267,7 @@ public class AlienCreature : AlienAI {
     public float getSpeedModifier() {
         return speedModifier;
     }
+   
 
     /// <summary>
     /// Returns this creatures dodge chance modifier
@@ -419,6 +406,21 @@ public class AlienCreature : AlienAI {
         //Make sure it is at 0,0,0 in relation to the parent
         limb.transform.localPosition = Vector3.zero;
         limb.transform.localRotation = Quaternion.identity;
+    }
+
+    /// <summary>
+    /// Returns true if this agent is ready to reproduce
+    /// </summary>
+    /// <returns></returns>
+    public bool canReproduce() {
+        return reproductionTimePassed >= reproductionTimer;
+    }
+
+    /// <summary>
+    /// Helper function for reoduction
+    /// </summary>
+    public void AttemptReproduction() {
+        StartCoroutine(reproduce());
     }
 
     /// <summary>
