@@ -15,27 +15,40 @@ public class CreatureSpawner : MonoBehaviour {
     //How much to scale the creatures by
     public int scaleValue = 100;
 
+    //How many creatures to spawn on the planet
+    private int amount;
+
     // Use this for initialization
     void Start() {
+        //Set the amount
+        amount = Random.Range(1, 5);
+        //Spawn those craetures
         StartCoroutine(spawnCreatures());
     }
 
     private IEnumerator spawnCreatures() {
-        //Spawn in one creature for now
-        GameObject creature = GameObject.Instantiate(creatureTypes[0]);
+        for(int i = 0; i < amount; i++) {
+            //Spawn in one creature for now
+            GameObject creature = GameObject.Instantiate(creatureTypes[0]);
 
-        //Wait one frame
-        yield return null;
+            //Wait one frame
+            yield return null;
 
-        //Set the parent / local variables
-        creature.transform.SetParent(gameObject.transform);
-        creature.transform.localScale /= scaleValue;                                            //Scale the creature down
-        creature.transform.localPosition = Vector3.up * creature.transform.localScale.y * 3;    //Move the creature up
-        //Make sure the creature wont move too fast
-        creature.GetComponent<AlienAI>().setSpeedScale(scaleValue);
-    }
+            //Set the parent and scale
+            creature.transform.SetParent(gameObject.transform);
+            creature.transform.localScale /= scaleValue;
 
-    void Update() {
-        
+            //Get a spawn position within the surface
+            Vector3 spawnPosition = new Vector3((Random.value * 2) - 1, 0, (Random.value * 2) - 1);
+            //The off set to put the creature on the ground
+            Vector3 spawnOffset = Vector3.up * creature.transform.localScale.y * 3;
+            //Combine the two values
+            spawnPosition += spawnOffset;
+            //Set the position
+            creature.transform.localPosition = spawnPosition;
+
+            //Make sure the creature wont move too fast
+            creature.GetComponent<AlienAI>().setSpeedScale(scaleValue);
+        }
     }
 }
