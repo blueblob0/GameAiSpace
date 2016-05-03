@@ -29,8 +29,10 @@ public class CreatureSpawner : MonoBehaviour {
 
         //Set the parent / local variables
         creature.transform.SetParent(gameObject.transform);
-        creature.transform.localScale /= scaleValue;                                        //Scale the creature down
+        creature.transform.localScale /= scaleValue;                                            //Scale the creature down
         creature.transform.localPosition = Vector3.up * creature.transform.localScale.y * 3;    //Move the creature up
+        //Make sure the creature wont move too fast
+        creature.GetComponent<AlienAI>().setSpeedScale(scaleValue);
     }
 
     void Update() {
