@@ -13,6 +13,9 @@ public class MoveToReproductionTarget : Task {
     }
 
     public bool activate() {
+        //Set the speed
+        agentRef.setTargetSpeed(5);
+        //Move to target
         agentRef.addSteeringForce(seek(agentRef.getReproductionTarget().transform.position));
         return true;
     }
