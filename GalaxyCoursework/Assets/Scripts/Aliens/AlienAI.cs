@@ -16,7 +16,7 @@ public class AlienAI : MonoBehaviour {
     public string creatureSpecies;      //The species of this creature 
     public float acceleration = 0.1f;   //How quickly the speed changes
     public float mass = 20;             //How heavy the agent is (this makes the steering more smooth)
-    public float intelligenceModifier;  //The accuracy of wether to flee or engage 
+    public float intelligenceModifier;  //DOESN'T ACTUALLY DO ANYTHING - ACCURACY MAYBE?
     public float strengthModifier;      //How much damage the creature does
     public float maxSpeed;              //How fast the agent moves at any given time, see true max speed for an unchanging variable
     public float dodgeModifier;         //Likley hood of avoid damage
@@ -665,25 +665,6 @@ public class AlienAI : MonoBehaviour {
         if(setTrueMax) {
             trueMaxSpeed = amount;
         }
-    }
-
-    /// <summary>
-    /// Returns a value on if the agent should attack the creature, < 0 and its not recommended > 0 and it is recommended
-    /// </summary>
-    /// <param name="creature">The target</param>
-    /// <returns></returns>
-    protected float shouldAttack(AlienAI creature) {
-        Debug.Log("Not implemented");
-        ////The stats of this creature comprised into one variable (weights applied)
-        //float stats = getStrength() + getSpeedModifier();
-        ////The stats of the other creature (weights applied)
-        //float theriStats = creature.getStrength() + creature.getSpeedModifier();
-        ////Off set by intelligence
-        //float chance = (stats - theriStats) + (getIntelligence() * 0.1f);
-
-        //Return the likleyhood
-        //return chance;
-        return 0;
     }
 
     /// <summary>
