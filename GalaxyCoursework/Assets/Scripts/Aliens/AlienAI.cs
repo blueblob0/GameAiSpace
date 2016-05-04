@@ -20,6 +20,7 @@ public class AlienAI : MonoBehaviour {
     public float strengthModifier;      //How much damage the creature does
     public float maxSpeed;              //How fast the agent moves
     public float dodgeModifier;         //Likley hood of avoid damage
+    public float reproductionTimer;    //How long between each reproduction attempt (seconds)
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -54,8 +55,6 @@ public class AlienAI : MonoBehaviour {
     //The creature's individual name
     private string creatureName = "NO_NAME";
 
-    //How long between each reproduction attempt (seconds)
-    private float reproductionTimer;
     //How long has passed
     private float reproductionTimePassed;
     //The target to try and reproduce with
