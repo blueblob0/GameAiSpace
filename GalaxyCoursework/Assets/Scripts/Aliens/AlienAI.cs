@@ -185,7 +185,7 @@ public class AlienAI : MonoBehaviour {
 	public virtual void Update () {
         //DEBUG--------------------------
         if(Input.GetKeyDown(KeyCode.Space)) {
-            StartCoroutine(reproduce());
+            reproduce();
         }
         displayDebugLines();
         //-------------------------------
@@ -285,50 +285,6 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
-    /// Delete this creature and replace it with a copy
-    /// </summary>
-    /// <param name="creature">Creature to copy</param>
-    public void copyCreature(AlienAI creature) {
-        Debug.Log("Not implemented");
-        ////Store, then reset the rot
-        //Quaternion rot = transform.rotation;
-        //transform.rotation = Quaternion.identity;
-
-        ////Delete the body
-        //int count = transform.childCount;
-        //for(int i = 0; i < count; i++) {
-        //    Destroy(transform.GetChild(i).gameObject);
-        //}
-
-        ////Add the body of the parent creature
-        //GameObject newBody = GameObject.Instantiate(creature.getDuplicateBody());
-        //newBody.transform.SetParent(transform);
-        //newBody.transform.localPosition = Vector3.zero;
-
-        ////Return the rotation to its default
-        //transform.rotation = rot;
-
-        ////Change the species to parent
-        //creatureSpecies = creature.getSpecies();
-        //name = creatureSpecies + ": " + creatureName;
-
-        ////Populate the list
-        //otherCreatures = new List<GameObject>(creature.getCreatureList());
-        ////Add the 'parent'
-        //addCreature(creature.gameObject);
-        ////Make sure it doesn't contain itself
-        //otherCreatures.Remove(gameObject);
-
-        ////Set the modifiers
-        //intelligenceModifier = creature.getIntelligence();
-        //strengthModifier = creature.getStrength();
-        //speedModifier = creature.getSpeedModifier();
-        //dodgeModifier = creature.getDdogeChance();
-        ////Increase the max speed
-        //changeMaxSpeed(creature.getMaximumSpeed(), true);
-    }
-
-    /// <summary>
     /// Sets the reproduction target of this agent
     /// </summary>
     /// <param name="target"></param>
@@ -376,6 +332,17 @@ public class AlienAI : MonoBehaviour {
         if(!otherCreatures.Contains(newCreature) && newCreature != null && newCreature != gameObject) {
             otherCreatures.Add(newCreature);
         }
+    }
+
+    /// <summary>
+    /// Sets the list of known other creatures
+    /// </summary>
+    /// <param name="list">The list to replace with</param>
+    public void giveCreatureList(List<GameObject> list) {
+        //Replace the list
+        otherCreatures = new List<GameObject>(list);
+        //Make sure the list does not contain itself
+        otherCreatures.Remove(gameObject);
     }
 
     /// <summary>
@@ -663,10 +630,29 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
-    /// Helper function for reoduction
+    /// Attempts to make another copy of this object
     /// </summary>
-    public void AttemptReproduction() {
-        StartCoroutine(reproduce());
+    public void reproduce() {
+        //Create a copy of this gameObject
+        GameObject spawn = GameObject.Instantiate(gameObject);
+        //Make the spawn apear in a random position near the creature
+        spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+
+        //Give the creature the list of current other creatures
+        spawn.GetComponent<AlienAI>().giveCreatureList(otherCreatures);
+        //Let the new creature be aware of this creature
+        spawn.GetComponent<AlienAI>().addCreature(gameObject);
+        //Make the other creatures aware of this new creature
+        foreach(GameObject creature in otherCreatures) {
+            if(creature != null) {
+                creature.GetComponent<AlienAI>().addCreature(spawn);
+            }
+        }
+        //Add the new creature onto this own creature's list
+        addCreature(spawn);
+
+        //Reset the reproduction timer
+        reproductionTimePassed = 0;
     }
 
     /// <summary>
@@ -726,31 +712,6 @@ public class AlienAI : MonoBehaviour {
             }
         }
         return Vector3.zero;
-    }
-
-    /// <summary>
-    /// Attempts to make another copy of this object
-    /// </summary>
-    private IEnumerator reproduce() {
-        Debug.Log("Not Implemented");
-        ////Create a copy of this gameObject
-        //GameObject spawn = GameObject.Instantiate(gameObject);
-        ////Make the spawn apear in a random position near the creature
-        //spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
-        ////Wait a frame for the spawn to happen before copying
-        yield return null;
-        ////Copy this creature's values
-        //spawn.GetComponent<AlienAI>().copyCreature(this);
-        ////Add it onto the list
-        //addCreature(spawn);
-        ////Make the other creatures aware of this new creature
-        //foreach(GameObject creature in otherCreatures) {
-        //    if(creature != null) {
-        //        creature.GetComponent<AlienAI>().addCreature(spawn);
-        //    }
-        //}
-        ////Reset the timer
-        //reproductionTimePassed = 0;
     }
 
     /// <summary>
