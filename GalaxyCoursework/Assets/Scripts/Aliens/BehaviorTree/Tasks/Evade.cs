@@ -40,7 +40,7 @@ public class Evade : Task {
     /// <returns></returns>
     private Vector3 evade(AlienAI target) {
         //How far ahead (as time) to to evade the target
-        float t = Vector3.Distance(target.transform.position, agentRef.transform.position) / (agentRef.currentSpeed * Time.deltaTime);
+        float t = Vector3.Distance(target.transform.position, agentRef.transform.position) / (agentRef.getCurrentSpeed() * Time.deltaTime);
         //Get the future position of the agent
         Vector3 futurePosition = target.transform.position + (target.getVelocity() * t);
         //Return the flee steering of the future position

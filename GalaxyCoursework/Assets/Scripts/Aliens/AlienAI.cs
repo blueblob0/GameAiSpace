@@ -13,11 +13,9 @@ using System.Collections.Generic;
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
-    public float acceleration = 0.1f;  //How quickly the speed changes
-    public float currentSpeed = 5;     //How fast the agent is current moving
-    public float maxSpeed = 10;        //The fastest this agent can currently go
-    public float trueMaxSpeed = 10;    //the fastest possible speed this agent can go at any time
-    public float mass = 20;            //How heavy the agent is (this makes the steering more smooth)
+    public float acceleration = 0.1f;   //How quickly the speed changes
+    public float mass = 20;             //How heavy the agent is (this makes the steering more smooth)
+    public string creatureSpecies;      //The species of this creature 
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -41,10 +39,17 @@ public class AlienAI : MonoBehaviour {
     //Likley hood of avoid damage
     protected float dodgeModifier;         //Will increase per wing
 
-    //If the agent can attack
-    protected bool canAttack;
     //The speed the agent wants to go
     private float targetSpeed;
+    //How fast the agent is current moving
+    private float currentSpeed = 5;
+    //The fastest this agent can currently go   
+    private float maxSpeed = 10;
+    //the fastest possible speed this agent can go at any time       
+    private float trueMaxSpeed = 10;
+
+    //If the agent can attack
+    protected bool canAttack;
 
     //Character controller ref
     private CharacterController controller;
@@ -55,8 +60,6 @@ public class AlienAI : MonoBehaviour {
     //How much to scale the speed down by (when on planets)
     private float speedScale;
 
-    //The species of creature
-    private string creatureSpecies = "NO_SPECIES";
     //The creature's individual name
     private string creatureName = "NO_NAME";
 
@@ -91,12 +94,6 @@ public class AlienAI : MonoBehaviour {
     private Vector3 steering;
     private Vector3 desiredVelocity;
 
-    //Keep track of the limb count
-    private ushort headCount;
-    private ushort armCount;
-    private ushort legCount;
-    private ushort wingCount;
-
     //The main selector of the behavior tree
     private Selector mainSelector;
     //Tasks for the main selector
@@ -117,9 +114,6 @@ public class AlienAI : MonoBehaviour {
                                   "jy", "fv",  "vv",  "tb", "lk",
                                   "ri", "ru",  "lar", "ij"};
 
-    //An array of potential species parts
-    private string[] speciesParts = {"hu", "man", "xe", "mo", "zi",
-                                     "yu", "lo",  "pa", "th", "ad"};
 
 
     // Use this for initialization
@@ -188,19 +182,6 @@ public class AlienAI : MonoBehaviour {
         //Get some random reproduction values
         reproductionTimer = Random.Range(30, 150);
         reproductionTarget = null;
-
-        //Set the species
-        creatureSpecies = "";
-        int speciesLength = Random.Range(2, 6);
-        string firstHalf = "";
-        string secondHalf = "";
-        for(int i = 0; i < speciesLength; i++) {
-            firstHalf += speciesParts[Random.Range(0, speciesParts.Length)];
-        }
-        for(int i = 0; i < speciesLength; i++) {
-            secondHalf += speciesParts[Random.Range(0, speciesParts.Length)];
-        }
-        creatureSpecies = upperCaseFirst(firstHalf) + " " + upperCaseFirst(secondHalf);
 
         //Set the name
         creatureName = "";
