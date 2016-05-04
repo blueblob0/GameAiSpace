@@ -13,9 +13,13 @@ using System.Collections.Generic;
 public class AlienAI : MonoBehaviour {
 
     //Set in inspector
+    public string creatureSpecies;      //The species of this creature 
     public float acceleration = 0.1f;   //How quickly the speed changes
     public float mass = 20;             //How heavy the agent is (this makes the steering more smooth)
-    public string creatureSpecies;      //The species of this creature 
+    public float intelligenceModifier;  //The accuracy of wether to flee or engage 
+    public float strengthModifier;      //How much damage the creature does
+    public float maxSpeed;              //How fast the agent moves
+    public float dodgeModifier;         //Likley hood of avoid damage
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -30,32 +34,19 @@ public class AlienAI : MonoBehaviour {
     //How much damage the agent can take before dying
     protected float health;
     protected float maxHealth;
-    //The accuracy of wether to flee or engage
-    protected float intelligenceModifier;  //Will increase per head
-    //How much damage the agent deals
-    protected float strengthModifier;      //Will increase per arm
-    //How fast the agent moves
-    protected float speedModifier;         //Will increase per leg
-    //Likley hood of avoid damage
-    protected float dodgeModifier;         //Will increase per wing
 
     //The speed the agent wants to go
     private float targetSpeed;
     //How fast the agent is current moving
-    private float currentSpeed = 5;
-    //The fastest this agent can currently go   
-    private float maxSpeed = 10;
+    private float currentSpeed;
     //the fastest possible speed this agent can go at any time       
-    private float trueMaxSpeed = 10;
+    private float trueMaxSpeed;
 
     //If the agent can attack
     protected bool canAttack;
 
     //Character controller ref
     private CharacterController controller;
-
-    //Just to stop the creature 'spawning' twice
-    bool spawned;
 
     //How much to scale the speed down by (when on planets)
     private float speedScale;
@@ -118,9 +109,6 @@ public class AlienAI : MonoBehaviour {
 
     // Use this for initialization
     public virtual void Start () {
-        //Has not yet been spawned
-        spawned = false;
-
         //Construct the main selector
         mainSelector = new Selector(this);
 
@@ -141,13 +129,10 @@ public class AlienAI : MonoBehaviour {
         //Set the stat values
         health = 100;
         maxHealth = health;
-        intelligenceModifier = 40;
-        strengthModifier = 20;
-        speedModifier = 5;
-        dodgeModifier = 20;
         energy = 100;
         maxEnergy = energy;
         energyThreshold = 5;
+        trueMaxSpeed = maxSpeed;
 
         //Let the agent attack
         canAttack = true;
@@ -318,42 +303,43 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <param name="creature">Creature to copy</param>
     public void copyCreature(AlienAI creature) {
-        //Store, then reset the rot
-        Quaternion rot = transform.rotation;
-        transform.rotation = Quaternion.identity;
+        Debug.Log("Not implemented");
+        ////Store, then reset the rot
+        //Quaternion rot = transform.rotation;
+        //transform.rotation = Quaternion.identity;
 
-        //Delete the body
-        int count = transform.childCount;
-        for(int i = 0; i < count; i++) {
-            Destroy(transform.GetChild(i).gameObject);
-        }
+        ////Delete the body
+        //int count = transform.childCount;
+        //for(int i = 0; i < count; i++) {
+        //    Destroy(transform.GetChild(i).gameObject);
+        //}
 
-        //Add the body of the parent creature
-        GameObject newBody = GameObject.Instantiate(creature.getDuplicateBody());
-        newBody.transform.SetParent(transform);
-        newBody.transform.localPosition = Vector3.zero;
+        ////Add the body of the parent creature
+        //GameObject newBody = GameObject.Instantiate(creature.getDuplicateBody());
+        //newBody.transform.SetParent(transform);
+        //newBody.transform.localPosition = Vector3.zero;
 
-        //Return the rotation to its default
-        transform.rotation = rot;
+        ////Return the rotation to its default
+        //transform.rotation = rot;
 
-        //Change the species to parent
-        creatureSpecies = creature.getSpecies();
-        name = creatureSpecies + ": " + creatureName;
+        ////Change the species to parent
+        //creatureSpecies = creature.getSpecies();
+        //name = creatureSpecies + ": " + creatureName;
 
-        //Populate the list
-        otherCreatures = new List<GameObject>(creature.getCreatureList());
-        //Add the 'parent'
-        addCreature(creature.gameObject);
-        //Make sure it doesn't contain itself
-        otherCreatures.Remove(gameObject);
+        ////Populate the list
+        //otherCreatures = new List<GameObject>(creature.getCreatureList());
+        ////Add the 'parent'
+        //addCreature(creature.gameObject);
+        ////Make sure it doesn't contain itself
+        //otherCreatures.Remove(gameObject);
 
-        //Set the modifiers
-        intelligenceModifier = creature.getIntelligence();
-        strengthModifier = creature.getStrength();
-        speedModifier = creature.getSpeedModifier();
-        dodgeModifier = creature.getDdogeChance();
-        //Increase the max speed
-        changeMaxSpeed(creature.getMaximumSpeed(), true);
+        ////Set the modifiers
+        //intelligenceModifier = creature.getIntelligence();
+        //strengthModifier = creature.getStrength();
+        //speedModifier = creature.getSpeedModifier();
+        //dodgeModifier = creature.getDdogeChance();
+        ////Increase the max speed
+        //changeMaxSpeed(creature.getMaximumSpeed(), true);
     }
 
     /// <summary>
@@ -421,15 +407,6 @@ public class AlienAI : MonoBehaviour {
     public float getStrength() {
         return strengthModifier;
     }
-
-    /// <summary>
-    /// Returns this creatures speed modifier
-    /// </summary>
-    /// <returns></returns>
-    public float getSpeedModifier() {
-        return speedModifier;
-    }
-
 
     /// <summary>
     /// Returns this creatures dodge chance modifier
@@ -724,15 +701,17 @@ public class AlienAI : MonoBehaviour {
     /// <param name="creature">The target</param>
     /// <returns></returns>
     protected float shouldAttack(AlienAI creature) {
-        //The stats of this creature comprised into one variable (weights applied)
-        float stats = getStrength() + getSpeedModifier();
-        //The stats of the other creature (weights applied)
-        float theriStats = creature.getStrength() + creature.getSpeedModifier();
-        //Off set by intelligence
-        float chance = (stats - theriStats) + (getIntelligence() * 0.1f);
+        Debug.Log("Not implemented");
+        ////The stats of this creature comprised into one variable (weights applied)
+        //float stats = getStrength() + getSpeedModifier();
+        ////The stats of the other creature (weights applied)
+        //float theriStats = creature.getStrength() + creature.getSpeedModifier();
+        ////Off set by intelligence
+        //float chance = (stats - theriStats) + (getIntelligence() * 0.1f);
 
         //Return the likleyhood
-        return chance;
+        //return chance;
+        return 0;
     }
 
     /// <summary>
