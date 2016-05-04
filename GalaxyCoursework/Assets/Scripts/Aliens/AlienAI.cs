@@ -91,9 +91,6 @@ public class AlienAI : MonoBehaviour {
     private Vector3 steering;
     private Vector3 desiredVelocity;
 
-    //The script the body contains
-    private AlienBody bodyScript;
-
     //Keep track of the limb count
     private ushort headCount;
     private ushort armCount;

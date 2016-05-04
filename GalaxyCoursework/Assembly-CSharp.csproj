@@ -47,8 +47,6 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Aliens\AgressiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienAI.cs" />
-     <Compile Include="Assets\Scripts\Aliens\AlienBody.cs" />
-     <Compile Include="Assets\Scripts\Aliens\AssertiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Decorators\Inverse.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selector.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\FightSelector.cs" />
@@ -91,8 +89,6 @@
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\ReproductionTargetInRange.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Rest.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Wander.cs" />
-     <Compile Include="Assets\Scripts\Aliens\CreatureSpawner.cs" />
-     <Compile Include="Assets\Scripts\Aliens\PassiveAlien.cs" />
      <Compile Include="Assets\Scripts\BlackHole.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
