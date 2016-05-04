@@ -260,6 +260,7 @@ public class AlienAI : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Space)) {
             StartCoroutine(reproduce());
         }
+        displayDebugLines();
         //-------------------------------
 
         //Check the health
@@ -292,6 +293,9 @@ public class AlienAI : MonoBehaviour {
 
         //Only if the agent wants to move
         if(currentSpeed > 0) {
+            //Avoid obstacles independantly of the behavior tree
+            addSteeringForce(collisionAvoidance());
+
             //Make the steering smooth
             steering /= mass;
 
@@ -776,6 +780,34 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Returns a force to avoid obstacles with
+    /// </summary>
+    /// <param name="distance">Distance ahead to avoid obstacles</param>
+    /// <param name="strength">How strong the force will be</param>
+    /// <returns></returns>
+    private Vector3 collisionAvoidance(float distance = 10, float strength = 1) {
+        //Fire a ray at the distance to look ahead
+        RaycastHit rayOut;
+        if(Physics.Raycast(transform.position, velocity, out rayOut, distance)) {
+            //Store the game object
+            GameObject hit = rayOut.collider.gameObject;
+            //First make sure we arent avoiding targets or allies
+            if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit)) {
+                Debug.Log("Applying force away from " + hit.name);
+
+                //Calculate the avoidance force
+                Vector3 ahead = transform.position + velocity * distance * Time.deltaTime;
+                Vector3 avoidanceForce = ahead - (rayOut.point + hit.transform.position);
+                //Set the desired velocity
+                setDesiredVelocity(avoidanceForce.normalized * strength * Time.deltaTime);
+                //Return the new force to push the agent away from obsticles
+                return desiredVelocity - velocity;
+            }
+        }
+        return Vector3.zero;
+    }
+
+    /// <summary>
     /// Spawns in the creature
     /// </summary>
     /// <param name="body">The body to attach the limbs to</param>
@@ -970,6 +1002,8 @@ public class AlienAI : MonoBehaviour {
         //Steering
         Vector3 steer = steering + velocity;
         Debug.DrawLine(transform.position, transform.position + (steer.normalized * 5), Color.red);
+        //Avoidance distance
+        Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 10), Color.magenta);
         //Velocity
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 5), Color.green);
     }
