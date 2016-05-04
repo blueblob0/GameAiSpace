@@ -397,7 +397,7 @@ public class AlienAI : MonoBehaviour {
         speedModifier = creature.getSpeedModifier();
         dodgeModifier = creature.getDdogeChance();
         //Increase the max speed
-        changeMaxSpeed(getMaximumSpeed() + speedModifier, true);
+        changeMaxSpeed(creature.getMaximumSpeed(), true);
     }
 
     /// <summary>
@@ -785,7 +785,7 @@ public class AlienAI : MonoBehaviour {
     /// <param name="distance">Distance ahead to avoid obstacles</param>
     /// <param name="strength">How strong the force will be</param>
     /// <returns></returns>
-    private Vector3 collisionAvoidance(float distance = 10, float strength = 1) {
+    private Vector3 collisionAvoidance(float distance = 10, float strength = 3) {
         //Fire a ray at the distance to look ahead
         RaycastHit rayOut;
         if(Physics.Raycast(transform.position, velocity, out rayOut, distance)) {
@@ -793,7 +793,7 @@ public class AlienAI : MonoBehaviour {
             GameObject hit = rayOut.collider.gameObject;
             //First make sure we arent avoiding targets or allies
             if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit)) {
-                Debug.Log("Applying force away from " + hit.name);
+                //Debug.Log("Applying force away from " + hit.name);
 
                 //Calculate the avoidance force
                 Vector3 ahead = transform.position + velocity * distance * Time.deltaTime;
