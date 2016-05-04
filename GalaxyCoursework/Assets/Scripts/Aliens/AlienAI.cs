@@ -18,9 +18,9 @@ public class AlienAI : MonoBehaviour {
     public float mass = 20;             //How heavy the agent is (this makes the steering more smooth)
     public float intelligenceModifier;  //The accuracy of wether to flee or engage 
     public float strengthModifier;      //How much damage the creature does
-    public float maxSpeed;              //How fast the agent moves
+    public float maxSpeed;              //How fast the agent moves at any given time, see true max speed for an unchanging variable
     public float dodgeModifier;         //Likley hood of avoid damage
-    public float reproductionTimer;    //How long between each reproduction attempt (seconds)
+    public float reproductionTimer;     //How long between each reproduction attempt (seconds)
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -40,7 +40,7 @@ public class AlienAI : MonoBehaviour {
     private float targetSpeed;
     //How fast the agent is current moving
     private float currentSpeed;
-    //the fastest possible speed this agent can go at any time       
+    //the fastest possible speed this agent can go      
     private float trueMaxSpeed;
 
     //If the agent can attack
@@ -104,8 +104,6 @@ public class AlienAI : MonoBehaviour {
                                   "jy", "fv",  "vv",  "tb", "lk",
                                   "ri", "ru",  "lar", "ij"};
 
-
-
     // Use this for initialization
     public virtual void Start () {
         //Construct the main selector
@@ -132,6 +130,8 @@ public class AlienAI : MonoBehaviour {
         maxEnergy = energy;
         energyThreshold = 5;
         trueMaxSpeed = maxSpeed;
+        currentSpeed = 0;
+        targetSpeed = currentSpeed;
 
         //Let the agent attack
         canAttack = true;
@@ -155,17 +155,15 @@ public class AlienAI : MonoBehaviour {
         weightChangeWait = Random.Range(3, 10);
         weightChangePass = 0;
 
-        targetSpeed = currentSpeed;
-
         //Get the controllre
         controller = GetComponent<CharacterController>();
 
         //Set the default value
         speedScale = 1;
 
-        //Get some random reproduction values
-        reproductionTimer = Random.Range(30, 150);
+        //Init
         reproductionTarget = null;
+        reproductionTimePassed = 0;
 
         //Set the name
         creatureName = "";
@@ -176,17 +174,6 @@ public class AlienAI : MonoBehaviour {
         creatureName = upperCaseFirst(creatureName);
         //Set the object name
         name = creatureSpecies + ": " + creatureName;
-
-        //Get the object's rotation, easier to spawn everything the same direction
-        Quaternion rot = transform.rotation;
-        //Reset it to 0
-        transform.rotation = Quaternion.identity;
-
-        //Now the creature has been created, re apply the rotation
-        transform.rotation = rot;
-
-        //Init
-        reproductionTimePassed = 0;
 
         //Set the collider size
         targetDetectCollider = GetComponent<SphereCollider>();
@@ -742,42 +729,28 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
-    /// Spawns a limb on the creature
-    /// </summary>
-    /// <param name="parent">The transform to attack the limb to</param>
-    /// <param name="limbPrefab">The prefab to instantiate</param>
-    private void spawnLimb(Transform parent, GameObject limbPrefab) {
-        //Spawn in the wing
-        GameObject limb = GameObject.Instantiate<GameObject>(limbPrefab);
-        //Set the parent
-        limb.transform.SetParent(parent);
-        //Make sure it is at 0,0,0 in relation to the parent
-        limb.transform.localPosition = Vector3.zero;
-        limb.transform.localRotation = Quaternion.identity;
-    }
-
-    /// <summary>
     /// Attempts to make another copy of this object
     /// </summary>
     private IEnumerator reproduce() {
-        //Create a copy of this gameObject
-        GameObject spawn = GameObject.Instantiate(gameObject);
-        //Make the spawn apear in a random position near the creature
-        spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
-        //Wait a frame for the spawn to happen before copying
+        Debug.Log("Not Implemented");
+        ////Create a copy of this gameObject
+        //GameObject spawn = GameObject.Instantiate(gameObject);
+        ////Make the spawn apear in a random position near the creature
+        //spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        ////Wait a frame for the spawn to happen before copying
         yield return null;
-        //Copy this creature's values
-        spawn.GetComponent<AlienAI>().copyCreature(this);
-        //Add it onto the list
-        addCreature(spawn);
-        //Make the other creatures aware of this new creature
-        foreach(GameObject creature in otherCreatures) {
-            if(creature != null) {
-                creature.GetComponent<AlienAI>().addCreature(spawn);
-            }
-        }
-        //Reset the timer
-        reproductionTimePassed = 0;
+        ////Copy this creature's values
+        //spawn.GetComponent<AlienAI>().copyCreature(this);
+        ////Add it onto the list
+        //addCreature(spawn);
+        ////Make the other creatures aware of this new creature
+        //foreach(GameObject creature in otherCreatures) {
+        //    if(creature != null) {
+        //        creature.GetComponent<AlienAI>().addCreature(spawn);
+        //    }
+        //}
+        ////Reset the timer
+        //reproductionTimePassed = 0;
     }
 
     /// <summary>
