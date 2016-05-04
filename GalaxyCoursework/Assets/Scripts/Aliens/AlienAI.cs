@@ -19,13 +19,6 @@ public class AlienAI : MonoBehaviour {
     public float trueMaxSpeed = 10;    //the fastest possible speed this agent can go at any time
     public float mass = 20;            //How heavy the agent is (this makes the steering more smooth)
 
-    //Set in inspector
-    public GameObject[] bodyPrefabs;
-    public GameObject[] headPrefabs;
-    public GameObject[] armPrefabs;
-    public GameObject[] legPrefabs;
-    public GameObject[] wingPrefabs;
-
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
     //The agents current target
@@ -226,21 +219,6 @@ public class AlienAI : MonoBehaviour {
         Quaternion rot = transform.rotation;
         //Reset it to 0
         transform.rotation = Quaternion.identity;
-
-        //Select the body to be used
-        GameObject bodyToUse = bodyPrefabs[Random.Range(0, bodyPrefabs.Length)];
-
-        //Add the body script
-        bodyScript = bodyToUse.GetComponent<AlienBody>();
-
-        //Get the maximum number of spawn spots
-        ushort maxHead = (ushort)bodyScript.getHeadSpotCount();
-        ushort maxArm = (ushort)bodyScript.getArmSpotCount();
-        ushort maxLeg = (ushort)bodyScript.getLegSpotCount();
-        ushort maxWing = (ushort)bodyScript.getWingSpotCount();
-
-        //Create the creature
-        createCreature(bodyToUse, (ushort)Random.Range(1, maxHead + 1), (ushort)Random.Range(2, maxArm + 1), (ushort)Random.Range(2, maxLeg + 1), (ushort)Random.Range(2, maxWing + 1));
 
         //Now the creature has been created, re apply the rotation
         transform.rotation = rot;
@@ -805,105 +783,6 @@ public class AlienAI : MonoBehaviour {
             }
         }
         return Vector3.zero;
-    }
-
-    /// <summary>
-    /// Spawns in the creature
-    /// </summary>
-    /// <param name="body">The body to attach the limbs to</param>
-    /// <param name="maxHeads">The maximum amount of heads the creature can have</param>
-    /// <param name="maxArms">The maximum amount of arms the creature can have</param>
-    /// <param name="maxLegs">The maximum amount of legs the creature can have</param>
-    /// <param name="maxWings">The maximum amount of wings the creature can have</param>
-    private void createCreature(GameObject bodyPrefab, ushort maxHeads = 1, ushort maxArms = 2, ushort maxLegs = 2, ushort maxWings = 0) {
-        if(!spawned) {
-            //Set the limb counts
-            headCount = maxHeads;
-            armCount = maxArms;
-            legCount = maxLegs;
-            wingCount = maxWings;
-
-            //Spawn in the body
-            GameObject body = GameObject.Instantiate<GameObject>(bodyPrefab);
-            body.transform.SetParent(transform);
-            body.transform.localPosition = Vector3.zero;
-
-            //Make the body a random colour
-            body.transform.FindChild("Body").GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, Random.value);
-
-            //Get the head to use
-            GameObject headToUse = headPrefabs[Random.Range(0, headPrefabs.Length)];
-            //Spawn in the Head(s)
-            for(int i = 0; i < maxHeads; i++) {
-                //Get the body's children
-                for(int j = 0; j < body.transform.childCount; j++) {
-                    //Check if the spot is a 'Head' spot and that it is free
-                    GameObject headSpot = body.transform.GetChild(j).gameObject;
-                    if(headSpot.name == "Head" + i && headSpot.transform.childCount == 0) {
-                        //Spawn in the head
-                        spawnLimb(headSpot.transform, headToUse);
-                    }
-                }
-            }
-            //Increase intelligence based off of head count
-            intelligenceModifier += maxHeads * 10;
-
-            //Get the arm to use
-            GameObject armToUse = armPrefabs[Random.Range(0, armPrefabs.Length)];
-            //Spawn in the Arms
-            for(int i = 0; i < maxArms; i++) {
-                //Get the body's children
-                for(int j = 0; j < body.transform.childCount; j++) {
-                    //Check if the spot is an 'Arm' spot and that it is free
-                    GameObject armSpot = body.transform.GetChild(j).gameObject;
-                    if(armSpot.name == "Arm" + i && armSpot.transform.childCount == 0) {
-                        //Spawn in the arm
-                        spawnLimb(armSpot.transform, armToUse);
-                    }
-                }
-            }
-            //Increase strength based off of the arm count
-            strengthModifier += maxArms * 5;
-
-            //Get the leg to use
-            GameObject legToUse = legPrefabs[Random.Range(0, legPrefabs.Length)];
-            //Spawn in the Legs
-            for(int i = 0; i < maxLegs; i++) {
-                //Get the body's children
-                for(int j = 0; j < body.transform.childCount; j++) {
-                    //Check if the spot is a 'Leg' spot and that it is free
-                    GameObject legSpot = body.transform.GetChild(j).gameObject;
-                    if(legSpot.name == "Leg" + i && legSpot.transform.childCount == 0) {
-                        //Spawn in the leg
-                        spawnLimb(legSpot.transform, legToUse);
-                    }
-                }
-            }
-            //Increase speed based off of the leg count (for the reproducted aliens)
-            speedModifier += maxLegs;
-            //Increase the max speed
-            changeMaxSpeed(getMaximumSpeed() + speedModifier, true);
-
-            //Get the wing to use
-            GameObject wingToUse = wingPrefabs[Random.Range(0, wingPrefabs.Length)];
-            //Spawn in the wings
-            for(int i = 0; i < maxWings; i++) {
-                //Get the body's children
-                for(int j = 0; j < body.transform.childCount; j++) {
-                    //Check if the spot is a 'Wing' spot and that it is free
-                    GameObject wingSpot = body.transform.GetChild(j).gameObject;
-                    if(wingSpot.name == "Wing" + i && wingSpot.transform.childCount == 0) {
-                        //Spawn the wing
-                        spawnLimb(wingSpot.transform, wingToUse);
-                    }
-                }
-            }
-            //Increase dodge based off of the wing count
-            dodgeModifier += wingCount * 2;
-
-            //Creature has now been spawned
-            spawned = true;
-        }
     }
 
     /// <summary>
