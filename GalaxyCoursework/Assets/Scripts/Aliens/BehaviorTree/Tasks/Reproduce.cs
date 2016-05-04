@@ -13,7 +13,7 @@ public class Reproduce : Task {
     }
 
     public bool activate() {
-        agentRef.AttemptReproduction();
+        agentRef.reproduce();
         return true;
     }
 }
