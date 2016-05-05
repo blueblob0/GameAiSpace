@@ -21,7 +21,7 @@ public class AlienAI : MonoBehaviour {
     public float maxSpeed;              //How fast the agent moves at any given time, see true max speed for an unchanging variable
     public float dodgeModifier;         //Likley hood of avoid damage
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
-    public biomes favouriteBiome;       //Creature gets a +%20 in stats inside this biome
+    public biomes favouriteBiome;       //Creature gets a +%35 in stats inside this biome
     public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
     public bool canFly = false;         //DOIESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
 
@@ -38,6 +38,12 @@ public class AlienAI : MonoBehaviour {
     //How much damage the agent can take before dying
     protected float health;
     protected float maxHealth;
+
+    //These are here to store the base values for all the modifies (which get changed per biome)
+    private float baseAttackSpeed;
+    private float baseStrength;
+    private float baseDodge;
+    private float baseReproduction;
 
     //The speed the agent wants to go
     private float targetSpeed;
@@ -135,6 +141,11 @@ public class AlienAI : MonoBehaviour {
         trueMaxSpeed = maxSpeed;
         currentSpeed = 0;
         targetSpeed = currentSpeed;
+        //Keep track of the base values
+        baseAttackSpeed = attackSpeed;
+        baseDodge = dodgeModifier;
+        baseStrength = strengthModifier;
+        baseReproduction = reproductionTimer;
 
         //Let the agent attack
         canAttack = true;
@@ -285,6 +296,37 @@ public class AlienAI : MonoBehaviour {
     /// <param name="other"></param>
     public void OnTriggerExit(Collider other) {
         nearTargets.Remove(other.GetComponent<AlienAI>());
+    }
+
+    /// <summary>
+    /// Called when the creature enters a biome, adjusts stats accordingly
+    /// </summary>
+    public void enteredBiome(biomes biome) {
+        if (biome == favouriteBiome){
+            //Increase stats by 35%
+            strengthModifier += baseStrength * 0.35f;
+            dodgeModifier += baseDodge * 0.35f;
+            attackSpeed += baseAttackSpeed * 0.35f;
+            reproductionTimer += baseReproduction * 0.35f;
+        }
+
+        if (biome == leastFavouriteBiome) {
+            //Decrease stats by 60%
+            strengthModifier -= baseStrength * 0.6f;
+            dodgeModifier -= baseDodge * 0.6f;
+            attackSpeed -= baseAttackSpeed * 0.6f;
+            reproductionTimer -= baseReproduction * 0.6f;
+        }
+    }
+
+    /// <summary>
+    /// Called when the creature leaves the biome, sets its stat values back to normal
+    /// </summary>
+    public void leftBiome(){
+        strengthModifier = baseStrength;
+        dodgeModifier = baseDodge;
+        attackSpeed = baseAttackSpeed;
+        reproductionTimer = baseReproduction;
     }
 
     /// <summary>
