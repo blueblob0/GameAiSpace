@@ -11,6 +11,10 @@ public class CreatureSpawner : MonoBehaviour {
 
     //Set in inspector
     public GameObject[] creatureTypes;
+    public Transform[] spawnPlaces;
+
+    //Keep track of what has been spawned where
+    private bool[] placeTaken;
 
     //How much to scale the creatures by
     public int scaleValue = 100;
@@ -20,6 +24,11 @@ public class CreatureSpawner : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
+        placeTaken = new bool[spawnPlaces.Length];
+        for(int i = 0; i < placeTaken.Length; i++) {
+            placeTaken[i] = false;
+        }
+
         //Set the amount
         amount = Random.Range(1, 5);
         //Spawn those craetures
@@ -28,6 +37,18 @@ public class CreatureSpawner : MonoBehaviour {
 
     private IEnumerator spawnCreatures() {
         for(int i = 0; i < amount; i++) {
+            //Make sure there is a free space left
+            bool allTaken = true;
+            for(int k = 0; k < placeTaken.Length; k++) {
+                if(!placeTaken[k]) {
+                    allTaken = false;
+                    break;
+                }
+            }
+            if(allTaken) {
+                yield break;
+            }
+
             //Spawn in one creature for now
             GameObject creature = GameObject.Instantiate(creatureTypes[Random.Range(1, creatureTypes.Length)]);
 
@@ -39,7 +60,14 @@ public class CreatureSpawner : MonoBehaviour {
             creature.transform.localScale /= scaleValue;
 
             //Get a spawn position within the surface
-            Vector3 spawnPosition = new Vector3((Random.value * 2) - 1, 0, (Random.value * 2) - 1);
+            int rand;
+            Vector3 spawnPosition;
+            do {
+                rand = Random.Range(0, spawnPlaces.Length);
+                spawnPosition = spawnPlaces[rand].localPosition;
+            } while(placeTaken[rand]);
+            placeTaken[rand] = true;
+            
             //Set the position
             creature.transform.localPosition = spawnPosition;
 
