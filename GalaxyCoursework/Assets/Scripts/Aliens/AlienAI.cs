@@ -317,31 +317,24 @@ public class AlienAI : MonoBehaviour {
     /// Called when the creature enters a biome, adjusts stats accordingly
     /// </summary>
     public void enteredBiome(biomes biome) {
-        if (biome == favouriteBiome){
+        if(biome == favouriteBiome) {
             //Increase stats by 35%
             strengthModifier += baseStrength * 0.35f;
             dodgeModifier += baseDodge * 0.35f;
             attackSpeed += baseAttackSpeed * 0.35f;
             reproductionTimer += baseReproduction * 0.35f;
-        }
-
-        if (biome == leastFavouriteBiome) {
+        } else if(biome == leastFavouriteBiome) {
             //Decrease stats by 60%
             strengthModifier -= baseStrength * 0.6f;
             dodgeModifier -= baseDodge * 0.6f;
             attackSpeed -= baseAttackSpeed * 0.6f;
             reproductionTimer -= baseReproduction * 0.6f;
+        } else {
+            strengthModifier = baseStrength;
+            dodgeModifier = baseDodge;
+            attackSpeed = baseAttackSpeed;
+            reproductionTimer = baseReproduction;
         }
-    }
-
-    /// <summary>
-    /// Called when the creature leaves the biome, sets its stat values back to normal
-    /// </summary>
-    public void leftBiome(){
-        strengthModifier = baseStrength;
-        dodgeModifier = baseDodge;
-        attackSpeed = baseAttackSpeed;
-        reproductionTimer = baseReproduction;
     }
 
     /// <summary>
