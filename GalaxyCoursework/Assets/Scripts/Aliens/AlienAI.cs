@@ -117,8 +117,9 @@ public class AlienAI : MonoBehaviour {
     // Use this for initialization
     public virtual void Start () {
         //Get a random colour for this creature
+        Color bodyColour = new Color(Random.value, Random.value, Random.value);
         for(int i = 0; i < creatureBody.Length; i++) {
-            creatureBody[i].GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, Random.value);
+            creatureBody[i].GetComponent<Renderer>().material.color = bodyColour;
         }
 
         //Construct the main selector
