@@ -506,7 +506,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public float getCurrentSpeed() {
-        return currentSpeed;
+        return currentSpeed / planetScale;
     }
 
     /// <summary>
@@ -678,12 +678,14 @@ public class AlienAI : MonoBehaviour {
     public void reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
-        //Make the spawn apear in a random position near the creature
-        spawn.transform.position += new Vector3(Random.Range(-10, 10) / planetScale, 0, Random.Range(-10, 10) / planetScale);
         //Set the parent if there is one
         if(transform.parent != null) {
             spawn.transform.SetParent(transform.parent);
         }
+        //Make the spawn apear in a random position near the creature
+        spawn.transform.position = transform.position + new Vector3(Random.Range(-10, 10) / planetScale, 0, Random.Range(-10, 10) / planetScale);
+        //Make sure the scale is normal
+        spawn.transform.localScale = transform.localScale;
 
         //Set the body colour
         spawn.GetComponent<AlienAI>().changeBodyColour(bodyColour);
@@ -731,7 +733,7 @@ public class AlienAI : MonoBehaviour {
             GameObject hit = rayOut.collider.gameObject;
             //First make sure we arent avoiding targets or allies
             if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit)) {
-                Debug.Log("Applying force away from " + hit.name);
+                //Debug.Log("Applying force away from " + hit.name);
 
                 //Calculate the avoidance force
                 Vector3 ahead = transform.position + velocity * distance * Time.deltaTime;
