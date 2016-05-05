@@ -15,6 +15,6 @@ public class EnemyInRange : Task {
 
     public bool activate() {
         //Returns true if the targets are in range
-        return Vector3.Distance(agentRef.getTarget().transform.position, agentRef.transform.position) < 5;
+        return Vector3.Distance(agentRef.getTarget().transform.position, agentRef.transform.position) <= 5;
     }
 }

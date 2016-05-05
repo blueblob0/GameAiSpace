@@ -44,7 +44,7 @@ public class CreatureSpawner : MonoBehaviour {
             creature.transform.localPosition = spawnPosition;
 
             //Make sure the creature wont move too fast
-            creature.GetComponent<AlienAI>().setSpeedScale(scaleValue);
+            creature.GetComponent<AlienAI>().setPlanetScale(scaleValue);
         }
     }
 }

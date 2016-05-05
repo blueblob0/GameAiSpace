@@ -58,8 +58,8 @@ public class AlienAI : MonoBehaviour {
     //Character controller ref
     private CharacterController controller;
 
-    //How much to scale the speed down by (when on planets)
-    private float speedScale;
+    //How much to scale everything down (for the planet size)
+    private float planetScale;
 
     //The creature's individual name
     private string creatureName = "NO_NAME";
@@ -173,7 +173,7 @@ public class AlienAI : MonoBehaviour {
         controller = GetComponent<CharacterController>();
 
         //Set the default value
-        speedScale = 1;
+        planetScale = 1;
 
         //Init
         reproductionTarget = null;
@@ -386,11 +386,11 @@ public class AlienAI : MonoBehaviour {
     /// Call to set the scale for speed (gets dvidided by amount)
     /// </summary>
     /// <param name="scale">Scale for speed, can't be beloew 1</param>
-    public void setSpeedScale(float scale) {
+    public void setPlanetScale(float scale) {
         if(scale < 1) {
             return;
         } else {
-            speedScale = scale;
+            planetScale = scale;
         }
     }
 
@@ -631,7 +631,7 @@ public class AlienAI : MonoBehaviour {
     /// <param name="vec">Vector to calculate from</param>
     /// <returns></returns>
     public Vector3 calculateSpeed(Vector3 vec) {
-        return ((vec.normalized * currentSpeed) / speedScale) * Time.deltaTime;
+        return ((vec.normalized * currentSpeed) / planetScale) * Time.deltaTime;
     }
 
     /// <summary>
