@@ -94,9 +94,14 @@ public class Planet : Satalite
                 oneSect = Mathf.CeilToInt((test) * count);
 
                 //Placing the biome zones---------------------------------------------------------------------
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                //Spawn i nthe cube collider
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);   //replace with the prefab
+                //Set the position
                 cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z + y) - (test/2) - (numOfChanges == 3 ? 2 : 0));
-                cube.name = count + " - " + y;
+                //Resize
+                cube.transform.localScale = new Vector3(13, 1, 13 / numOfChanges);
+                //Let the collider know which biome it is and what parent to set (position scale fuck up if you set the parent here)
+                //TODO
                 //--------------------------------------------------------------------------------------------
             }
 
