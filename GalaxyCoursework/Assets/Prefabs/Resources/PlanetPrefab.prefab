@@ -517,7 +517,7 @@ MonoBehaviour:
   - {fileID: 127500, guid: 19d7e18934272fa4b96c1b1f323fab46, type: 2}
   - {fileID: 115768, guid: f0ce77993fe75274bba7dc136e4ace50, type: 2}
   - {fileID: 103400, guid: dfc7780fb292a5b45b0a4d58b764a574, type: 2}
-  scaleValue: 100
+  scaleValue: 50
 --- !u!114 &11469362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -615,6 +615,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_CastShadows
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: scaleValue
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
