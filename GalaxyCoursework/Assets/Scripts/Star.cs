@@ -10,14 +10,19 @@ public class Star: CelestialBody
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
-    const float dist = 0.05f;//CreateGalaxy.starMuti;
-    const float minDis = 0.05f;//CreateGalaxy.starMuti;
+    //const float dist = 0.05f;//
+    const float dist = CreateGalaxy.starMuti;
+   // const float minDis = 0.05f;//CreateGalaxy.starMuti;
+    const float minDis = CreateGalaxy.starMuti;
     //public float angle;
     //public float spiralAngel;
     // Use this for initialization
     protected override void Start()
     {       
         miniSun.SetActive(false);
+        miniSun.transform.SetParent(null);
+        miniSun.transform.localScale = Vector3.one * CreateGalaxy.starMuti *2;
+        miniSun.transform.SetParent(transform);
         base.Start();
         planetsSpawned = false;
         //mass = 100;      
@@ -33,26 +38,27 @@ public class Star: CelestialBody
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
-        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x - 50)/2 )/60);
-        //Debug.Log(maxplanets);
+        int maxplanets = Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
+
+        Debug.Log((transform.lossyScale.x / CreateGalaxy.starMuti * 2) - (CreateGalaxy.starMuti * 2));
 
         do
         {
             planetsNum();
         } while (numPlanets > maxplanets);
-
+        numPlanets = maxplanets;
         // Debug.Log(numPlanets);
         planetsLoc = new SataliteDetails[numPlanets];
-        float hold = transform.lossyScale.x / 2;
-        hold = 0.05f;
+        float hold = CreateGalaxy.starMuti;
+        
         Vector2 circlePos;
         circlePos = Vector2.one;
         for (int i = 0; i < numPlanets; i++)
-        {
+        {          
             //circlePos = Random.insideUnitCircle.normalized;
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
             planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos);
-            hold = planetsLoc[i].distFromBody;
+            hold = planetsLoc[i].distFromBody + minDis;
         }
     }
 
@@ -113,7 +119,10 @@ public class Star: CelestialBody
         holds.distPlanet = starPos.distFromBody;
         a.name = starPos.distFromBody.ToString();
         a.transform.SetParent(gameObject.transform);
-        a.transform.localPosition = starPos.location;
+
+        a.transform.position = gameObject.transform.position;
+
+        a.transform.position+= starPos.location;
 
         holds.SetBiomes();
 
