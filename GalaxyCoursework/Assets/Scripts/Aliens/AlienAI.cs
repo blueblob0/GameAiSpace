@@ -23,7 +23,7 @@ public class AlienAI : MonoBehaviour {
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
     public biomes favouriteBiome;       //Creature gets a +%20 in stats inside this biome
     public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
-    public bool canFly;                 //DOIESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
+    public bool canFly = false;         //DOIESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
