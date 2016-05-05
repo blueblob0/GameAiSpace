@@ -198,7 +198,7 @@ public class AlienAI : MonoBehaviour {
 
         //Set the collider size
         targetDetectCollider = GetComponent<SphereCollider>();
-        targetDetectCollider.radius = 30 / planetScale;
+        targetDetectCollider.radius = 30;
         targetDetectCollider.isTrigger = true;
     }
 	
