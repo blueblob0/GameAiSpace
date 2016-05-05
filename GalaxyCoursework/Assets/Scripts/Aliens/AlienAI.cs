@@ -16,11 +16,14 @@ public class AlienAI : MonoBehaviour {
     public string creatureSpecies;      //The species of this creature 
     public float acceleration = 0.1f;   //How quickly the speed changes
     public float mass = 20;             //How heavy the agent is (this makes the steering more smooth)
-    public float intelligenceModifier;  //DOESN'T ACTUALLY DO ANYTHING - ACCURACY MAYBE?
+    public float intelligenceModifier;  //DOESN'T ACTUALLY DO ANYTHING - ACCURACY MAYBE?------------------------------------------------------------------------
     public float strengthModifier;      //How much damage the creature does
     public float maxSpeed;              //How fast the agent moves at any given time, see true max speed for an unchanging variable
     public float dodgeModifier;         //Likley hood of avoid damage
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
+    public biomes favouriteBiome;       //Creature gets a +%20 in stats inside this biome
+    public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
+    public bool canFly;                 //DOIESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
