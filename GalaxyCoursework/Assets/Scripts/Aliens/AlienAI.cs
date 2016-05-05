@@ -354,14 +354,6 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
-    /// Returns the body of this creature and its limbs
-    /// </summary>
-    /// <returns></returns>
-    public GameObject getDuplicateBody() {
-        return transform.GetChild(0).gameObject;
-    }
-
-    /// <summary>
     /// Returns the list containing other known creatures
     /// </summary>
     /// <returns></returns>
@@ -388,22 +380,6 @@ public class AlienAI : MonoBehaviour {
         otherCreatures = new List<GameObject>(list);
         //Make sure the list does not contain itself
         otherCreatures.Remove(gameObject);
-    }
-
-    /// <summary>
-    /// Returns this creatures strength modifier
-    /// </summary>
-    /// <returns></returns>
-    public float getStrength() {
-        return strengthModifier;
-    }
-
-    /// <summary>
-    /// Returns this creatures dodge chance modifier
-    /// </summary>
-    /// <returns></returns>
-    public float getDdogeChance() {
-        return dodgeModifier;
     }
 
     /// <summary>
