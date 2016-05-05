@@ -16,7 +16,7 @@ public class AlienAI : MonoBehaviour {
     public string creatureSpecies;      //The species of this creature 
     public float acceleration = 0.1f;   //How quickly the speed changes
     public float mass = 20;             //How heavy the agent is (this makes the steering more smooth)
-    public float intelligenceModifier;  //DOESN'T ACTUALLY DO ANYTHING - ACCURACY MAYBE?------------------------------------------------------------------------
+    public float attackSpeed;           //Time between each attack (seconds)
     public float strengthModifier;      //How much damage the creature does
     public float maxSpeed;              //How fast the agent moves at any given time, see true max speed for an unchanging variable
     public float dodgeModifier;         //Likley hood of avoid damage
@@ -346,14 +346,6 @@ public class AlienAI : MonoBehaviour {
         otherCreatures = new List<GameObject>(list);
         //Make sure the list does not contain itself
         otherCreatures.Remove(gameObject);
-    }
-
-    /// <summary>
-    /// Returns this creatures intelligence modifier
-    /// </summary>
-    /// <returns></returns>
-    public float getIntelligence() {
-        return intelligenceModifier;
     }
 
     /// <summary>
@@ -707,7 +699,7 @@ public class AlienAI : MonoBehaviour {
         canAttack = false;
         float damage = (5 + strengthModifier) / 3;
         creature.receiveDamage(damage);
-        yield return new WaitForSeconds(1.5f); //random value for now
+        yield return new WaitForSeconds(attackSpeed);
         canAttack = true;
     }
 
