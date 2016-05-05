@@ -40,10 +40,6 @@ public class CreatureSpawner : MonoBehaviour {
 
             //Get a spawn position within the surface
             Vector3 spawnPosition = new Vector3((Random.value * 2) - 1, 0, (Random.value * 2) - 1);
-            //The off set to put the creature on the ground
-            Vector3 spawnOffset = Vector3.up * creature.transform.localScale.y * 3;
-            //Combine the two values
-            spawnPosition += spawnOffset;
             //Set the position
             creature.transform.localPosition = spawnPosition;
 
