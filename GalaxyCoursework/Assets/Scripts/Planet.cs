@@ -104,8 +104,11 @@ public class Planet : Satalite
                 cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z + y) - (numOfChanges > 1 ? (test/2) - (numOfChanges == 3 ? 2 : 0) : 0 ));
                 //Resize
                 cube.transform.localScale = new Vector3(13, 1, 13 / numOfChanges);
-                //Let the collider know which biome it is and what parent to set (position scale fuck up if you set the parent here)
-                //--TODO--
+                //Let the collider know which biome it is and what parent to set (position & scale fuck up if you set the parent here)
+                BiomeColliderScript script = cube.GetComponent<BiomeColliderScript>();
+                script.biomeType = biomeList[count - 1]; //-1 because count gets increased
+                script.parenToSet = transform;
+                script.setUp();
                 //--------------------------------------------------------------------------------------------
             }
 
