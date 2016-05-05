@@ -50,7 +50,7 @@ public class Planet : Satalite
     {
 
         Color planColour = Color.white;
-        planTexture = new Texture2D(128, 128);
+        planTexture = new Texture2D(12, 12);
         GetComponent<Renderer>().material.mainTexture = planTexture;
         surface.material.mainTexture = planTexture;
         int numOfChanges = 2;
@@ -107,25 +107,18 @@ public class Planet : Satalite
         if(test == biomes.Land)
         {
             return Color.grey;
-
-
         }
         else if(test == biomes.Forest)
         {
             return Color.yellow;
-
         }
         else if (test == biomes.Desert)
         {
-
             return Color.red;
-
         }
         else if (test == biomes.Ice)
         {
             return Color.cyan;
-
-
         }
         else if (test == biomes.Water)
         {
