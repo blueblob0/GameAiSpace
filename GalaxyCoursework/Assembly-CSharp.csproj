@@ -90,6 +90,7 @@
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Rest.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Wander.cs" />
      <Compile Include="Assets\Scripts\Aliens\CreatureSpawner.cs" />
+     <Compile Include="Assets\Scripts\BiomeColliderScript.cs" />
      <Compile Include="Assets\Scripts\BlackHole.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
