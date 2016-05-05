@@ -566,7 +566,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public float getAllignmentDistance() {
-        return allignmentDistance;
+        return allignmentDistance / planetScale;
     }
 
     /// <summary>
@@ -582,7 +582,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public float getCohesionDistance() {
-        return cohesionDistance;
+        return cohesionDistance / planetScale;
     }
 
     /// <summary>
@@ -598,7 +598,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public float getSeperationDistance() {
-        return seperationDistance;
+        return seperationDistance / planetScale;
     }
 
     /// <summary>
@@ -734,6 +734,8 @@ public class AlienAI : MonoBehaviour {
     /// <param name="strength">How strong the force will be</param>
     /// <returns></returns>
     private Vector3 collisionAvoidance(float distance = 10, float strength = 3) {
+        //Scale back the distance
+        distance /= planetScale;
         //Fire a ray at the distance to look ahead
         RaycastHit rayOut;
         if(Physics.Raycast(transform.position, velocity, out rayOut, distance)) {
