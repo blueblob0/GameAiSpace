@@ -741,6 +741,7 @@ MonoBehaviour:
   surface: {fileID: 2333138}
   planetPrefabName: MoonPrefab
   biomeList: 
+  biomeCollider: {fileID: 179242, guid: 1dd3ab79b5777204e8bc19473801d815, type: 2}
 --- !u!135 &13547394
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -824,6 +825,10 @@ Prefab:
       propertyPath: scaleValue
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: biomeCollider
+      value: 
+      objectReference: {fileID: 179242, guid: 1dd3ab79b5777204e8bc19473801d815, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 188760}
