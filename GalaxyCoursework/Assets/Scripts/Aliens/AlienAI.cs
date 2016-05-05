@@ -322,13 +322,13 @@ public class AlienAI : MonoBehaviour {
             strengthModifier += baseStrength * 0.35f;
             dodgeModifier += baseDodge * 0.35f;
             attackSpeed += baseAttackSpeed * 0.35f;
-            reproductionTimer += baseReproduction * 0.35f;
+            reproductionTimer -= baseReproduction * 0.35f;
         } else if(biome == leastFavouriteBiome) {
             //Decrease stats by 60%
             strengthModifier -= baseStrength * 0.6f;
             dodgeModifier -= baseDodge * 0.6f;
             attackSpeed -= baseAttackSpeed * 0.6f;
-            reproductionTimer -= baseReproduction * 0.6f;
+            reproductionTimer += baseReproduction * 0.6f;
         } else {
             strengthModifier = baseStrength;
             dodgeModifier = baseDodge;
