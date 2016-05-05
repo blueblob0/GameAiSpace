@@ -116,16 +116,3 @@ public class Planet : Satalite
 
 }
 
-enum biome
-{
-    Land,
-    Forest,
-    Desert,
-    Radiated,
-    Ice,
-    Water,
-    Mountainous,
-    Lava
-
-
-}

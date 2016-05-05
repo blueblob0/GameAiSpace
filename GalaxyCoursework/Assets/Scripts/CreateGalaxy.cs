@@ -31,17 +31,15 @@ public class HoldStar
     }
 }
 
-
-
 public class CreateGalaxy : MonoBehaviour
 {
     public const int starMuti = 50; 
     public const string removeName = "ToRemove";
-    public int numStars = 100;
+    //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
     private List<Star> realStars = new List<Star>();
     public string starPrefabName = "StarPrefab";
-
+    
     // private int spaceBetween = StarMuti*10;
     /// <summary>
     /// the center of the Galaxy might be usefull if you have mutiple galaxys 
@@ -261,19 +259,25 @@ public class CreateGalaxy : MonoBehaviour
         HoldStar[] tempArray = holdStars.ToArray();
 
         //Collider[] hitColliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x);
-
+        bool restartCheck = false;
         for (int i = 0; i < tempArray.Length; i++)
         {
             float dis = Vector3.Distance(theStar.starPos, tempArray[i].starPos); // Get Distance Between two stars 
             
             if (tempArray[i].id != theStar.id && dis < (theStar.radius()+ tempArray[i].radius()) && tempArray[i].StarMass <= theStar.StarMass)
             {
-                theStar.IncreaseMass(tempArray[i].StarMass);
-                //Debug.Log(dis + " " + theStar.radius());
-                //Debug.Log(Vector3.one * theStar.StarMass * starMuti);
+                theStar.IncreaseMass(tempArray[i].StarMass);    
+                            
                 holdStars.Remove(tempArray[i]);
-                
+                restartCheck = true;
+                break;
             }
+        }
+
+        //if the sun has got bigger need to check all stars around it again
+        if (restartCheck)
+        {
+            RemoveStarsInStar(theStar);
         }
        
     }
