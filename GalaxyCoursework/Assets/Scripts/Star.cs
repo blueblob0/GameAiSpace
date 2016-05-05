@@ -10,23 +10,17 @@ public class Star: CelestialBody
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
-    const float dist = 0.04f;
-    const float minDis = 0.02f;
+    const float dist = 0.05f;//CreateGalaxy.starMuti;
+    const float minDis = 0.05f;//CreateGalaxy.starMuti;
     //public float angle;
     //public float spiralAngel;
     // Use this for initialization
     protected override void Start()
-    {
-        if(CreateGalaxy.removeName == name)
-        {
-            return;
-        }
-
+    {       
         miniSun.SetActive(false);
         base.Start();
         planetsSpawned = false;
         //mass = 100;      
-
         //for now do this now will change later 
         GeneratePlanets();
     }
@@ -39,49 +33,57 @@ public class Star: CelestialBody
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
-        numPlanets = Random.Range(0, 100);
+        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x - 50)/2 )/60);
+        //Debug.Log(maxplanets);
 
-        if (numPlanets < 2)
+        do
         {
-            numPlanets = 0;
-        }
-        else if (numPlanets < 8)
-        {
-            numPlanets = 1;
-        }
-        else if (numPlanets < 20)
-        {
-            numPlanets = Random.Range(2, 5); //432
-        }
-        else if (numPlanets < 40)
-        {
-            numPlanets = Random.Range(5, 8); //567
-        }
-        else if (numPlanets < 90)
-        {
-            numPlanets = Random.Range(8, 11); //8910
-        }
-        else if (numPlanets < 100)
-        {
-            numPlanets = Random.Range(11, 14); //11 12 13
-        }
+            planetsNum();
+        } while (numPlanets > maxplanets);
+
         // Debug.Log(numPlanets);
         planetsLoc = new SataliteDetails[numPlanets];
         float hold = transform.lossyScale.x / 2;
         hold = 0.05f;
-        Vector2 circlePos = Random.insideUnitCircle.normalized;
+        Vector2 circlePos;
         circlePos = Vector2.one;
         for (int i = 0; i < numPlanets; i++)
         {
-
+            //circlePos = Random.insideUnitCircle.normalized;
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
             planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos);
-
             hold = planetsLoc[i].distFromBody;
         }
+    }
 
 
+    public int planetsNum()
+    {
 
+        numPlanets = Random.Range(0, 100);
+
+        if (numPlanets < 2) //2%
+        {
+            numPlanets = 0;
+        }
+        else if (numPlanets < 10) //8%
+        {
+            numPlanets = 1;
+        }
+        else if (numPlanets < 30)  //20%
+        {
+            numPlanets = Random.Range(2, 5); //432
+        }
+        else if (numPlanets < 70) //40%
+        {
+            numPlanets = Random.Range(5, 8); //567
+        }
+        else if (numPlanets < 100) //30%
+        {
+            numPlanets = Random.Range(8, 9); //8910
+        }
+
+        return numPlanets;
     }
 
     public void IncreaseMass(int plus)
@@ -97,31 +99,36 @@ public class Star: CelestialBody
     }
 
 
-    /*
-    void OnDrawGizmos()
+    /// <summary>
+    /// spawing satalite planets around the sun 
+    /// </summary>
+    /// <param name="starPos">The stars position info</param>
+    /// <param name="prefabName">String of th prefab to spawn</param>
+    /// <returns> the satalite spawned</returns>
+    protected override GameObject SpawnSatalite(SataliteDetails starPos, string prefabName)
     {
-        foreach (float f in spheres)
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, f);
-        }        
+        GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
+        Planet holds = a.GetComponent<Planet>();
+        holds.orbitingBody = gameObject;
+        holds.distPlanet = starPos.distFromBody;
+        a.name = starPos.distFromBody.ToString();
+        a.transform.SetParent(gameObject.transform);
+        a.transform.localPosition = starPos.location;
+
+        holds.SetBiomes();
+
+        return a;
     }
-    */
+
     void OnTriggerEnter(Collider other)
     {
-        //if its going to be removed the star should have no effect  
-        if (CreateGalaxy.removeName == name)
-        {
-            return;
-        }
+        
         if (other.tag == "MainCamera")
         {
             //Decrease Speed for moving around soloar system
             other.GetComponent<CameraMove>().DecreaseSpeed();
-
             // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
             //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
-
             // Debug.Log("hit");
             miniSun.SetActive(true);
             Color c = GetComponent<Renderer>().material.color;
@@ -145,20 +152,7 @@ public class Star: CelestialBody
                 planetsSpawned = true;
             }
         }
-        /*else if (other.GetComponent<Star>())
-        {
-            if (!controler)
-            {
-                controler = FindObjectOfType<CreateGalaxy>();
-            }
-            int massa = other.GetComponent<Star>().mass;
-            if (massa <= mass)
-            {
-                controler.DestroyStar(other.gameObject);
-                IncreaseMass(massa);
-            }
-        }
-        */
+       
         Debug.Log("thing should not hit");
         
     }
@@ -166,10 +160,7 @@ public class Star: CelestialBody
 
     void OnTriggerExit(Collider other)
     {
-        if (CreateGalaxy.removeName == name)
-        {
-            return;
-        }
+        
         if (other.tag == "MainCamera")
         {
             miniSun.SetActive(false);

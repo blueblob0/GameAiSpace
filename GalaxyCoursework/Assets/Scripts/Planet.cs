@@ -1,69 +1,157 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-
+using System.Collections;
 public class Planet : Satalite
 {
-    int numPlanets;
-    public List<GameObject> planets = new List<GameObject>();
+    int numMoons;
+    public List<GameObject> moons = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public Renderer surface; // The plane on the planet
     public string planetPrefabName = "MoonPrefab";
     const float dist = 0.03f;
     const float minDis = 0.06f;
-    
-
+    Texture2D planTexture;
+    public biomes[] biomeList;
 
     // Use this for initialization
 
-        
+
     protected override void Start () {
         base.Start();
-        numPlanets = Random.Range(0, 4);
+        Transform theParent = transform.parent;
+        transform.parent = null;
+        transform.localScale= Vector3.one * CreateGalaxy.starMuti;
+
+        transform.SetParent(theParent);
+
+        numMoons = Random.Range(0, 4);
         speed = Random.Range(10,35);
         float hold = transform.lossyScale.x/2;
         Vector2 circlePos = Random.insideUnitCircle.normalized;
-         circlePos =  Vector2.one;
-        for (int i = 0; i < numPlanets; i++)
+        circlePos =  Vector2.one;
+
+        for (int i = 0; i < numMoons; i++)
         {
-            planets.Add(SpawnSatalite(hold, minDis, dist, planetPrefabName, circlePos));
-            hold = planets[i].GetComponent<Satalite>().distPlanet;
+            moons.Add(SpawnSatalite(hold, minDis, dist, planetPrefabName, circlePos));
+            hold = moons[i].GetComponent<Satalite>().distPlanet;
 
         }
-        //gameObject.GetComponent<Transform>().localScale = Vector3.one * planetsize * CreateGalaxy.starMuti;
-        Texture2D texture = new Texture2D(128, 128);
-        gameObject.GetComponent<Transform>().localScale *=  CreateGalaxy.starMuti;
-        GetComponent<Renderer>().material.mainTexture = texture;
-        surface.material.mainTexture = texture;
-        Color color = Color.white;
-        int numOfChanges = 6;
-        float oneSect = 0;// texture.height / numOfChanges;
-        int count = 0;
-        for (int y = 0; y < texture.height; y++)
-        {
-            
-            if (y == oneSect )
-            {
-                count++;
-                color = new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
 
-                float test = texture.height;
-                test /= numOfChanges;
+        //set the texture of the surface so we can call it later;
 
-                //Debug.Log(test);
-                oneSect = Mathf.CeilToInt( (test) * count);
-            }
 
-            for (int x = 0; x < texture.width; x++)
-            {                
-                texture.SetPixel(x, y, color);
-            }
-        }
-        texture.Apply();
+      
 
         surface.gameObject.SetActive(false);
-
     }
 
+   
+    public void SetBiomes()
+    {
+
+        Color planColour = Color.white;
+        planTexture = new Texture2D(128, 128);
+        GetComponent<Renderer>().material.mainTexture = planTexture;
+        surface.material.mainTexture = planTexture;
+        int numOfChanges = 2;
+        
+        int biomeChance= Random.Range(0, 100);
+        
+        if (biomeChance < 10) //10%
+        {
+            numOfChanges = 1;
+
+        }
+        else if (biomeChance < 80) //70%
+        {
+            numOfChanges = 2;
+        }
+        else  //20%
+        {
+            numOfChanges = 3;
+        }
+
+
+        biomeList = new biomes[numOfChanges];
+
+        for(int i =0;i<biomeList.Length;i++)
+        {
+            //biomes hold = 1;
+            biomeList[i] =  (biomes)Random.Range(0, System.Enum.GetValues(typeof(biomes)).Length);
+        }
+        
+        float oneSect = 0;// texture.height / numOfChanges;
+        int count = 0;
+        for (int y = 0; y < planTexture.height; y++)
+        {
+            if (y == oneSect)
+            {
+                planColour = GetBiomeColour(biomeList[count]);// new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
+                count++;                
+                Debug.Log(planColour);
+                float test = planTexture.height;
+                test /= numOfChanges;
+                oneSect = Mathf.CeilToInt((test) * count);
+            }
+
+            for (int x = 0; x < planTexture.width; x++)
+            {
+                planTexture.SetPixel(x, y, planColour);
+            }
+        }
+        planTexture.Apply();
+    }
+    
+    Color GetBiomeColour(biomes test)
+    {
+        if(test == biomes.Land)
+        {
+            return Color.grey;
+
+
+        }
+        else if(test == biomes.Forest)
+        {
+            return Color.yellow;
+
+        }
+        else if (test == biomes.Desert)
+        {
+
+            return Color.red;
+
+        }
+        else if (test == biomes.Ice)
+        {
+            return Color.cyan;
+
+
+        }
+        else if (test == biomes.Water)
+        {
+
+            return Color.blue;
+
+        }
+        else if (test == biomes.Mountainous)
+        {
+
+
+            return Color.magenta;
+        }
+        else if (test == biomes.Lava)
+        {
+
+            return Color.black;
+
+        }
+
+
+        return Color.white;
+
+
+    }
+    
     // Update is called once per frame
 
     void OnTriggerEnter(Collider other)

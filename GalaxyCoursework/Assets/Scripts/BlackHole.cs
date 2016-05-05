@@ -6,7 +6,7 @@ public class BlackHole : CelestialBody
 {
     public int count =  20;
     public bool move = false;
-    bool check = false;
+//bool check = false;
 	// Use this for initialization
 	protected override void  Start ()
     {

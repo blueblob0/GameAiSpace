@@ -86,22 +86,19 @@ public class CelestialBody : MonoBehaviour {
         return a;
     }
 
+
     /// <summary>
-    /// spawing Satalite around things 
+    /// spawing satalites
     /// </summary>
-    /// <param name="MoveAmount">The distance you have to move to start spawning from</param>
-    /// <param name="minDist"> The min dsitance from previous one</param>
-    /// <param name="MaxDist"> the max distance</param>
-    /// <param name="prefabName"> name of prefab to spawn</param>
-    /// <returns></returns>
-    protected GameObject SpawnSatalite(SataliteDetails starPos, string prefabName)
+    /// <param name="starPos">The stars position info</param>
+    /// <param name="prefabName">String of th prefab to spawn</param>
+    /// <returns> the satalite spawned</returns>
+    protected virtual GameObject SpawnSatalite(SataliteDetails starPos, string prefabName)
     {
 
-        // start by moving out a bit from the planet 
-        
+        // start by moving out a bit from the planet       
 
-        //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));
-        
+        //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));        
         GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
         Satalite holds = a.GetComponent<Satalite>();
         holds.orbitingBody = gameObject;
@@ -111,36 +108,11 @@ public class CelestialBody : MonoBehaviour {
         a.transform.localPosition = starPos.location;
         return a;
     }
+
     
-    /// <summary>
-    /// Getting the locations to sapwn satalites 
-    /// </summary>
-    /// <param name="moveAmount"></param>
-    /// <param name="minDist"></param>
-    /// <param name="maxDist"></param>
-    /// <returns></returns>
-    protected SataliteDetails SataliteLocation(float moveAmount, float minDist, float maxDist)
-    {
-
-        // star by moving out a bit from the planet 
-        float move = moveAmount + Random.Range(minDist, maxDist);
-        // GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
-        // a.transform.SetParent(transform);
-        Vector3 starPos;
-
-        starPos = Random.insideUnitCircle.normalized * move;
-        //Vector3 starPos = Vector3.one * move;
-        starPos.z = starPos.y; //+ transform.position.z;
-        //starPos.x = starPos.x + transform.position.x;
-        starPos.y = 0;
 
 
-        SataliteDetails a = new SataliteDetails(starPos, move);
-       
-        return a;
-        //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));
-        
-    }
+
 
     /// <summary>
     /// Getting the locations to sapwn satalites 

@@ -34,7 +34,7 @@ public class HoldStar
 public class CreateGalaxy : MonoBehaviour
 {
     public const int starMuti = 50; 
-    public const string removeName = "ToRemove";
+    
     //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
     private List<Star> realStars = new List<Star>();
@@ -45,7 +45,7 @@ public class CreateGalaxy : MonoBehaviour
     /// the center of the Galaxy might be usefull if you have mutiple galaxys 
     /// </summary>
     private Vector3 centerpos = Vector3.zero;
-    bool testing = false;
+    //bool testing = false;
     bool backhole = true;
     //bool backhole = false;
     BlackHole black;
@@ -134,7 +134,7 @@ public class CreateGalaxy : MonoBehaviour
         MoveTowardsBlackHole();
 
         CatogriseStars();
-        Debug.Log(black.count);
+       // Debug.Log(black.count);
     }
 
 
@@ -188,8 +188,8 @@ public class CreateGalaxy : MonoBehaviour
 
         foreach(HoldStar s in holdStars)
         {
-            MakeStar(s.starPos, s.StarMass);            
-           // Debug.Log(s.id);
+            MakeStar(s.starPos, s.StarMass);           
+          
         }
 
 
@@ -228,7 +228,7 @@ public class CreateGalaxy : MonoBehaviour
     /// </summary>
     public void RemoveStarsInsideBH()
     {
-        SphereCollider blackColl = black.GetComponent<SphereCollider>();
+       // SphereCollider blackColl = black.GetComponent<SphereCollider>();
 
         HoldStar[] tempArray = holdStars.ToArray();
 
