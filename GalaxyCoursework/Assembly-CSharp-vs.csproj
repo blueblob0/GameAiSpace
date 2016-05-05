@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_5_1_3;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_5_1_2;UNITY_5_1;UNITY_5;ENABLE_NEW_BUGREPORTER;ENABLE_2D_PHYSICS;ENABLE_4_6_FEATURES;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_FRAME_DEBUGGER;ENABLE_GENERICS;ENABLE_HOME_SCREEN;ENABLE_IMAGEEFFECTS;ENABLE_LIGHT_PROBES_LEGACY;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_PHYSICS_PHYSX3;ENABLE_PLUGIN_INSPECTOR;ENABLE_SHADOWS;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_UNET;ENABLE_UNITYEVENTS;ENABLE_VR;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_LICENSE;ENABLE_AUDIOMIXER_SUSPEND;ENABLE_EDITOR_METRICS;INCLUDE_DYNAMIC_GI;INCLUDE_GI;INCLUDE_IL2CPP;INCLUDE_DIRECTX12;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;ENABLE_LOCALIZATION;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_TEXTUREID_MAP;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;UNITY_PRO_LICENSE</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -39,48 +39,58 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Aliens\AgressiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienAI.cs" />
-     <Compile Include="Assets\Scripts\Aliens\AlienBody.cs" />
-     <Compile Include="Assets\Scripts\Aliens\AlienCreature.cs" />
-     <Compile Include="Assets\Scripts\Aliens\AssertiveAlien.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selector.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\FightSelector.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\IdleSelector.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Selectors\RecoupSelector.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\AttackSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\EscapeSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\FlockSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\GetTargetSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\HealSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\PursueSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Sequences\RestSequence.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Task.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\AlliesNear.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Attack.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnemyInRange.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnemyInSight.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnemyTargetingSelf.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\EnergyLow.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Evade.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Flock.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\GetTarget.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\HaveTarget.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Heal.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\HealthLow.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Pursue.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Rest.cs" />
-     <Compile Include="Assets\Scripts\Aliens\Behavior Tree\Tasks\Wander.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Decorators\Inverse.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\FightSelector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\IdleSelector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\PursueAttackSelector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\RecoupSelector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selectors\ReproductionTargetInRangeSelector.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\AllyReproductionReadySequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\AttackTargetSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\AttemptReproductionSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\EngageTargetSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\EscapeSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\FlockSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\GetTargetSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\HealSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\RecoupSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\ReproduceSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Sequences\RestSequence.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Task.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\AlliesNear.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\AlliesReadyToReproduce.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Attack.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\EnemyInRange.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\EnemyInSight.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\EnemyTargetingSelf.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\EnergyLow.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\EnergyNotFull.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Evade.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Flock.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\GetTarget.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\HaveTarget.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Heal.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\HealthLow.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\HealthNotFull.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\MoveToReproductionTarget.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Pursue.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\ReadyToReproduce.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Reproduce.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\ReproductionTargetInRange.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Rest.cs" />
+     <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Tasks\Wander.cs" />
      <Compile Include="Assets\Scripts\Aliens\CreatureSpawner.cs" />
-     <Compile Include="Assets\Scripts\Aliens\PassiveAlien.cs" />
      <Compile Include="Assets\Scripts\BlackHole.cs" />
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
@@ -91,16 +101,16 @@
      <Compile Include="Assets\Scripts\Satalite.cs" />
      <Compile Include="Assets\Scripts\Star.cs" />
  <Reference Include="UnityEngine.UI">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>D:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
