@@ -28,6 +28,9 @@ public class BiomeColliderScript : MonoBehaviour {
     }
 
     public void OnTriggerEnter(Collider other) {
-        //Let the creature know it is in this biome
+        //Tell the creature that it has entered this biome
+        if(other.GetComponent<AlienAI>()) {
+            other.GetComponent<AlienAI>().enteredBiome(biomeType);
+        }
     }
 }
