@@ -65,6 +65,7 @@ public class AlienAI : MonoBehaviour {
 
     //How much to scale everything down (for the planet size)
     private float planetScale;
+    private bool scaleSet = false;  //for reproducing
 
     //The creature's individual name
     private string creatureName = "NO_NAME";
@@ -186,7 +187,9 @@ public class AlienAI : MonoBehaviour {
         controller = GetComponent<CharacterController>();
 
         //Set the default value
-        planetScale = 1;
+        if(!scaleSet) {
+            planetScale = 1;
+        }
 
         //Init
         reproductionTarget = null;
@@ -403,6 +406,7 @@ public class AlienAI : MonoBehaviour {
             return;
         } else {
             planetScale = scale;
+            scaleSet = true;
         }
     }
 
@@ -678,6 +682,10 @@ public class AlienAI : MonoBehaviour {
     public void reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
+        //Get the script reference
+        AlienAI spawnScript = spawn.GetComponent<AlienAI>();
+        //Immediatley set the scale
+        spawnScript.setPlanetScale(planetScale);
         //Set the parent if there is one
         if(transform.parent != null) {
             spawn.transform.SetParent(transform.parent);
@@ -688,12 +696,12 @@ public class AlienAI : MonoBehaviour {
         spawn.transform.localScale = transform.localScale;
 
         //Set the body colour
-        spawn.GetComponent<AlienAI>().changeBodyColour(bodyColour);
+        spawnScript.changeBodyColour(bodyColour);
 
         //Give the creature the list of current other creatures
-        spawn.GetComponent<AlienAI>().giveCreatureList(otherCreatures);
+        spawnScript.giveCreatureList(otherCreatures);
         //Let the new creature be aware of this creature
-        spawn.GetComponent<AlienAI>().addCreature(gameObject);
+        spawnScript.addCreature(gameObject);
         //Make the other creatures aware of this new creature
         foreach(GameObject creature in otherCreatures) {
             if(creature != null) {
