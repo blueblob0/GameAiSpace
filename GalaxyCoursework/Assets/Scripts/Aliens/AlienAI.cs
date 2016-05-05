@@ -506,7 +506,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public float getCurrentSpeed() {
-        return currentSpeed;
+        return currentSpeed / planetScale;
     }
 
     /// <summary>
