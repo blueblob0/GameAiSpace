@@ -657,7 +657,11 @@ public class AlienAI : MonoBehaviour {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
         //Make the spawn apear in a random position near the creature
-        spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        spawn.transform.position += new Vector3(Random.Range(-10, 10) / planetScale, 0, Random.Range(-10, 10) / planetScale);
+        //Set the parent if there is one
+        if(transform.parent != null) {
+            spawn.transform.SetParent(transform.parent);
+        }
 
         //Give the creature the list of current other creatures
         spawn.GetComponent<AlienAI>().giveCreatureList(otherCreatures);
