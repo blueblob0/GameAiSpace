@@ -23,7 +23,8 @@ public class AlienAI : MonoBehaviour {
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
     public biomes favouriteBiome;       //Creature gets a +%35 in stats inside this biome
     public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
-    public bool canFly = false;         //DOIESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
+    public bool canFly = false;         //DOESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
+    public GameObject[] creatureBody;   //Reference so it can set the colour of its body
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -115,6 +116,11 @@ public class AlienAI : MonoBehaviour {
 
     // Use this for initialization
     public virtual void Start () {
+        //Get a random colour for this creature
+        for(int i = 0; i < creatureBody.Length; i++) {
+            creatureBody[i].GetComponent<Renderer>().material.color = new Color(Random.value, Random.value, Random.value);
+        }
+
         //Construct the main selector
         mainSelector = new Selector(this);
 
