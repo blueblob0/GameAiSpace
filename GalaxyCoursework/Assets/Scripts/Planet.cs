@@ -79,7 +79,7 @@ public class Planet : Satalite
             //biomes hold = 1;
             biomeList[i] =  (biomes)Random.Range(0, System.Enum.GetValues(typeof(biomes)).Length);
         }
-        
+
         float oneSect = 0;// texture.height / numOfChanges;
         int count = 0;
         for (int y = 0; y < planTexture.height; y++)
@@ -92,6 +92,12 @@ public class Planet : Satalite
                 float test = planTexture.height;
                 test /= numOfChanges;
                 oneSect = Mathf.CeilToInt((test) * count);
+
+                //Placing the biome zones---------------------------------------------------------------------
+                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z + y) - (test/2) - (numOfChanges == 3 ? 2 : 0));
+                cube.name = count + " - " + y;
+                //--------------------------------------------------------------------------------------------
             }
 
             for (int x = 0; x < planTexture.width; x++)
