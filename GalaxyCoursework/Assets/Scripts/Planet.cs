@@ -101,7 +101,7 @@ public class Planet : Satalite
                 //Spawn in the cube collider
                 GameObject cube = GameObject.Instantiate(biomeCollider);
                 //Set the position
-                cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z + y) - (numOfChanges > 1 ? (test/2) - (numOfChanges == 3 ? 2 : 0) : 0 ));
+                cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z - y) + (numOfChanges > 1 ? (test/2) + (numOfChanges == 3 ? 2 : 0) : 0 ));
                 //Resize
                 cube.transform.localScale = new Vector3(13, 1, 13 / numOfChanges);
                 //Let the collider know which biome it is and what parent to set (position & scale fuck up if you set the parent here)
