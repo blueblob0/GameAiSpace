@@ -29,7 +29,7 @@ public class CreatureSpawner : MonoBehaviour {
     private IEnumerator spawnCreatures() {
         for(int i = 0; i < amount; i++) {
             //Spawn in one creature for now
-            GameObject creature = GameObject.Instantiate(creatureTypes[0]);
+            GameObject creature = GameObject.Instantiate(creatureTypes[Random.Range(1, creatureTypes.Length)]);
 
             //Wait one frame
             yield return null;
