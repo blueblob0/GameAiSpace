@@ -14,6 +14,6 @@ public class ReproductionTargetInRange : Task {
     }
 
     public bool activate() {
-        return Vector3.Distance(agentRef.transform.position, agentRef.getReproductionTarget().transform.position) <= 2;
+        return Vector3.Distance(agentRef.transform.position, agentRef.getReproductionTarget().transform.position) <= (2 / agentRef.getPlanetScale());
     }
 }

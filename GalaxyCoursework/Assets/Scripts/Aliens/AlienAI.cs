@@ -23,7 +23,8 @@ public class AlienAI : MonoBehaviour {
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
     public biomes favouriteBiome;       //Creature gets a +%35 in stats inside this biome
     public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
-    public bool canFly = false;         //DOIESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
+    public bool canFly = false;         //DOESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
+    public GameObject[] creatureBody;   //Reference so it can set the colour of its body
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -45,6 +46,10 @@ public class AlienAI : MonoBehaviour {
     private float baseDodge;
     private float baseReproduction;
 
+    //Colour of this creature's body
+    private Color bodyColour;
+    private bool colourSet = false;
+
     //The speed the agent wants to go
     private float targetSpeed;
     //How fast the agent is current moving
@@ -58,8 +63,8 @@ public class AlienAI : MonoBehaviour {
     //Character controller ref
     private CharacterController controller;
 
-    //How much to scale the speed down by (when on planets)
-    private float speedScale;
+    //How much to scale everything down (for the planet size)
+    private float planetScale;
 
     //The creature's individual name
     private string creatureName = "NO_NAME";
@@ -115,6 +120,14 @@ public class AlienAI : MonoBehaviour {
 
     // Use this for initialization
     public virtual void Start () {
+        if(!colourSet) {
+            //Get a random colour for this creature
+            bodyColour = new Color(Random.value, Random.value, Random.value);
+        }
+        for(int i = 0; i < creatureBody.Length; i++) {
+            creatureBody[i].GetComponent<Renderer>().material.color = bodyColour;
+        }
+
         //Construct the main selector
         mainSelector = new Selector(this);
 
@@ -173,7 +186,7 @@ public class AlienAI : MonoBehaviour {
         controller = GetComponent<CharacterController>();
 
         //Set the default value
-        speedScale = 1;
+        planetScale = 1;
 
         //Init
         reproductionTarget = null;
@@ -197,12 +210,11 @@ public class AlienAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	public virtual void Update () {
-        //DEBUG--------------------------
+        //Debug----------------------------------------
         if(Input.GetKeyDown(KeyCode.Space)) {
             reproduce();
         }
-        displayDebugLines();
-        //-------------------------------
+        //---------------------------------------------
 
         //Check the health
         if(health <= 0) {
@@ -386,12 +398,20 @@ public class AlienAI : MonoBehaviour {
     /// Call to set the scale for speed (gets dvidided by amount)
     /// </summary>
     /// <param name="scale">Scale for speed, can't be beloew 1</param>
-    public void setSpeedScale(float scale) {
+    public void setPlanetScale(float scale) {
         if(scale < 1) {
             return;
         } else {
-            speedScale = scale;
+            planetScale = scale;
         }
+    }
+
+    /// <summary>
+    /// Returns the planet scale value
+    /// </summary>
+    /// <returns></returns>
+    public float getPlanetScale() {
+        return planetScale;
     }
 
     /// <summary>
@@ -578,6 +598,16 @@ public class AlienAI : MonoBehaviour {
     }
 
     /// <summary>
+    /// Changes the colour of this agent
+    /// </summary>
+    /// <param name="colour"></param>
+    /// <returns></returns>
+    public void changeBodyColour(Color colour) {
+        bodyColour = colour;
+        colourSet = true;
+    }
+
+    /// <summary>
     /// Tries to damage this creature, has a chance to miss bassed off of dodge
     /// </summary>
     /// <param name="amount">The incomming damage amount</param>
@@ -631,7 +661,7 @@ public class AlienAI : MonoBehaviour {
     /// <param name="vec">Vector to calculate from</param>
     /// <returns></returns>
     public Vector3 calculateSpeed(Vector3 vec) {
-        return ((vec.normalized * currentSpeed) / speedScale) * Time.deltaTime;
+        return ((vec.normalized * currentSpeed) / planetScale) * Time.deltaTime;
     }
 
     /// <summary>
@@ -649,7 +679,14 @@ public class AlienAI : MonoBehaviour {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
         //Make the spawn apear in a random position near the creature
-        spawn.transform.position += new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        spawn.transform.position += new Vector3(Random.Range(-10, 10) / planetScale, 0, Random.Range(-10, 10) / planetScale);
+        //Set the parent if there is one
+        if(transform.parent != null) {
+            spawn.transform.SetParent(transform.parent);
+        }
+
+        //Set the body colour
+        spawn.GetComponent<AlienAI>().changeBodyColour(bodyColour);
 
         //Give the creature the list of current other creatures
         spawn.GetComponent<AlienAI>().giveCreatureList(otherCreatures);
