@@ -13,6 +13,10 @@ public class Planet : Satalite
     Texture2D planTexture;
     public biomes[] biomeList;
 
+    //For the biome collider----------
+    public GameObject biomeCollider;
+    //--------------------------------
+
     // Use this for initialization
 
 
@@ -94,14 +98,14 @@ public class Planet : Satalite
                 oneSect = Mathf.CeilToInt((test) * count);
 
                 //Placing the biome zones---------------------------------------------------------------------
-                //Spawn i nthe cube collider
-                GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);   //replace with the prefab
+                //Spawn in the cube collider
+                GameObject cube = GameObject.Instantiate(biomeCollider);
                 //Set the position
-                cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z + y) - (test/2) - (numOfChanges == 3 ? 2 : 0));
+                cube.transform.position = new Vector3(transform.position.x, 0, (transform.position.z + y) - (numOfChanges > 1 ? (test/2) - (numOfChanges == 3 ? 2 : 0) : 0 ));
                 //Resize
                 cube.transform.localScale = new Vector3(13, 1, 13 / numOfChanges);
                 //Let the collider know which biome it is and what parent to set (position scale fuck up if you set the parent here)
-                //TODO
+                //--TODO--
                 //--------------------------------------------------------------------------------------------
             }
 
