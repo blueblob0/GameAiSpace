@@ -678,12 +678,14 @@ public class AlienAI : MonoBehaviour {
     public void reproduce() {
         //Create a copy of this gameObject
         GameObject spawn = GameObject.Instantiate(gameObject);
-        //Make the spawn apear in a random position near the creature
-        spawn.transform.position += new Vector3(Random.Range(-10, 10) / planetScale, 0, Random.Range(-10, 10) / planetScale);
         //Set the parent if there is one
         if(transform.parent != null) {
             spawn.transform.SetParent(transform.parent);
         }
+        //Make the spawn apear in a random position near the creature
+        spawn.transform.position = transform.position + new Vector3(Random.Range(-10, 10) / planetScale, 0, Random.Range(-10, 10) / planetScale);
+        //Make sure the scale is normal
+        spawn.transform.localScale = transform.localScale;
 
         //Set the body colour
         spawn.GetComponent<AlienAI>().changeBodyColour(bodyColour);
