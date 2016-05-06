@@ -167,7 +167,7 @@ public class Star: CelestialBody
     {
         if (typeOfStar == starType.Neutron)
         {
-            transform.localScale = Vector3.one * mass;
+            transform.localScale = Vector3.one * CreateGalaxy.starMuti*5;
         }
         else
         {

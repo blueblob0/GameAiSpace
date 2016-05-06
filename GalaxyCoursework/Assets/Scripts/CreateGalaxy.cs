@@ -140,8 +140,8 @@ public class CreateGalaxy : MonoBehaviour
     private void CatogriseStars()
     {
         //types of star: tbd            (array pos)
-        //Neutron Star Over 50 Mass     (0)
-        //BlackHole Over 40 Mass        (1)
+        //BlackHole Star Over 50 Mass     (0)
+        //Neutron Over 40 Mass           (1)
         //otherwise:
         //Singe Star 70%                (2)
         //Twin Star 20%                 (3)
@@ -153,11 +153,11 @@ public class CreateGalaxy : MonoBehaviour
         {
             if (s.StarMass > 50)
             {
-                MakeStar(s, starType.Neutron);                
+                MakeStar(s, starType.BlackHole);                
             }
             else if(s.StarMass > 40)
             {
-                MakeStar(s, starType.BlackHole);
+                MakeStar(s, starType.Neutron);
             }
             else
             {
@@ -349,8 +349,8 @@ public class CreateGalaxy : MonoBehaviour
 
 public enum starType
 {
-    Neutron =    0,
-    BlackHole = 1,    
+    BlackHole = 0,
+    Neutron =    1,     
     SingeStar = 2,
     BinaryStar = 3,
     Ternarystar = 4,
