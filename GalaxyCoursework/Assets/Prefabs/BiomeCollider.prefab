@@ -10,6 +10,7 @@ GameObject:
   - 4: {fileID: 416538}
   - 65: {fileID: 6594978}
   - 114: {fileID: 11480752}
+  - 54: {fileID: 5493102}
   m_Layer: 0
   m_Name: BiomeCollider
   m_TagString: Untagged
@@ -29,6 +30,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!54 &5493102
+Rigidbody:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 179242}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: .0500000007
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!65 &6594978
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -63,6 +79,10 @@ Prefab:
     m_Modifications:
     - target: {fileID: 0}
       propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_IsKinematic
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
