@@ -157,7 +157,7 @@ MonoBehaviour:
   miniSun: {fileID: 116360}
   spheres: []
   planetPrefabName: PlanetPrefab
-  typeOfStar: 0
+  typeOfStar: 2
 --- !u!135 &13533070
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -168,7 +168,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: .699999988
+  m_Radius: .800000012
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &13567860
 SphereCollider:
@@ -227,7 +227,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Radius
-      value: .699999988
+      value: .800000012
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: typeOfStar
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//script made by: up651590
+using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 public class Star: CelestialBody
@@ -15,14 +16,16 @@ public class Star: CelestialBody
    // const float minDis = 0.05f;//CreateGalaxy.starMuti;
     const float minDis = CreateGalaxy.planetMuti;
 
-    public starType typeOfStar; 
-
+    public starType typeOfStar;
+    Renderer theRend;
 
     //public float angle;
     //public float spiralAngel;
     // Use this for initialization
     protected override void Start()
-    {       
+    {
+
+         theRend = GetComponent<Renderer>();
         miniSun.SetActive(false);
         miniSun.transform.SetParent(null);
         if(typeOfStar == starType.Neutron)
@@ -161,14 +164,12 @@ public class Star: CelestialBody
         if (other.tag == "MainCamera")
         {
             //Decrease Speed for moving around soloar system
-            other.GetComponent<CameraMove>().DecreaseSpeed();
+            other.GetComponent<CameraMove>().DecreaseSpeedStar();
             // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
             //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
             // Debug.Log("hit");
             miniSun.SetActive(true);
-            Color c = GetComponent<Renderer>().material.color;
-            c.a = 0;
-            GetComponent<Renderer>().material.color = c;
+            StartCoroutine(  reduceAlpha());
             if (planetsSpawned)
             {
                 for (int i = 0; i < planets.Length; i++)
@@ -191,6 +192,20 @@ public class Star: CelestialBody
        // Debug.Log("thing should not hit");
         
     }
+
+
+    //used to reduce the alpha of the sun when the player moves in
+    IEnumerator reduceAlpha()
+    {
+        while(theRend.material.color.a > 0f)
+        {
+            Color c = theRend.material.color;
+            c.a -= 0.1f;
+            //Debug.Log(theRend.material.color.a);
+            theRend.material.color = c;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
     
 
     void OnTriggerExit(Collider other)
@@ -200,12 +215,13 @@ public class Star: CelestialBody
         {
             miniSun.SetActive(false);
             //increase speed for moving around galxy 
-            other.GetComponent<CameraMove>().IncreaseSpeed();
+            other.GetComponent<CameraMove>().IncreaseStarSpeed();
             //other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 20f);
             //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 10f);
-            Color c = GetComponent<Renderer>().material.color;
+            StopAllCoroutines(); // use this to stop the current fade if any
+            Color c = theRend.material.color;
             c.a = 1;
-            GetComponent<Renderer>().material.color = c;
+            theRend.material.color = c;
             for (int i = 0; i < planets.Length; i++)
             {
                 planets[i].SetActive(false);

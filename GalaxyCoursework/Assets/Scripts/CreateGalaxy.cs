@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//script made by: up651590
+using UnityEngine;
 using System.Collections.Generic;
 
 //Class to hold the star and move it before we spawn it
@@ -146,7 +147,7 @@ public class CreateGalaxy : MonoBehaviour
         //Twin Star 20%                 (3)
         //Ternary star10%               (4)
 
-        int[] starCount = new int[5] { 0, 0, 0, 0, 0 };
+        //int[] starCount = new int[5] { 0, 0, 0, 0, 0 };
 
         foreach (HoldStar s in holdStars)
         {

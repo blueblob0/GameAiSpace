@@ -12,7 +12,8 @@ public class CameraMove : MonoBehaviour {
     private bool mouseHeld;
 
     private float speedChange =10;
-
+    private int starEntered = 0;
+    private int planetEntered = 0;
 
     Vector2 _mouseAbsolute;
     Vector2 _smoothMouse;
@@ -152,31 +153,74 @@ public class CameraMove : MonoBehaviour {
 
     }
 
-    public void DecreaseSpeed()
+    public void DecreaseSpeedPlanet()
     {
-        maxSpeed /= speedChange;
-        acceleration /= speedChange;
-
-        //gameObject.GetComponent<SphereCollider>().radius /= speedChange;
-        if (velocity.x> maxSpeed)
+        planetEntered++;
+        if(planetEntered == 1) // if this is the first planet entered
         {
-            velocity.x = maxSpeed;
-        }
-        if (velocity.z > maxSpeed)
-        {
-            velocity.z = maxSpeed;
+            maxSpeed /= speedChange;
+            acceleration /= speedChange;
+
+            //gameObject.GetComponent<SphereCollider>().radius /= speedChange;
+            if (velocity.x > maxSpeed)
+            {
+                velocity.x = maxSpeed;
+            }
+            if (velocity.z > maxSpeed)
+            {
+                velocity.z = maxSpeed;
+            }
+
         }
 
+        
+    }
+
+    public void DecreaseSpeedStar()
+    {
+        starEntered++;
+        if (starEntered == 1) // if this is the first star entered
+        {
+            maxSpeed /= speedChange;
+            acceleration /= speedChange;
+
+            //gameObject.GetComponent<SphereCollider>().radius /= speedChange;
+            if (velocity.x > maxSpeed)
+            {
+                velocity.x = maxSpeed;
+            }
+            if (velocity.z > maxSpeed)
+            {
+                velocity.z = maxSpeed;
+            }
+
+        }
+
+
+       
+    }
+
+    public void IncreaseStarSpeed()
+    {
+        starEntered--;
+        if (starEntered == 0) // if this is the last star exited
+        {
+            maxSpeed *= speedChange;
+            acceleration *= speedChange;
+        }
 
 
     }
 
-    public void IncreaseSpeed()
+    public void IncreasePlanetSpeed()
     {
 
-        maxSpeed *= speedChange;
-        acceleration *= speedChange;
-        //gameObject.GetComponent<SphereCollider>().radius *= speedChange;
+        planetEntered--;
+        if (planetEntered == 0) // if this is the last planet entered
+        {
+            maxSpeed *= speedChange;
+            acceleration *= speedChange;
+        }
     }
 
     private void CheckButton()

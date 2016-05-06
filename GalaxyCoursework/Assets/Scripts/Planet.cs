@@ -92,7 +92,7 @@ public class Planet : Satalite
             {
                 planColour = GetBiomeColour(biomeList[count]);// new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
                 count++;                
-                Debug.Log(planColour);
+                //Debug.Log(planColour);
                 float test = planTexture.height;
                 test /= numOfChanges;
                 oneSect = Mathf.CeilToInt((test) * count);
@@ -172,7 +172,7 @@ public class Planet : Satalite
             Debug.Log("hitp" + name);
             surface.gameObject.SetActive(true);
             //Decrease Speed for moving around planet surface 
-            other.GetComponentInParent<CameraMove>().DecreaseSpeed();
+            other.GetComponentInParent<CameraMove>().DecreaseSpeedPlanet();
             Color c = GetComponent<Renderer>().material.color;
             c.a = 0;
             GetComponent<Renderer>().material.color = c;
@@ -196,7 +196,7 @@ public class Planet : Satalite
         {
             surface.gameObject.SetActive(false);
             //increase speed for moving around soloar system
-            other.GetComponentInParent<CameraMove>().IncreaseSpeed();
+            other.GetComponentInParent<CameraMove>().IncreasePlanetSpeed();
             Color c = GetComponent<Renderer>().material.color;
             c.a = 1;
             GetComponent<Renderer>().material.color = c;
