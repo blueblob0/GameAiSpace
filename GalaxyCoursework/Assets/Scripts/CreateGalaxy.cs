@@ -230,10 +230,10 @@ public class CreateGalaxy : MonoBehaviour
           for(int i =0;i< theStar.theRend.Length; i++)
             {
                 theStar.theRend[i].material.SetColor("_Color", Color.yellow);
-                Debug.Log(theStar.theRend[i].material.color);
+                
                 
             }
-            Debug.Log(theStar.theRend.Length);
+            
             stara.name = "BinaryStar";
         }
         else if (sType == starType.Ternarystar)

@@ -63,7 +63,6 @@ public class CelestialBody : MonoBehaviour {
     /// <returns></returns>
     protected GameObject SpawnSatalite(float moveAmount, float minDist, float maxDist, string prefabName, Vector2 crcle)
     {
-
         // star by moving out a bit from the planet 
         float move = moveAmount + Random.Range(minDist, maxDist);
         // GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
@@ -109,11 +108,7 @@ public class CelestialBody : MonoBehaviour {
         a.transform.localPosition = starPos.location;
         return a;
     }
-
-    
-
-
-
+        
 
     /// <summary>
     /// Getting the locations to sapwn satalites 
@@ -121,8 +116,10 @@ public class CelestialBody : MonoBehaviour {
     /// <param name="moveAmount"></param>
     /// <param name="minDist"></param>
     /// <param name="maxDist"></param>
+    /// <param name="circle"></param>
+    /// <param name="life"></param>
     /// <returns></returns>
-    protected SataliteDetails SataliteLocation(float moveAmount, float minDist, float maxDist,Vector2 circle)
+    protected SataliteDetails SataliteLocation(float moveAmount, float minDist, float maxDist,Vector2 circle, bool life)
     {
 
         // star by moving out a bit from the planet 
@@ -138,7 +135,7 @@ public class CelestialBody : MonoBehaviour {
         starPos.y = 0;
 
 
-        SataliteDetails a = new SataliteDetails(starPos, move);
+        SataliteDetails a = new SataliteDetails(starPos, move, life);
 
         return a;
         //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));
@@ -155,10 +152,12 @@ public struct SataliteDetails
 {
     public Vector3 location;
     public float distFromBody;
-    public SataliteDetails(Vector3 aLocation,float hold)
+    public bool haveLifeHold;
+    public SataliteDetails(Vector3 aLocation,float hold,bool life)
     {
         location = aLocation;
         distFromBody = hold;
+        haveLifeHold = life;
     }
 }
 

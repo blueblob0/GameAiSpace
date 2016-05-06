@@ -94,13 +94,31 @@ public class Star: CelestialBody
         
         Vector2 circlePos;
         circlePos = Vector2.one;
-        for (int i = 0; i < numPlanets; i++)
+        for (int i = 0; i < planetsLoc.Length; i++)
         {          
             circlePos = Random.insideUnitCircle.normalized;
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
-            planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos);
+            planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos, WorkOutLife(i));
             hold = planetsLoc[i].distFromBody + minDis;
         }
+    }
+
+    /// <summary>
+    /// used to work out if a planet can have life
+    /// </summary>
+    private bool WorkOutLife(int planetNum)
+    {
+        
+
+        if (planetNum >2 && planetNum < 5)
+        {
+            Debug.Log("make life random");
+            return true;
+        }
+        return false;
+
+       
+
     }
 
 

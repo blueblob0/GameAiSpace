@@ -7,7 +7,7 @@ public class Planet : Satalite
     public List<GameObject> moons = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public Renderer surface; // The plane on the planet
-    public string planetPrefabName = "MoonPrefab";
+    public string moonPrefabName = "MoonPrefab";
     const float dist = 0.03f;
     const float minDis = 0.06f;
     Texture2D planTexture;
@@ -16,6 +16,7 @@ public class Planet : Satalite
     //For the biome collider----------
     public GameObject biomeCollider;
     //--------------------------------
+    public bool haveLife = false;
 
     // Use this for initialization
 
@@ -36,7 +37,7 @@ public class Planet : Satalite
 
         for (int i = 0; i < numMoons; i++)
         {
-            moons.Add(SpawnSatalite(hold, minDis, dist, planetPrefabName, circlePos));
+            moons.Add(SpawnSatalite(hold, minDis, dist, moonPrefabName, circlePos));
             hold = moons[i].GetComponent<Satalite>().distPlanet;
 
         }
@@ -170,7 +171,14 @@ public class Planet : Satalite
         if (other.tag == "minicam")
         {
             Debug.Log("hitp" + name);
-            surface.gameObject.SetActive(true);
+
+            //IF the planet can have life then spawn the surface and creatures
+            if (haveLife)
+            {
+                surface.gameObject.SetActive(true);
+            }
+
+            
             //Decrease Speed for moving around planet surface 
             other.GetComponentInParent<CameraMove>().DecreaseSpeedPlanet();
             Color c = GetComponent<Renderer>().material.color;
@@ -194,7 +202,11 @@ public class Planet : Satalite
     {
         if (other.tag == "minicam")
         {
-            surface.gameObject.SetActive(false);
+            if (haveLife)
+            {
+                surface.gameObject.SetActive(false);
+            }
+            
             //increase speed for moving around soloar system
             other.GetComponentInParent<CameraMove>().IncreasePlanetSpeed();
             Color c = GetComponent<Renderer>().material.color;
