@@ -11,9 +11,9 @@ public class Star: CelestialBody
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
     //const float dist = 0.05f;//
-    const float dist = CreateGalaxy.starMuti;
+    const float dist = CreateGalaxy.planetMuti*2;
    // const float minDis = 0.05f;//CreateGalaxy.starMuti;
-    const float minDis = CreateGalaxy.starMuti;
+    const float minDis = CreateGalaxy.planetMuti;
 
     public starType typeOfStar; 
 
@@ -188,7 +188,7 @@ public class Star: CelestialBody
             }
         }
        
-        Debug.Log("thing should not hit");
+       // Debug.Log("thing should not hit");
         
     }
     

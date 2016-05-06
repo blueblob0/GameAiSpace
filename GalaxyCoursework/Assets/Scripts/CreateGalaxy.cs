@@ -33,8 +33,8 @@ public class HoldStar
 
 public class CreateGalaxy : MonoBehaviour
 {
-    public const int starMuti = 50; 
-    
+    public const int starMuti = 50;
+    public const int planetMuti = 50;
     //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
     private List<Star> realStars = new List<Star>();
@@ -174,11 +174,7 @@ public class CreateGalaxy : MonoBehaviour
                     MakeStar(s, starType.Ternarystar);
                 }
             }            
-        }
-        //for(int i=0;i< starCount.Length; i++)
-        //{
-           // Debug.Log("Count "+ i + ": " +starCount[i]);
-       // }
+        }        
     }
 
     /// <summary>

@@ -24,7 +24,7 @@ public class Planet : Satalite
         base.Start();
         Transform theParent = transform.parent;
         transform.parent = null;
-        transform.localScale= Vector3.one * CreateGalaxy.starMuti;
+        transform.localScale= Vector3.one * CreateGalaxy.planetMuti;
 
         transform.SetParent(theParent);
 
