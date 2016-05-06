@@ -67,8 +67,6 @@ public class CreateGalaxy : MonoBehaviour
     {        
         Application.runInBackground = true;
         GenerateGalaxy();
-
-
     }
 
     void GenerateGalaxy()
@@ -140,13 +138,13 @@ public class CreateGalaxy : MonoBehaviour
 
     private void CatogriseStars()
     {
-        //types of star: tbd
-        //Neutron Star Over 50 Mass
-        //BlackHole Over 40 Mass
+        //types of star: tbd            (array pos)
+        //Neutron Star Over 50 Mass     (0)
+        //BlackHole Over 40 Mass        (1)
         //otherwise:
-        //Singe Star 70% 
-        //Twin Star 20%
-        //Ternary star10%
+        //Singe Star 70%                (2)
+        //Twin Star 20%                 (3)
+        //Ternary star10%               (4)
 
         int[] starCount = new int[5] { 0, 0, 0, 0, 0 };
 
@@ -154,62 +152,79 @@ public class CreateGalaxy : MonoBehaviour
         {
             if (s.StarMass > 50)
             {
-                starCount[0]++;
+                MakeStar(s, starType.Neutron);                
             }
             else if(s.StarMass > 40)
             {
-                starCount[1]++;
+                MakeStar(s, starType.BlackHole);
             }
             else
             {
                 int holdRand = Random.Range(0,100);
                 if (holdRand < 70)
                 {
-                    starCount[2]++;
+                    MakeStar(s, starType.SingeStar);
                 }
                 else if(holdRand < 90)
                 {
-                    starCount[3]++;
+                    MakeStar(s, starType.TwinStar);
                 }
                 else 
                 {
-                    starCount[4]++;
+                    MakeStar(s, starType.Ternarystar);
                 }
-            }
-
-            //Debug.Log(s.mass);
+            }            
         }
-
-        for(int i=0;i< starCount.Length; i++)
-        {
-            Debug.Log("Count "+ i + ": " +starCount[i]);
-
-        }
-
-        foreach(HoldStar s in holdStars)
-        {
-            MakeStar(s.starPos, s.StarMass);           
-          
-        }
-
-
-
+        //for(int i=0;i< starCount.Length; i++)
+        //{
+           // Debug.Log("Count "+ i + ": " +starCount[i]);
+       // }
     }
 
-
-   private void MakeStar(Vector3 starPos, int theMass)
+    /// <summary>
+    /// Function to spawn a given type of star
+    /// </summary>
+    /// <param name="starInfo"> a Class holding the stars position and mass</param>
+    /// <param name="sType"> The Type of star to spawn</param>
+    private void MakeStar(HoldStar starInfo, starType sType)
     {
         GameObject stara = (GameObject)Instantiate(Resources.Load(starPrefabName));
        
         stara.transform.SetParent(transform);
-        stara.transform.position = starPos;
-        Star theStar = stara.GetComponent<Star>();
-
+        stara.transform.position = starInfo.starPos;
+        Star theStar = stara.GetComponent<Star>();       
+        
+        theStar.typeOfStar = sType;
+        theStar.SetMass(starInfo.StarMass);
         realStars.Add(theStar);
-        theStar.SetMass(theMass);
 
-    }
-    
+        if(sType == starType.Neutron)
+        {
+            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
+            stara.name = "Neutron";
+            Debug.Log("Neutron");
+        }
+        else if (sType == starType.BlackHole)
+        {
+            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
+            stara.name = "BlackHole";
+        }
+        else if (sType == starType.SingeStar)
+        {
+            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            stara.name = "SingeStar";
+        }
+        else if (sType == starType.TwinStar)
+        {
+            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
+            stara.name = "TwinStar";
+        }
+        else if (sType == starType.Ternarystar)
+        {
+            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.magenta);
+            stara.name = "Ternarystar";
+        }
+    }    
     
     //move every sun towards the backhole
     public void MoveTowardsBlackHole()
@@ -311,3 +326,11 @@ public class CreateGalaxy : MonoBehaviour
 
 
 
+public enum starType
+{
+    Neutron =    0,
+    BlackHole = 1,    
+    SingeStar = 2,
+    TwinStar = 3,
+    Ternarystar = 4,
+}
