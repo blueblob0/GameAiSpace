@@ -21,7 +21,7 @@ public class Star: CelestialBody
     {       
         miniSun.SetActive(false);
         miniSun.transform.SetParent(null);
-        miniSun.transform.localScale = Vector3.one * CreateGalaxy.starMuti *2;
+        miniSun.transform.localScale = Vector3.one * (CreateGalaxy.starMuti +20);
         miniSun.transform.SetParent(transform);
         base.Start();
         planetsSpawned = false;
@@ -38,9 +38,11 @@ public class Star: CelestialBody
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
-        int maxplanets = 9; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
+        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x-100) / CreateGalaxy.starMuti) * 2)/10; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
 
-        Debug.Log((transform.lossyScale.x / CreateGalaxy.starMuti * 2) - (CreateGalaxy.starMuti * 2));
+        Debug.Log(((Mathf.RoundToInt(transform.lossyScale.x-150) / CreateGalaxy.starMuti * 2) / 10) + " " + transform.lossyScale.x );
+
+
 
         do
         {
