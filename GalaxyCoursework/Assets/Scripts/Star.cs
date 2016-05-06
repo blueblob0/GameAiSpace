@@ -7,7 +7,7 @@ public class Star: CelestialBody
     public int numPlanets;
     public GameObject[] planets;// = new List<GameObject>();
     public SataliteDetails[] planetsLoc;// = new List<SataliteDetails>();
-    public GameObject miniSun;
+    
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
@@ -17,28 +17,39 @@ public class Star: CelestialBody
     const float minDis = CreateGalaxy.planetMuti;
 
     public starType typeOfStar;
-    Renderer theRend;
+    
+
+    //varables for twinStars
+    public GameObject[] miniStars;
+    public GameObject[] bigStars;
+    Renderer[] theRend;
+
 
     //public float angle;
     //public float spiralAngel;
     // Use this for initialization
     protected override void Start()
     {
-
-         theRend = GetComponent<Renderer>();
-        miniSun.SetActive(false);
-        miniSun.transform.SetParent(null);
-        if(typeOfStar == starType.Neutron)
+        theRend = new Renderer[bigStars.Length];
+        for (int i = 0; i < bigStars.Length; i++)
         {
-            miniSun.transform.localScale = Vector3.one * (CreateGalaxy.starMuti/10);
+            theRend[i] = bigStars[i].GetComponent<Renderer>();
         }
-        else
-        {
-            miniSun.transform.localScale = Vector3.one * (CreateGalaxy.starMuti + CreateGalaxy.starMuti / 2);
-        }
-
         
-        miniSun.transform.SetParent(transform);
+        for (int  i = 0; i < miniStars.Length;i++)
+        {
+            miniStars[i].SetActive(false);
+            miniStars[i].transform.SetParent(null);
+            if (typeOfStar == starType.Neutron)
+            {
+                miniStars[i].transform.localScale = Vector3.one * (CreateGalaxy.starMuti / 10);
+            }
+            else
+            {
+                miniStars[i].transform.localScale = Vector3.one * (CreateGalaxy.starMuti + CreateGalaxy.starMuti / 2);
+            }
+            miniStars[i].transform.SetParent(transform);
+        }
         base.Start();
         planetsSpawned = false;
         //mass = 100;      
@@ -48,7 +59,7 @@ public class Star: CelestialBody
    
 
     /// <summary>
-    /// Function for making planets this is called by the genration algrithum when the size of the sun is set
+    /// Function for making planets this is called by the genration algrithum when the size of the star is set
     /// </summary>
     public void GeneratePlanets()
     {
@@ -135,7 +146,7 @@ public class Star: CelestialBody
 
 
     /// <summary>
-    /// spawing satalite planets around the sun 
+    /// spawing satalite planets around the star 
     /// </summary>
     /// <param name="starPos">The stars position info</param>
     /// <param name="prefabName">String of th prefab to spawn</param>
@@ -168,8 +179,16 @@ public class Star: CelestialBody
             // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
             //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
             // Debug.Log("hit");
-            miniSun.SetActive(true);
-            StartCoroutine(  reduceAlpha());
+            for(int  i = 0; i < miniStars.Length; i++)
+            {
+                miniStars[i].SetActive(true);
+            }
+
+            for (int i = 0; i < theRend.Length; i++)
+            {
+                StartCoroutine(ReduceAlpha(theRend[i]));
+            }
+            
             if (planetsSpawned)
             {
                 for (int i = 0; i < planets.Length; i++)
@@ -194,42 +213,64 @@ public class Star: CelestialBody
     }
 
 
-    //used to reduce the alpha of the sun when the player moves in
-    IEnumerator reduceAlpha()
+    //used to reduce the alpha of the star when the player moves in
+    IEnumerator ReduceAlpha( Renderer starRend)
     {
-        while(theRend.material.color.a > 0f)
+        
+
+
+        while (starRend.material.color.a > 0f)
         {
-            Color c = theRend.material.color;
+            Color c = starRend.material.color;
             c.a -= 0.1f;
             //Debug.Log(theRend.material.color.a);
-            theRend.material.color = c;
+            starRend.material.color = c;
             yield return new WaitForSeconds(0.1f);
         }
     }
-    
+
+    //used to increase the alpha of the star when the player moves out
+    IEnumerator IncreaseAlpha(Renderer starRend)
+    {
+        while (starRend.material.color.a < 1f)
+        {
+            Color c = starRend.material.color;
+            c.a -= 0.1f;
+            //Debug.Log(theRend.material.color.a);
+            starRend.material.color = c;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 
     void OnTriggerExit(Collider other)
     {
         
         if (other.tag == "MainCamera")
         {
-            miniSun.SetActive(false);
+            for (int i = 0; i < miniStars.Length; i++)
+            {
+                miniStars[i].SetActive(false);
+            }
             //increase speed for moving around galxy 
             other.GetComponent<CameraMove>().IncreaseStarSpeed();
             //other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 20f);
             //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 10f);
             StopAllCoroutines(); // use this to stop the current fade if any
-            Color c = theRend.material.color;
-            c.a = 1;
-            theRend.material.color = c;
+
+            for (int i = 0; i < theRend.Length; i++)
+            {
+                StartCoroutine(IncreaseAlpha(theRend[i]));
+            }
+
             for (int i = 0; i < planets.Length; i++)
             {
                 planets[i].SetActive(false);
             }
         }
 
-
     }
+
+
 
 
 

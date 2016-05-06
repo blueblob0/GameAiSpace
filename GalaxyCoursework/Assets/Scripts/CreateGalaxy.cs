@@ -52,12 +52,12 @@ public class CreateGalaxy : MonoBehaviour
     BlackHole black;
 
     //The way geenration will work
-    //create suns
+    //create stars
     //create balckhole
-    //move the suns towards blackhole 
-    //stop all suns
-    //work out type of sun from size
-    //then work out planets around sun
+    //move the stars towards blackhole 
+    //stop all stars
+    //work out type of star from size
+    //then work out planets around star
     //planets that can have life marked 
 
      //extra
@@ -87,7 +87,7 @@ public class CreateGalaxy : MonoBehaviour
             spiralAngel[i] = i * angelhold;
         }
 
-        //start by creating suns
+        //start by creating stars
 
         //This is how many "rows" of planets are in the spiral, (each row are a circle 
         for (float row = 1; row < radiusMax; row++)
@@ -117,7 +117,7 @@ public class CreateGalaxy : MonoBehaviour
             }
             for (int i = 0; i < spiralAngel.Length; i++)
             {
-                spiralAngel[i] += radiusIncrease / (starMuti); // This moves the angle that the sun can spawn at along after each rotation
+                spiralAngel[i] += radiusIncrease / (starMuti); // This moves the angle that the star can spawn at along after each rotation
             }
 
         }
@@ -129,7 +129,7 @@ public class CreateGalaxy : MonoBehaviour
             ablack.transform.SetParent(transform);
             black = ablack.GetComponent<BlackHole>();
         }
-        //then move the suns towards the blackhole
+        //then move the stars towards the blackhole
         MoveTowardsBlackHole();
 
         CatogriseStars();
@@ -223,7 +223,7 @@ public class CreateGalaxy : MonoBehaviour
         }
     }    
     
-    //move every sun towards the backhole
+    //move every star towards the backhole
     public void MoveTowardsBlackHole()
     {
         int i = 0;
@@ -286,7 +286,7 @@ public class CreateGalaxy : MonoBehaviour
             }
         }
 
-        //if the sun has got bigger need to check all stars around it again
+        //if the star has got bigger need to check all stars around it again
         if (restartCheck)
         {
             RemoveStarsInStar(theStar);
