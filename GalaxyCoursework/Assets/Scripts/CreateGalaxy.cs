@@ -39,8 +39,8 @@ public class CreateGalaxy : MonoBehaviour
     //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
     private List<Star> realStars = new List<Star>();
-    public string starPrefabName = "StarPrefab";
-    
+    public const string starPrefabName = "StarPrefab";
+    public const string binaryPrefabName = "BinaryStarPrefab";
     // private int spaceBetween = StarMuti*10;
     /// <summary>
     /// the center of the Galaxy might be usefull if you have mutiple galaxys 
@@ -168,10 +168,11 @@ public class CreateGalaxy : MonoBehaviour
                 }
                 else if(holdRand < 90)
                 {
-                    MakeStar(s, starType.TwinStar);
+                    MakeStar(s, starType.BinaryStar);
                 }
                 else 
                 {
+                    //Debug.Log("starType.Ternarystar");
                     MakeStar(s, starType.Ternarystar);
                 }
             }            
@@ -185,18 +186,31 @@ public class CreateGalaxy : MonoBehaviour
     /// <param name="sType"> The Type of star to spawn</param>
     private void MakeStar(HoldStar starInfo, starType sType)
     {
-        GameObject stara = (GameObject)Instantiate(Resources.Load(starPrefabName));
+        GameObject stara;
+        if (sType == starType.BinaryStar)
+        {
+
+             stara = (GameObject)Instantiate(Resources.Load(binaryPrefabName));
+        }
+        else
+        {
+
+            stara = (GameObject)Instantiate(Resources.Load(starPrefabName));
+        }
+        
        
         stara.transform.SetParent(transform);
         stara.transform.position = starInfo.starPos;
-        Star theStar = stara.GetComponent<Star>();       
+        Star theStar = stara.GetComponent<Star>();
         
         theStar.typeOfStar = sType;
         theStar.SetMass(starInfo.StarMass);
+        
+        theStar.AssignVarables();
         realStars.Add(theStar);
-
-        if(sType == starType.Neutron)
+        if (sType == starType.Neutron)
         {
+            
             stara.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
             stara.name = "Neutron";
             Debug.Log("Neutron");
@@ -209,16 +223,26 @@ public class CreateGalaxy : MonoBehaviour
         else if (sType == starType.SingeStar)
         {
             stara.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
-            stara.name = "SingeStar";
+            stara.name = "SingleStar";
         }
-        else if (sType == starType.TwinStar)
+        else if (sType == starType.BinaryStar)
         {
-            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
-            stara.name = "TwinStar";
+          for(int i =0;i< theStar.theRend.Length; i++)
+            {
+                theStar.theRend[i].material.SetColor("_Color", Color.yellow);
+                Debug.Log(theStar.theRend[i].material.color);
+                
+            }
+            Debug.Log(theStar.theRend.Length);
+            stara.name = "BinaryStar";
         }
         else if (sType == starType.Ternarystar)
         {
-            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.magenta);
+            for (int i = 0; i < theStar.theRend.Length; i++)
+            {
+                theStar.theRend[i].material.SetColor("_Color", Color.magenta);
+                
+            }
             stara.name = "Ternarystar";
         }
     }    
@@ -328,6 +352,6 @@ public enum starType
     Neutron =    0,
     BlackHole = 1,    
     SingeStar = 2,
-    TwinStar = 3,
+    BinaryStar = 3,
     Ternarystar = 4,
 }

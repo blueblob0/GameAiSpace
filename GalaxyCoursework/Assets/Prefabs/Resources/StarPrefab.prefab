@@ -12,7 +12,7 @@ GameObject:
   - 23: {fileID: 2333862}
   - 135: {fileID: 13567860}
   m_Layer: 0
-  m_Name: StarPrefab (5)
+  m_Name: MiniStar
   m_TagString: CelestialBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,7 +97,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: 53b995727e4c3a84f9260ae07b427067, type: 2}
+  - {fileID: 2100000, guid: 28ad9c3e5e911394f9f8b0f14ea4d94f, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1
@@ -154,10 +154,14 @@ MonoBehaviour:
   mass: 0
   numPlanets: 0
   planets: []
-  miniSun: {fileID: 116360}
   spheres: []
   planetPrefabName: PlanetPrefab
   typeOfStar: 2
+  miniStars:
+  - {fileID: 116360}
+  bigStars:
+  - {fileID: 147378}
+  theRend: []
 --- !u!135 &13533070
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -168,7 +172,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: .800000012
+  m_Radius: .899999976
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!135 &13567860
 SphereCollider:
@@ -189,6 +193,22 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: bigSuns.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: miniSuns.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: bigStars.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: miniStars.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_LocalScale.x
       value: 300
@@ -227,12 +247,28 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: m_Radius
-      value: .800000012
+      value: .899999976
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: typeOfStar
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_Name
+      value: MiniStar
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: bigStars.Array.data[0]
+      value: 
+      objectReference: {fileID: 147378}
+    - target: {fileID: 0}
+      propertyPath: bigStars.Array.data[1]
+      value: 
+      objectReference: {fileID: 147378}
+    - target: {fileID: 0}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 28ad9c3e5e911394f9f8b0f14ea4d94f, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 147378}
