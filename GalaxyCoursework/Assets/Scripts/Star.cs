@@ -14,6 +14,10 @@ public class Star: CelestialBody
     const float dist = CreateGalaxy.starMuti;
    // const float minDis = 0.05f;//CreateGalaxy.starMuti;
     const float minDis = CreateGalaxy.starMuti;
+
+    public starType typeOfStar; 
+
+
     //public float angle;
     //public float spiralAngel;
     // Use this for initialization
@@ -21,7 +25,16 @@ public class Star: CelestialBody
     {       
         miniSun.SetActive(false);
         miniSun.transform.SetParent(null);
-        miniSun.transform.localScale = Vector3.one * CreateGalaxy.starMuti *2;
+        if(typeOfStar == starType.Neutron)
+        {
+            miniSun.transform.localScale = Vector3.one * (CreateGalaxy.starMuti/10);
+        }
+        else
+        {
+            miniSun.transform.localScale = Vector3.one * (CreateGalaxy.starMuti + CreateGalaxy.starMuti / 2);
+        }
+
+        
         miniSun.transform.SetParent(transform);
         base.Start();
         planetsSpawned = false;
@@ -38,15 +51,14 @@ public class Star: CelestialBody
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
-        int maxplanets = 9; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
-
-        Debug.Log((transform.lossyScale.x / CreateGalaxy.starMuti * 2) - (CreateGalaxy.starMuti * 2));
-
+        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x- (CreateGalaxy.starMuti * 2)) / CreateGalaxy.starMuti) * 2)/10; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
+        
         do
         {
             planetsNum();
         } while (numPlanets > maxplanets);
-        numPlanets = maxplanets;
+
+        //numPlanets = maxplanets;
         // Debug.Log(numPlanets);
         planetsLoc = new SataliteDetails[numPlanets];
         float hold = CreateGalaxy.starMuti;
@@ -55,7 +67,7 @@ public class Star: CelestialBody
         circlePos = Vector2.one;
         for (int i = 0; i < numPlanets; i++)
         {          
-            //circlePos = Random.insideUnitCircle.normalized;
+            circlePos = Random.insideUnitCircle.normalized;
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
             planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos);
             hold = planetsLoc[i].distFromBody + minDis;
@@ -95,13 +107,27 @@ public class Star: CelestialBody
     public void IncreaseMass(int plus)
     {
         mass += plus;
-        transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti;
+        SetScale();
     }
 
     public void SetMass(int newMass)
-    {
+    {        
         mass = newMass;
-        transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti;
+        SetScale();
+    }
+
+    private void SetScale()
+    {
+        if (typeOfStar == starType.Neutron)
+        {
+            transform.localScale = Vector3.one * mass;
+        }
+        else
+        {
+            transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti;
+        }
+
+
     }
 
 
