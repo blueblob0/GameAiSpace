@@ -311,6 +311,7 @@ public class Star: CelestialBody
                 planetsSpawned = true;
             }
             StopAllCoroutines(); // use this to stop the current fade if any
+
             for (int i = 0; i < theRend.Length; i++)
             {
                 StartCoroutine(ReduceAlpha(theRend[i]));
@@ -373,24 +374,10 @@ public class Star: CelestialBody
         planetListText.text = "";
     }
 
-    //used to reduce the alpha of the star when the player moves in
-    IEnumerator ReduceAlpha( Renderer starRend)
-    {
-        
-
-
-        while (starRend.material.color.a > 0f)
-        {
-            Color c = starRend.material.color;
-            c.a -= 0.1f;
-            //Debug.Log(theRend.material.color.a);
-            starRend.material.color = c;
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+   
 
     //used to increase the alpha of the star when the player moves out
-    IEnumerator IncreaseAlpha(Renderer starRend)
+    protected override IEnumerator IncreaseAlpha(Renderer starRend)
     {
         while (starRend.material.color.a < 1f)
         {

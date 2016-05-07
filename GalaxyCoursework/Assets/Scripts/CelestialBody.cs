@@ -1,9 +1,9 @@
 ﻿//script made by: up651590
 using UnityEngine;
-using System.Collections.Generic;
 
+using System.Collections;
 public abstract class CelestialBody : MonoBehaviour {
-
+  
     
     protected CreateGalaxy controler;
 
@@ -98,7 +98,32 @@ public abstract class CelestialBody : MonoBehaviour {
         mass = newMass;
         SetScale();
     }
+    //used to reduce the alpha of the star when the player moves in
+   protected IEnumerator ReduceAlpha(Renderer starRend)
+    {
+        while (starRend.material.color.a > 0f)
+        {
+            Debug.Log(starRend.material.color.a);
+            Color c = starRend.material.color;
+            c.a -= 0.1f;
+            //Debug.Log(theRend.material.color.a);
+            starRend.material.color = c;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 
+    //used to increase the alpha of the star when the player moves out
+    protected virtual IEnumerator IncreaseAlpha(Renderer starRend)
+    {
+        while (starRend.material.color.a < 1f)
+        {
+            Color c = starRend.material.color;
+            c.a += 0.1f;
+            //Debug.Log(theRend.material.color.a);
+            starRend.material.color = c;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
 
 
 }

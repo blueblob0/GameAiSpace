@@ -182,15 +182,15 @@ public class Planet : Satalite
                 other.GetComponentInParent<CameraMove>().DecreaseSpeedPlanet();
             }
             
-            Color c = GetComponent<Renderer>().material.color;
-            c.a = 0;
-            GetComponent<Renderer>().material.color = c;
-           
+           // Color c = GetComponent<Renderer>().material.color;
+           // c.a = 0;
+            //GetComponent<Renderer>().material.color = c;
+            StopAllCoroutines(); // use this to stop the current fade if any
+                        
+            StartCoroutine(ReduceAlpha(gameObject.GetComponent<Renderer>()));
+
         }
-        else
-        {
-           // Debug.Log(other.tag);
-        }
+        
     }
 
     void OnTriggerExit(Collider other)
@@ -200,20 +200,19 @@ public class Planet : Satalite
             if (haveLife)
             {
                 surface.gameObject.SetActive(false);
+                //increase speed for moving around soloar system
+                other.GetComponentInParent<CameraMove>().IncreasePlanetSpeed();
             }
             
-            //increase speed for moving around soloar system
-            other.GetComponentInParent<CameraMove>().IncreasePlanetSpeed();
-            Color c = GetComponent<Renderer>().material.color;
-            c.a = 1;
-            GetComponent<Renderer>().material.color = c;
-            //Set the despawning here
-            //Here
-            //Here
-            //Here
-            //Here
-            //Here
-            //Here
+            
+            StopAllCoroutines(); // use this to stop the current fade if any
+            StartCoroutine(IncreaseAlpha(gameObject.GetComponent<Renderer>()));
+
+            //Color c = GetComponent<Renderer>().material.color;
+            // c.a = 1;
+            // GetComponent<Renderer>().material.color = c;
+
+
         }
 
 
