@@ -6,6 +6,7 @@ TagManager:
   tags:
   - CelestialBody
   - minicam
+  - PlanetList
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
+  - Star
+  - Planet
   - 
   - 
   - 
@@ -42,4 +43,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: 1
+    uniqueID: 2951812981
     locked: 0

@@ -47,7 +47,7 @@ public class CreateGalaxy : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Random.seed = 5;
+        Random.seed = 5;//ToDO Make Random Again 
         Application.runInBackground = true;
         GenerateGalaxy();
         ShowStarList();

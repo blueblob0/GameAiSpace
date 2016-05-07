@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿//script made by: up651590
+using UnityEngine;
 
 public class Moon : Satalite {
 

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿//script made by: up651590
+using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
+
 public class Planet : Satalite
 {
    

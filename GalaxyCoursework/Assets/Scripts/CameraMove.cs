@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿//script made by: up651590, except for the defined region code from  http://forum.unity3d.com/threads/a-free-simple-smooth-mouselook.73117/ 
+using UnityEngine;
 using System.Collections;
 
 public class CameraMove : MonoBehaviour {
@@ -15,14 +16,7 @@ public class CameraMove : MonoBehaviour {
     private int starEntered = 0;
     private int planetEntered = 0;
 
-    Vector2 _mouseAbsolute;
-    Vector2 _smoothMouse;
-
-    public Vector2 clampInDegrees = new Vector2(360, 180);
-    public bool lockCursor;
-    //public Vector2 sensitivity = new Vector2(2, 2);
-    public Vector2 smoothing = new Vector2(3, 3);
-    public Vector2 targetDirection;
+   
    
     // Use this for initialization
     void Start () {
@@ -38,11 +32,23 @@ public class CameraMove : MonoBehaviour {
         targetDirection = transform.localRotation.eulerAngles;
     }
 
+   
+    Vector2 mouseAbsolute;
+    Vector2 smoothMouse;
+
+    public Vector2 clampInDegrees = new Vector2(360, 180);
+
+    //public Vector2 sensitivity = new Vector2(2, 2);
+    public Vector2 smoothing = new Vector2(3, 3);
+    public Vector2 targetDirection;
+
     // Update is called once per frame
     void Update () {
         //Debug.Log(maxSpeed);
-        CheckButton();       
-        
+        CheckButton();
+
+        //region to show copied code
+        #region camera code from http://forum.unity3d.com/threads/a-free-simple-smooth-mouselook.73117/ 
         // if you hold the mous rotate the camera
         if (mouseHeld)
         {
@@ -50,8 +56,7 @@ public class CameraMove : MonoBehaviour {
             Cursor.visible = false;
 
             var targetOrientation = Quaternion.Euler(targetDirection);
-
-            //http://forum.unity3d.com/threads/a-free-simple-smooth-mouselook.73117/
+            
             // Get raw mouse input for a cleaner reading on more sensitive mice.
             Vector2 mouseDelta = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
 
@@ -59,26 +64,26 @@ public class CameraMove : MonoBehaviour {
             mouseDelta = Vector2.Scale(mouseDelta, new Vector2(smoothing.x, smoothing.y));
 
             // Interpolate mouse movement over time to apply smoothing delta.
-            _smoothMouse.x = Mathf.Lerp(_smoothMouse.x, mouseDelta.x, 1f / smoothing.x);
-            _smoothMouse.y = Mathf.Lerp(_smoothMouse.y, mouseDelta.y, 1f / smoothing.y);
+            smoothMouse.x = Mathf.Lerp(smoothMouse.x, mouseDelta.x, 1f / smoothing.x);
+            smoothMouse.y = Mathf.Lerp(smoothMouse.y, mouseDelta.y, 1f / smoothing.y);
 
             // Find the absolute mouse movement value from point zero.
-            _mouseAbsolute += _smoothMouse;
+            mouseAbsolute += smoothMouse;
 
             // Clamp and apply the local x value first, so as not to be affected by world transforms.
             if (clampInDegrees.x < 360)
-                _mouseAbsolute.x = Mathf.Clamp(_mouseAbsolute.x, -clampInDegrees.x * 0.5f, clampInDegrees.x * 0.5f);
+                mouseAbsolute.x = Mathf.Clamp(mouseAbsolute.x, -clampInDegrees.x * 0.5f, clampInDegrees.x * 0.5f);
 
-            var xRotation = Quaternion.AngleAxis(-_mouseAbsolute.y, targetOrientation * Vector3.right);
+            var xRotation = Quaternion.AngleAxis(-mouseAbsolute.y, targetOrientation * Vector3.right);
             transform.localRotation = xRotation;
 
             // Then clamp and apply the global y value.
             if (clampInDegrees.y < 360)
-                _mouseAbsolute.y = Mathf.Clamp(_mouseAbsolute.y, -clampInDegrees.y * 0.5f, clampInDegrees.y * 0.5f);
+                mouseAbsolute.y = Mathf.Clamp(mouseAbsolute.y, -clampInDegrees.y * 0.5f, clampInDegrees.y * 0.5f);
 
             transform.localRotation *= targetOrientation;
 
-            var yRotation = Quaternion.AngleAxis(_mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
+            var yRotation = Quaternion.AngleAxis(mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
             transform.localRotation *= yRotation;
         }
         else
@@ -87,6 +92,7 @@ public class CameraMove : MonoBehaviour {
             Cursor.visible = true;
 
         }
+        #endregion
 
         if (forward && velocity.x < maxSpeed)
         {
@@ -152,6 +158,8 @@ public class CameraMove : MonoBehaviour {
 
 
     }
+   
+
 
     public void DecreaseSpeedPlanet()
     {

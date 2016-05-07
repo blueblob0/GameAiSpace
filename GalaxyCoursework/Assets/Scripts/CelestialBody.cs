@@ -73,11 +73,17 @@ public abstract class CelestialBody : MonoBehaviour {
 
         // star by moving out a bit from the planet 
         float move = moveAmount + Random.Range(minDist, maxDist);
+       // Debug.Log(move);
         // GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
         // a.transform.SetParent(transform);
         Vector3 starPos;
 
+        move = Mathf.Sqrt((move * move) / 2);
+
+        
         starPos = circle * move;
+
+       // Debug.Log(Vector3.Distance(hold * circle,Vector3.zero) + " " + Vector3.Distance(starPos, Vector3.zero));
         //Vector3 starPos = Vector3.one * move;
         starPos.z = starPos.y; //+ transform.position.z;
         //starPos.x = starPos.x + transform.position.x;
@@ -103,7 +109,7 @@ public abstract class CelestialBody : MonoBehaviour {
     {
         while (starRend.material.color.a > 0f)
         {
-            Debug.Log(starRend.material.color.a);
+            
             Color c = starRend.material.color;
             c.a -= 0.1f;
             //Debug.Log(theRend.material.color.a);

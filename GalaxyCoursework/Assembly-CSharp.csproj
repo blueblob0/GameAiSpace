@@ -96,12 +96,15 @@
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
      <Compile Include="Assets\Scripts\CreateGalaxy.cs" />
+     <Compile Include="Assets\Scripts\Enums\NamesFemale.cs" />
+     <Compile Include="Assets\Scripts\Enums\NamesMale.cs" />
+     <Compile Include="Assets\Scripts\Enums\Surnames.cs" />
+     <Compile Include="Assets\Scripts\Enums\biomes.cs" />
      <Compile Include="Assets\Scripts\Moon.cs" />
      <Compile Include="Assets\Scripts\Noise.cs" />
      <Compile Include="Assets\Scripts\Planet.cs" />
      <Compile Include="Assets\Scripts\Satalite.cs" />
      <Compile Include="Assets\Scripts\Star.cs" />
-     <Compile Include="Assets\Scripts\biomes.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

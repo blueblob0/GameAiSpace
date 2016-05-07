@@ -12,9 +12,9 @@ public class Star: CelestialBody
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
     //const float dist = 0.05f;//
-    const float dist = CreateGalaxy.planetMuti*2;
+    const float dist = CreateGalaxy.planetMuti;
    // const float minDis = 0.05f;//CreateGalaxy.starMuti;
-    const float minDis = CreateGalaxy.planetMuti;
+    const float minDis = CreateGalaxy.planetMuti*0.75f;
 
     public starType typeOfStar;
 
@@ -37,16 +37,14 @@ public class Star: CelestialBody
         }
         base.Start();
         planetsSpawned = false;
-        //mass = 100;      
+        //mass = 100;     
         
-        foreach(PlanetsInfo pla in planetsOnStar)
-        {
-
-            GeneratePlanets(pla);
-
+        for (int i=0;i< planetsOnStar.Length;i++)
+        {           
+            GeneratePlanets(planetsOnStar[i], bigStars[i].transform);            
         }
 
-        
+
     }
 
     public void AssignVarables()
@@ -70,7 +68,7 @@ public class Star: CelestialBody
             }
             else
             {
-                miniStars[i].transform.localScale = Vector3.one * (CreateGalaxy.planetMuti + (CreateGalaxy.planetMuti / 2));
+                miniStars[i].transform.localScale = Vector3.one * (CreateGalaxy.planetMuti *1.5f);
                 
             }
             miniStars[i].transform.SetParent(bigStars[i].transform);
@@ -105,11 +103,18 @@ public class Star: CelestialBody
     /// <summary>
     /// Function for making planets this is called by the genration algrithum when the size of the star is set
     /// </summary>
-    public void GeneratePlanets(PlanetsInfo planets)
+    public void GeneratePlanets(PlanetsInfo planets, Transform parentSun)
     {
-        // the number of planets can be between 0 and 12 ( for now)
-        // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
-        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x- (CreateGalaxy.planetMuti * 2)) / CreateGalaxy.planetMuti) * 2)/10; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
+        // start with the size of the bisun and remove the spsace the mini sun would take up along with the raioud of a planet so planets cant stick out  
+        float disatanceCalc = parentSun.lossyScale.x - (CreateGalaxy.planetMuti * 1.5f)- (CreateGalaxy.planetMuti/2);
+        disatanceCalc /= (2 * (dist )); // then size to the number of planets that cna fit 
+        name = disatanceCalc.ToString();
+        int maxplanets = Mathf.FloorToInt(disatanceCalc); //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
+       
+       //TODO check maxplanets
+
+
+
         int numPlanets = 0;
         if (maxplanets > 0)
         {
@@ -118,25 +123,22 @@ public class Star: CelestialBody
                 numPlanets = planetsNum();
             } while (numPlanets > maxplanets);
         }
-
-        //Debug.Log(planets);
+        numPlanets = maxplanets;
+       //Debug.Log(maxplanets);
 
         
         planets.planetsLoc = new SataliteDetails[numPlanets];
-        float hold = CreateGalaxy.starMuti;
+        float hold = (CreateGalaxy.planetMuti*1.5f)/2;
         
         Vector2 circlePos;
         circlePos = Vector2.one;
         for (int i = 0; i < planets.planetsLoc.Length; i++)
         {          
-            circlePos = Random.insideUnitCircle.normalized;
+           // circlePos = Random.insideUnitCircle.normalized;
+           //TODO unalign planets
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
-            planets.planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos, WorkOutLife(i));
-            if (planets.planetsLoc[i].haveLifeHold)
-            {
-                Debug.Log("yes");
-                gameObject.name = "yes";
-            }
+            planets.planetsLoc[i] = SataliteLocation(hold, dist, dist, circlePos, WorkOutLife(i));
+            
 
             hold = planets.planetsLoc[i].distFromBody + minDis;
         }
@@ -181,7 +183,7 @@ public class Star: CelestialBody
     {
         if (planetNum >2 && planetNum < 5)
         {
-            Debug.Log("make life random");
+            //TODO make life random
             return true;
         }
         return false;
@@ -190,8 +192,9 @@ public class Star: CelestialBody
 
     public int planetsNum()
     {
-
-       int  numPlanets = Random.Range(0, 100);
+        // the number of planets can be between 0 and 12 ( for now)
+        // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
+        int numPlanets = Random.Range(0, 100);
 
         if (numPlanets < 2) //2%
         {
@@ -261,8 +264,8 @@ public class Star: CelestialBody
 
         a.transform.position = parent.transform.position;
 
-        a.transform.position+= starPos.location;
-
+        a.transform.position += starPos.location;
+       // Debug.Log(starPos.location);
         
         holds.haveLife = starPos.haveLifeHold;
         holds.SetBiomes();
@@ -288,13 +291,18 @@ public class Star: CelestialBody
             
             if (planetsSpawned)
             {
+                int c = 0;
                 foreach (PlanetsInfo pla in planetsOnStar)
                 {
                     for (int i = 0; i < pla.planets.Length; i++)
                     {
                         pla.planets[i].SetActive(true);
+                     Debug.Log(   Vector3.Distance(pla.planets[i].transform.position, bigStars[c].transform.position) + " " + bigStars[c].name +" " + pla.planets[i].name);
+
                     }
-                }               
+                    
+                    c++;
+                }
             }
             else
             {
@@ -306,6 +314,7 @@ public class Star: CelestialBody
                     for (int i = 0; i < planetsOnStar[c].planetsLoc.Length; i++)
                     {
                         planetsOnStar[c].planets[i] = SpawnPlanet(planetsOnStar[c].planetsLoc[i], planetPrefabName,bigStars[c]);
+
                     }
                 }
                 planetsSpawned = true;
