@@ -2,8 +2,7 @@
 using UnityEngine;
 
 public class Satalite : CelestialBody
-{
-    protected int speed;
+{    
     public GameObject orbitingBody;
     public float distPlanet;// distance from planet
     void Update()

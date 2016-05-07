@@ -138,7 +138,7 @@ public class Star: CelestialBody
             circlePos = Random.insideUnitCircle.normalized;
          
            
-            planets.planetsLoc[i] = SataliteLocation(hold, dist, dist, circlePos, WorkOutLife(i));
+            planets.planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos, WorkOutLife(i));
             
             hold = planets.planetsLoc[i].distFromBody + CreateGalaxy.planetMuti;
         }
@@ -271,6 +271,7 @@ public class Star: CelestialBody
         
         holds.haveLife = starPos.haveLifeHold;
         holds.SetBiomes();
+      
         return a;
     }
 

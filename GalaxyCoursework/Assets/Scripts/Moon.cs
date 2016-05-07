@@ -7,7 +7,7 @@ public class Moon : Satalite {
 	protected  override void Start ()
     {
         base.Start();
-        speed = Random.Range(100, 300);
+
     }
 	
 	

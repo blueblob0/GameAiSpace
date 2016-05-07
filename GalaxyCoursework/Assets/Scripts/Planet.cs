@@ -1,10 +1,15 @@
 ﻿//script made by: up651590
 using UnityEngine;
 using System.Collections.Generic;
-
+using System.Collections;
 public class Planet : Satalite
 {
-   
+    public LineRenderer ringLine;
+    public LineRenderer ringLine2;
+
+    bool ring1 = false;
+    bool ring2 = false;
+
     public List<GameObject> moons = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public Renderer surface; // The plane on the planet
@@ -19,6 +24,7 @@ public class Planet : Satalite
     //--------------------------------
     public bool haveLife = false;
     public bool startFinish = false;
+    
 
     // Use this for initialization
 
@@ -31,23 +37,120 @@ public class Planet : Satalite
 
         transform.SetParent(theParent);
 
-        int numMoons = Random.Range(0, 4);
-        speed = Random.Range(10,35);
-        float hold = transform.lossyScale.x/2;
-        Vector2 circlePos = Vector2.one;
-        circlePos =  Vector2.one;
-
-        for (int i = 0; i < numMoons; i++)
-        {
-             circlePos = Random.insideUnitCircle.normalized;
-            moons.Add(SpawnSatalite(hold, minDis, dist, moonPrefabName, circlePos));
-            hold = moons[i].GetComponent<Satalite>().distPlanet;
-            
-        }
+        
 
         //set the texture of the surface so we can call it later;
         surface.gameObject.SetActive(false);
+        
+        CreateOrbit();
+        
+        int holdRand = Random.Range(0, 100);
+        if (holdRand < 10) //10% chance to have a ring
+        {
+            CreatePlanetRing(1, ringLine);
+            ring1 = true;
+            if (holdRand < 5)//5% chance to have 2 rings 
+            {               
+                CreatePlanetRing(1.2f,ringLine2);
+                ring2= true;
+            }
+        }
+
+        GenerateMoons();
+
         startFinish = true;
+    }
+
+    private void GenerateMoons()
+    {
+        int maxmoon = 4;
+        float hold = transform.lossyScale.x / 2;
+        if (ring1) // have rings replace moons
+        {
+            maxmoon--;
+            hold += minDis;
+        }
+        if (ring2)
+        {
+            maxmoon--;
+            hold += minDis;
+        }
+        int numMoons = Random.Range(0, maxmoon+1);
+        if (numMoons > 0)
+        {
+            Vector2 circlePos = Vector2.one;
+            for (int i = 0; i < numMoons; i++)
+            {
+                circlePos = Random.insideUnitCircle.normalized;
+                moons.Add(SpawnSatalite(hold, minDis, dist, moonPrefabName, circlePos));
+                hold = moons[i].GetComponent<Satalite>().distPlanet;
+            }
+        }
+       
+       
+
+    }
+
+    /// <summary>
+    /// creates a ring to show orbit
+    /// </summary>
+    void CreateOrbit()
+    {
+        LineRenderer line = gameObject.GetComponent<LineRenderer>();
+        int segments =40;
+        float radius = (transform.lossyScale.x/2);
+
+        line.SetVertexCount(segments + 1);
+        line.useWorldSpace = true;
+        
+        float x;
+        float y =0;
+        float z = 0f;
+
+        float angle = 0f;
+
+        for (int i = 0; i < (segments + 1); i++)
+        {
+            float move = Mathf.Sqrt((distPlanet * distPlanet) / 2);
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * move ;
+            z = Mathf.Cos(Mathf.Deg2Rad * angle) * move ;
+            Vector3 pos = new Vector3(x, y, z);
+            pos = transform.parent.position + pos;
+            line.SetPosition(i, pos);
+
+            angle += (360f / segments);
+        }
+    }
+
+    /// <summary>
+    /// creaes a planet ring
+    /// </summary>
+    void CreatePlanetRing(float ringNumber, LineRenderer theRing)
+    {
+        theRing.gameObject.SetActive(true);
+        int segments = 40;
+        float radius = (transform.lossyScale.x / 2);
+        Debug.Log("ring");
+        theRing.SetVertexCount(segments + 1);
+        theRing.useWorldSpace = true;
+
+        float x;
+        float y = 0;
+        float z = 0f;
+
+        float angle = 0f;
+
+        for (int i = 0; i < (segments + 1); i++)
+        {
+            float move = Mathf.Sqrt((distPlanet * distPlanet) / 2);
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * ((ringNumber * transform.lossyScale.x/2) +(CreateGalaxy.planetMuti/10)) ;
+            z = Mathf.Cos(Mathf.Deg2Rad * angle) * ((ringNumber * transform.lossyScale.x/2) + (CreateGalaxy.planetMuti / 10));
+            Vector3 pos = new Vector3(x, y, z);
+            pos = transform.position + pos;
+            theRing.SetPosition(i, pos);
+
+            angle += (360f / segments);
+        }
     }
 
     protected override void SetScale()
