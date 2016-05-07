@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class CelestialBody : MonoBehaviour {
+public abstract class CelestialBody : MonoBehaviour {
 
     
     protected CreateGalaxy controler;
@@ -142,6 +142,13 @@ public class CelestialBody : MonoBehaviour {
 
     }
 
+    protected abstract void  SetScale();
+
+    public void SetMass(int newMass)
+    {
+        mass = newMass;
+        SetScale();
+    }
 
 
 

@@ -4,50 +4,52 @@ using System.Collections;
 
 public class BlackHole : CelestialBody
 {
-    public int count =  20;
-    public bool move = false;
+    public  int count{ get; private set; }
+   
 //bool check = false;
 	// Use this for initialization
 	protected override void  Start ()
     {
-        base.Start();
-        mass = 500; 
-        transform.localScale = Vector3.one * (mass );
+        base.Start();       
+        
 
         if (!controler)
         {
             controler = FindObjectOfType<CreateGalaxy>();
         }
         int holdcount = count; //store count as it would be lowered by any stars spawning sindie the hole 
-        controler.RemoveStarsInsideBH();
+        controler.RemoveStarsInsideBH(this);
         count = holdcount;
     }
 
-    
 
-
-	
-	// Update is called once per frame
-	void Update () {
-        if (move)
-        {
-            UpdateTowardsBlackHole();
-
-        }
-
-    }
-   
-
-    public void UpdateTowardsBlackHole()
+    protected override void SetScale()
     {
+        transform.localScale = Vector3.one * mass; 
+    }
 
-        if (count > 0)
+    /// <summary>
+    /// sets the number of stars the black hole can take in before it stops
+    /// </summary>
+    /// <param name="isBig">if the black hole is the one in th center</param>
+    public void SetCount(bool isBig)
+    {
+        if (isBig)
         {
-            controler.moveStars(transform.position, mass);
-            controler.RemoveStarsInsideBH();
-        }        
+            count = 20;
+        }
+        else
+        {
+            count = 1;
+        }
+    }
+
+    public void reduceCount(int amount)
+    {
+        count -= amount;
 
     }
+
 
 
 

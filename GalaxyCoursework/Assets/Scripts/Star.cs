@@ -63,7 +63,7 @@ public class Star: CelestialBody
             }
             else
             {
-                miniStars[i].transform.localScale = Vector3.one * (CreateGalaxy.starMuti + (CreateGalaxy.starMuti / 2));
+                miniStars[i].transform.localScale = Vector3.one * (CreateGalaxy.planetMuti + (CreateGalaxy.planetMuti / 2));
                 
             }
             miniStars[i].transform.SetParent(bigStars[i].transform);
@@ -80,7 +80,7 @@ public class Star: CelestialBody
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
-        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x- (CreateGalaxy.starMuti * 2)) / CreateGalaxy.starMuti) * 2)/10; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
+        int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x- (CreateGalaxy.planetMuti * 2)) / CreateGalaxy.planetMuti) * 2)/10; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
         
         do
         {
@@ -102,6 +102,34 @@ public class Star: CelestialBody
             hold = planetsLoc[i].distFromBody + minDis;
         }
     }
+
+    /// <summary>
+    /// returns the max number of planets fopr a star
+    /// </summary>
+    /// <returns></returns>
+    private int MaxPlanet()
+    {
+        if(typeOfStar == starType.Neutron) //neutron stars have a very small change to have a planet around them 
+        {
+            int testPlanet = Random.Range(0, 100);
+            if (testPlanet < 99)
+            {
+                return 0;
+            }
+            else
+            {
+                return 1;
+            }
+            
+        }
+        else
+        {
+            return Mathf.RoundToInt(((transform.lossyScale.x - (CreateGalaxy.planetMuti * 2)) / CreateGalaxy.planetMuti) * 2) / 10;
+        }
+
+    }
+
+
 
     /// <summary>
     /// used to work out if a planet can have life
@@ -157,33 +185,32 @@ public class Star: CelestialBody
         SetScale();
     }
 
-    public void SetMass(int newMass)
-    {        
-        mass = newMass;
-        SetScale();
-    }
+   
 
-    private void SetScale()
+    protected override void SetScale()
     {
         if (typeOfStar == starType.Neutron)
         {
-            transform.localScale = Vector3.one * CreateGalaxy.starMuti*5;
+            transform.localScale = Vector3.one * CreateGalaxy.starMuti * (CreateGalaxy.starMuti/10);
+        }else if (typeOfStar == starType.BinaryStar|| typeOfStar == starType.Ternarystar)
+        {
+            transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti/2;
         }
-        else
+        else 
         {
             transform.localScale = Vector3.one * mass * CreateGalaxy.starMuti;
         }
 
 
     }
-
+   
 
     /// <summary>
     /// spawing satalite planets around the star 
     /// </summary>
     /// <param name="starPos">The stars position info</param>
-    /// <param name="prefabName">String of th prefab to spawn</param>
-    /// <returns> the satalite spawned</returns>
+    /// <param name="prefabName">name of the prefab to spawn</param>
+    /// <returns>the satalite spawned</returns>
     protected override GameObject SpawnSatalite(SataliteDetails starPos, string prefabName)
     {
         GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;

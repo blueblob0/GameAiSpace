@@ -1,56 +1,36 @@
 ﻿//script made by: up651590
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
-//Class to hold the star and move it before we spawn it
-public class HoldStar
-{
-    public Vector3 starPos;
-    private int starMass;
-    public int StarMass
-    {
-        get{ return starMass; }
-    }   
-
-    public readonly int id;
-
-    public float radius()
-    {
-        return (starMass * CreateGalaxy.starMuti)/2;
-    }
-
-    public HoldStar(int StarMass, int Id, Vector3 StarPos)
-    {       
-        id = Id;
-        starPos = StarPos;
-        starMass = StarMass;
-    }
-
-    public void IncreaseMass( int addMass)
-    {
-        starMass += addMass;
-    }
-}
 
 public class CreateGalaxy : MonoBehaviour
 {
-    public const int starMuti = 50;
+    public Text StarListText;
+    public const int starMuti = 200;
     public const int planetMuti = 50;
     //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
     private List<Star> realStars = new List<Star>();
     public const string starPrefabName = "StarPrefab";
     public const string binaryPrefabName = "BinaryStarPrefab";
+    public const string ternayPrefabName = "TernaryStarPrefab";
+    public const string blackHolePrefabName = "BlackHole";
     // private int spaceBetween = StarMuti*10;
     /// <summary>
     /// the center of the Galaxy might be usefull if you have mutiple galaxys 
     /// </summary>
     private Vector3 centerpos = Vector3.zero;
     //bool testing = false;
-    bool backhole = true;
+    //bool backhole = true;
     //bool backhole = false;
     BlackHole black;
+    const int startBHoleMass = 500;
+    private bool first = true;
 
+    //counting varables to display star count on screen
+    private int blackHoleCount =0;
+    int[] starCount = new int[4] { 0, 0, 0, 0 };
     //The way geenration will work
     //create stars
     //create balckhole
@@ -60,14 +40,15 @@ public class CreateGalaxy : MonoBehaviour
     //then work out planets around star
     //planets that can have life marked 
 
-     //extra
-     //make stars just struts holding the location and mass and move based on that  
+    //extra
+    //make stars just struts holding the location and mass and move based on that  
 
     // Use this for initialization
     void Start()
     {        
         Application.runInBackground = true;
         GenerateGalaxy();
+        ShowStarList();
     }
 
     void GenerateGalaxy()
@@ -123,41 +104,86 @@ public class CreateGalaxy : MonoBehaviour
         }
         //backhole = false;
         //once all the stars are made create a blackhole at the center 
-        if (backhole)
-        {
-            GameObject ablack = Instantiate(Resources.Load("BlackHole")) as GameObject;
-            ablack.transform.SetParent(transform);
-            black = ablack.GetComponent<BlackHole>();
-        }
+        //GameObject ablack = Instantiate(Resources.Load(blackHolePrefabName)) as GameObject;
+        //ablack.transform.SetParent(transform);
+        //black = ablack.GetComponent<BlackHole>();
+        //black.SetMass(startBHoleMass);
+
+        black = MakeBlackHole(transform.position, startBHoleMass);
+        black.SetCount(true);
         //then move the stars towards the blackhole
-        MoveTowardsBlackHole();
+        MoveTowardsBlackHole(black, false);
+
+        //Check to see if there are any other blackholes 
+        HandelBackHoles();
 
         CatogriseStars();
        // Debug.Log(black.count);
     }
 
+    /// <summary>
+    /// used to handel any blackholes created after the first move and move the other stars towards them
+    /// </summary>
+    private void HandelBackHoles()
+    {
+        bool keepCheck = true;
+
+        //loop until all blackholes are found
+        while (keepCheck)
+        {
+            BlackHole checkBlack = CheckForBlackHoles();
+            if (checkBlack == null)
+            {
+                keepCheck = false;
+            }
+            else
+            {
+                Debug.Log("black");
+                checkBlack.SetCount(false); // setting the number of stars it can pull in 
+                MoveTowardsBlackHole(checkBlack,true);
+                blackHoleCount++;
+            }
+        }
+    }
+
+    /// <summary>
+    /// used to check for any blackholes created, and move them
+    /// </summary>
+    BlackHole CheckForBlackHoles()
+    {
+        HoldStar[] stars = holdStars.ToArray();
+
+        for (int i = 0;i< stars.Length; i++)
+        {
+            if (stars[i].StarMass > 50)
+            {
+                HoldStar s = stars[i];
+                holdStars.Remove(stars[i]);
+               
+                return MakeBlackHole(s.starPos,s.StarMass*5);
+                
+            }
+        }
+
+        return null;
+    }
+
 
     private void CatogriseStars()
     {
-        //types of star: tbd            (array pos)
-        //BlackHole Star Over 50 Mass     (0)
-        //Neutron Over 40 Mass           (1)
+        //types of star: tbd            (array pos)        
+        //Neutron Over 40 Mass           (0)
         //otherwise:
-        //Singe Star 70%                (2)
-        //Twin Star 20%                 (3)
-        //Ternary star10%               (4)
-
-        //int[] starCount = new int[5] { 0, 0, 0, 0, 0 };
-
+        //Singe Star 70%                (1)
+        //Twin Star 20%                 (2)
+        //Ternary star10%               (3)    
+        //
         foreach (HoldStar s in holdStars)
         {
-            if (s.StarMass > 50)
-            {
-                MakeStar(s, starType.BlackHole);                
-            }
-            else if(s.StarMass > 40)
+           if(s.StarMass > 40)
             {
                 MakeStar(s, starType.Neutron);
+                starCount[(int)starType.Neutron]++;
             }
             else
             {
@@ -165,15 +191,18 @@ public class CreateGalaxy : MonoBehaviour
                 if (holdRand < 70)
                 {
                     MakeStar(s, starType.SingeStar);
+                    starCount[(int)starType.SingeStar]++;
                 }
                 else if(holdRand < 90)
                 {
                     MakeStar(s, starType.BinaryStar);
+                    starCount[(int)starType.BinaryStar]++;
                 }
                 else 
                 {
                     //Debug.Log("starType.Ternarystar");
                     MakeStar(s, starType.Ternarystar);
+                    starCount[(int)starType.Ternarystar]++;
                 }
             }            
         }        
@@ -189,8 +218,11 @@ public class CreateGalaxy : MonoBehaviour
         GameObject stara;
         if (sType == starType.BinaryStar)
         {
-
              stara = (GameObject)Instantiate(Resources.Load(binaryPrefabName));
+        }
+        else if (sType == starType.Ternarystar)
+        {
+            stara = (GameObject)Instantiate(Resources.Load(ternayPrefabName));
         }
         else
         {
@@ -215,22 +247,16 @@ public class CreateGalaxy : MonoBehaviour
             stara.name = "Neutron";
             Debug.Log("Neutron");
         }
-        else if (sType == starType.BlackHole)
-        {
-            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.black);
-            stara.name = "BlackHole";
-        }
         else if (sType == starType.SingeStar)
         {
-            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+            stara.GetComponent<Renderer>().material.SetColor("_Color", Color.yellow);
             stara.name = "SingleStar";
         }
         else if (sType == starType.BinaryStar)
         {
           for(int i =0;i< theStar.theRend.Length; i++)
             {
-                theStar.theRend[i].material.SetColor("_Color", Color.yellow);
-                
+                theStar.theRend[i].material.SetColor("_Color", Color.red);               
                 
             }
             
@@ -247,22 +273,42 @@ public class CreateGalaxy : MonoBehaviour
         }
     }    
     
+    BlackHole MakeBlackHole(Vector3 starPos, int mass)
+    {
+        GameObject ablack = Instantiate(Resources.Load(blackHolePrefabName)) as GameObject;
+        ablack.transform.SetParent(transform);
+        ablack.transform.position = starPos;
+
+        BlackHole tempBlack = ablack.GetComponent<BlackHole>();
+        tempBlack.SetMass(mass);
+
+        return tempBlack;
+    }
+
     //move every star towards the backhole
-    public void MoveTowardsBlackHole()
+    public void MoveTowardsBlackHole(BlackHole bHole,bool limit)
     {
         int i = 0;
-        while (black.count > 0 && i < 10000)
+
+        int maxloops = 1000; //yo stop a infinate loiop
+        if (limit)
         {
-            moveStars(black.transform.position, black.mass);
-            RemoveStarsInsideBH(); //check for stars inside and destroy
+            maxloops = 100;
+        }
+
+        while (bHole.count > 0 && i < maxloops) //
+        {
+            moveStars(bHole.transform.position, bHole.mass, limit);
+            RemoveStarsInsideBH(bHole); //check for stars inside and destroy
             i++;
         }
 
     }
+
     /// <summary>
     /// make sure we remove planets inside the balckhole 
     /// </summary>
-    public void RemoveStarsInsideBH()
+    public void RemoveStarsInsideBH(BlackHole bHole)
     {
        // SphereCollider blackColl = black.GetComponent<SphereCollider>();
 
@@ -272,16 +318,15 @@ public class CreateGalaxy : MonoBehaviour
 
         for (int i = 0; i < tempArray.Length; i++)
         {
-            float dis = Vector3.Distance(black.transform.position, tempArray[i].starPos); // Get Distance Between two stars 
+            float dis = Vector3.Distance(bHole.transform.position, tempArray[i].starPos); // Get Distance Between two stars 
 
-            if (dis < ((black.mass/2) + tempArray[i].radius()))
+            if (dis < ((bHole.mass/2) + tempArray[i].radius()))
             {
-                //remove from the list so we dont try and acces a bull gameobjecct 
-                //going to try removing count isntead of mass as big stars isntatly remove the black hole 
+                //remove from the list so we dont try and acces a empty gameobjecct 
+                //the count is the number of stars a blackhole can absorbe before it stops moving them
                 //count--;
-                black.count -= Mathf.CeilToInt(Mathf.Log10(tempArray[i].StarMass));
+                bHole.reduceCount(Mathf.CeilToInt(Mathf.Log10(tempArray[i].StarMass)));
                 holdStars.Remove(tempArray[i]);
-
             }           
             
         }
@@ -324,17 +369,31 @@ public class CreateGalaxy : MonoBehaviour
     /// </summary>
     /// <param name="moveTo"></param>
     /// <param name="massAtPoint"></param>
-    public void moveStars(Vector3 moveTo,float massAtPoint)
+    public void moveStars(Vector3 moveTo,float massAtPoint,bool limit)
     {
         for (int i = 0; i < holdStars.Count; i++)
         {
             float force = 10 * massAtPoint / holdStars[i].StarMass; // / Vector3.Distance(transform.position, s.transform.position * s.GetComponent<Star>().mass);
+            if (limit && Vector3.Distance(holdStars[i].starPos, moveTo)>4000)
+            {
+               
 
-            holdStars[i].starPos = Vector3.MoveTowards(holdStars[i].starPos, moveTo, force);// * Time.deltaTime);
+            }
+            else
+            {
+                if (limit )
+                {
+                    force /= 2;
+
+                }
+
+                holdStars[i].starPos = Vector3.MoveTowards(holdStars[i].starPos, moveTo, force);// * Time.deltaTime);
+            }
+
         }
-      
-
+        
         //We hold the list in an array temporerally so we can remove stars without error
+
         //as you cant remove items from a list as you cycle through it 
         HoldStar[] tempArray = holdStars.ToArray(); 
         foreach (HoldStar s in tempArray)
@@ -343,15 +402,60 @@ public class CreateGalaxy : MonoBehaviour
         }
     }
 
+
+
+    void ShowStarList()
+    {
+        string hold = "StarList" + "\n";
+        hold += "Black Hole Count: " +  blackHoleCount + "\n";
+
+        hold += "Neutron Count: " + starCount[(int)starType.Neutron] + "\n";
+        hold += "Singe Star Count: " + starCount[(int)starType.SingeStar] + "\n";
+        hold += "Binary StarCount: " + starCount[(int)starType.BinaryStar] + "\n";
+        hold += "Ternary Star Count: " + starCount[(int)starType.Ternarystar] + "\n";
+
+
+        StarListText.text = hold;
+
+    }
+
 }
 
 
+//Class to hold the star and move it before we spawn it
+public class HoldStar
+{
+    public Vector3 starPos;
+    private int starMass;
+    public int StarMass
+    {
+        get { return starMass; }
+    }
+
+    public readonly int id;
+
+    public float radius()
+    {
+        return (starMass * CreateGalaxy.starMuti) / 2;
+    }
+
+    public HoldStar(int StarMass, int Id, Vector3 StarPos)
+    {
+        id = Id;
+        starPos = StarPos;
+        starMass = StarMass;
+    }
+
+    public void IncreaseMass(int addMass)
+    {
+        starMass += addMass;
+    }
+}
 
 public enum starType
-{
-    BlackHole = 0,
-    Neutron =    1,     
-    SingeStar = 2,
-    BinaryStar = 3,
-    Ternarystar = 4,
+{    
+    Neutron = 0,     
+    SingeStar = 1,
+    BinaryStar = 2,
+    Ternarystar = 3,
 }

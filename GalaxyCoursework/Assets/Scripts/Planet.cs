@@ -50,7 +50,11 @@ public class Planet : Satalite
         surface.gameObject.SetActive(false);
     }
 
-   
+    protected override void SetScale()
+    {
+        transform.localScale = CreateGalaxy.planetMuti * Vector3.one;
+    }
+
     public void SetBiomes()
     {
 
