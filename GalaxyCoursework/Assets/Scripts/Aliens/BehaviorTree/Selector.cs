@@ -10,7 +10,7 @@ public class Selector : Task {
     //Reference to the agent using this behavior
     protected AlienAI agentRef;
 
-    //The children this sequencer activates
+    //The children this selector activates
     private List<Task> children;
 
     //constructor
