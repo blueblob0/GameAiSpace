@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Collections;
 public class Planet : Satalite
 {
-    int numMoons;
+   
     public List<GameObject> moons = new List<GameObject>();
     public List<float> spheres = new List<float>();
     public Renderer surface; // The plane on the planet
     public string moonPrefabName = "MoonPrefab";
-    const float dist = 0.03f;
-    const float minDis = 0.06f;
+    const float dist = CreateGalaxy.planetMuti/5;
+    const float minDis = CreateGalaxy.planetMuti /10;
     Texture2D planTexture;
     public biomes[] biomeList;
 
@@ -17,6 +17,7 @@ public class Planet : Satalite
     public GameObject biomeCollider;
     //--------------------------------
     public bool haveLife = false;
+    public bool startFinish = false;
 
     // Use this for initialization
 
@@ -29,25 +30,23 @@ public class Planet : Satalite
 
         transform.SetParent(theParent);
 
-        numMoons = Random.Range(0, 4);
+        int numMoons = Random.Range(0, 4);
         speed = Random.Range(10,35);
         float hold = transform.lossyScale.x/2;
-        Vector2 circlePos = Random.insideUnitCircle.normalized;
+        Vector2 circlePos = Vector2.one;
         circlePos =  Vector2.one;
 
         for (int i = 0; i < numMoons; i++)
         {
+             circlePos = Random.insideUnitCircle.normalized;
             moons.Add(SpawnSatalite(hold, minDis, dist, moonPrefabName, circlePos));
             hold = moons[i].GetComponent<Satalite>().distPlanet;
-
+            
         }
 
         //set the texture of the surface so we can call it later;
-
-
-      
-
         surface.gameObject.SetActive(false);
+        startFinish = true;
     }
 
     protected override void SetScale()
@@ -173,28 +172,20 @@ public class Planet : Satalite
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "minicam")
-        {
-            Debug.Log("hitp" + name);
+        {           
 
             //IF the planet can have life then spawn the surface and creatures
             if (haveLife)
             {
                 surface.gameObject.SetActive(true);
+                //Decrease Speed for moving around planet surface 
+                other.GetComponentInParent<CameraMove>().DecreaseSpeedPlanet();
             }
-
             
-            //Decrease Speed for moving around planet surface 
-            other.GetComponentInParent<CameraMove>().DecreaseSpeedPlanet();
             Color c = GetComponent<Renderer>().material.color;
             c.a = 0;
             GetComponent<Renderer>().material.color = c;
-            //Set the spawning here
-            //Here
-            //Here
-            //Here
-            //Here
-            //Here
-            //Here
+           
         }
         else
         {

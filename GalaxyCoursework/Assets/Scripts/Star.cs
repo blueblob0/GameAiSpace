@@ -2,11 +2,12 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.UI;
 public class Star: CelestialBody
 {
     //public int[] numPlanets;
-    PlanetsInfo[] planetOnStar; //used to hold planets on each star, so that multistar systems have planet around rach star 
-
+    PlanetsInfo[] planetsOnStar; //used to hold planets on each star, so that multistar systems have planet around rach star 
+    public Text planetListText;
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
@@ -38,7 +39,7 @@ public class Star: CelestialBody
         planetsSpawned = false;
         //mass = 100;      
         
-        foreach(PlanetsInfo pla in planetOnStar)
+        foreach(PlanetsInfo pla in planetsOnStar)
         {
 
             GeneratePlanets(pla);
@@ -78,21 +79,21 @@ public class Star: CelestialBody
 
         if(starType.BinaryStar == typeOfStar)
         {
-            planetOnStar = new PlanetsInfo[2];
+            planetsOnStar = new PlanetsInfo[2];
             
         }
         else if (starType.Ternarystar == typeOfStar)
         {
-            planetOnStar = new PlanetsInfo[3];
+            planetsOnStar = new PlanetsInfo[3];
         }
         else
         {
-            planetOnStar = new PlanetsInfo[1];
+            planetsOnStar = new PlanetsInfo[1];
         }
 
-        for (int i =0;i< planetOnStar.Length;i++)
+        for (int i =0;i< planetsOnStar.Length;i++)
         {
-            planetOnStar[i] = new PlanetsInfo();
+            planetsOnStar[i] = new PlanetsInfo();
 
         }
 
@@ -131,9 +132,19 @@ public class Star: CelestialBody
             circlePos = Random.insideUnitCircle.normalized;
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
             planets.planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos, WorkOutLife(i));
+            if (planets.planetsLoc[i].haveLifeHold)
+            {
+                Debug.Log("yes");
+                gameObject.name = "yes";
+            }
+
             hold = planets.planetsLoc[i].distFromBody + minDis;
         }
     }
+
+
+    
+
 
     /// <summary>
     /// returns the max number of planets fopr a star
@@ -230,29 +241,31 @@ public class Star: CelestialBody
 
 
     }
-   
+
 
     /// <summary>
     /// spawing satalite planets around the star 
     /// </summary>
     /// <param name="starPos">The stars position info</param>
     /// <param name="prefabName">name of the prefab to spawn</param>
+    /// <param name="parent">name of the star to parent the planet to</param>
     /// <returns>the satalite spawned</returns>
-    protected override GameObject SpawnSatalite(SataliteDetails starPos, string prefabName)
+    protected GameObject SpawnPlanet(SataliteDetails starPos, string prefabName,GameObject parent)
     {
         GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
         Planet holds = a.GetComponent<Planet>();
-        holds.orbitingBody = gameObject;
+        holds.orbitingBody = parent;
         holds.distPlanet = starPos.distFromBody;
         a.name = starPos.distFromBody.ToString();
-        a.transform.SetParent(gameObject.transform);
+        a.transform.SetParent(parent.transform);
 
-        a.transform.position = gameObject.transform.position;
+        a.transform.position = parent.transform.position;
 
         a.transform.position+= starPos.location;
 
+        
+        holds.haveLife = starPos.haveLifeHold;
         holds.SetBiomes();
-
         return a;
     }
 
@@ -275,7 +288,7 @@ public class Star: CelestialBody
             
             if (planetsSpawned)
             {
-                foreach (PlanetsInfo pla in planetOnStar)
+                foreach (PlanetsInfo pla in planetsOnStar)
                 {
                     for (int i = 0; i < pla.planets.Length; i++)
                     {
@@ -285,14 +298,14 @@ public class Star: CelestialBody
             }
             else
             {
-                foreach (PlanetsInfo pla in planetOnStar)
+                for(int c =0;c< planetsOnStar.Length;c++)
                 {
 
-                    pla.planets = new GameObject[pla.planetsLoc.Length];
+                    planetsOnStar[c].planets = new GameObject[planetsOnStar[c].planetsLoc.Length];
 
-                    for (int i = 0; i < pla.planetsLoc.Length; i++)
+                    for (int i = 0; i < planetsOnStar[c].planetsLoc.Length; i++)
                     {
-                        pla.planets[i] = SpawnSatalite(pla.planetsLoc[i], planetPrefabName);
+                        planetsOnStar[c].planets[i] = SpawnPlanet(planetsOnStar[c].planetsLoc[i], planetPrefabName,bigStars[c]);
                     }
                 }
                 planetsSpawned = true;
@@ -302,12 +315,63 @@ public class Star: CelestialBody
             {
                 StartCoroutine(ReduceAlpha(theRend[i]));
             }
+
+
+            if (planetsOnStar[0]!=null && planetsOnStar[0].planets[0])
+            {
+
+                if (!planetListText)
+                {
+                    planetListText = GameObject.FindGameObjectWithTag("PlanetList").GetComponent<Text>();
+                }
+
+
+              StartCoroutine(  DisplayText(planetsOnStar[0].planets[0].GetComponent<Planet>()));
+
+            }
+
+
+
         }
        
        // Debug.Log("thing should not hit");
         
     }
 
+    private IEnumerator DisplayText(Planet planet)
+    {
+        while (!planet.startFinish)
+        {
+            yield return new WaitForEndOfFrame();
+
+        }
+        ShowPlanetList();
+
+    }
+
+    private void ShowPlanetList()
+    {       
+        string hold = "PlanetList" + "\n";
+        foreach (PlanetsInfo pla in planetsOnStar)
+        {
+            for (int i = 0; i < pla.planets.Length; i++)
+            {
+                Planet holdplan = pla.planets[i].GetComponent<Planet>();
+                hold += "Planet " + pla.planets[i].name;
+                hold += " Moons: " + holdplan.moons.Count ;
+                hold +=  "Life: " + holdplan.haveLife + "\n";
+                
+
+            }
+        }
+        planetListText.text = hold;
+
+    }
+
+    public void HidePlanetList()
+    {
+        planetListText.text = "";
+    }
 
     //used to reduce the alpha of the star when the player moves in
     IEnumerator ReduceAlpha( Renderer starRend)
@@ -341,7 +405,7 @@ public class Star: CelestialBody
         {
             miniStars[i].SetActive(false);
         }
-        foreach (PlanetsInfo pla in planetOnStar)
+        foreach (PlanetsInfo pla in planetsOnStar)
         {
             for (int i = 0; i < pla.planets.Length; i++)
             {
@@ -367,8 +431,8 @@ public class Star: CelestialBody
             {
                 StartCoroutine(IncreaseAlpha(theRend[i]));
             }
+            HidePlanetList();
 
-            
         }
 
     }

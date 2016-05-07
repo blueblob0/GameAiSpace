@@ -25,7 +25,7 @@ public class BlackHole : CelestialBody
 
     protected override void SetScale()
     {
-        transform.localScale = Vector3.one * mass; 
+        transform.localScale = Vector3.one * mass *CreateGalaxy.starMuti/50; 
     }
 
     /// <summary>

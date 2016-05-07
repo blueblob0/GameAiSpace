@@ -6,8 +6,9 @@ using UnityEngine.UI;
 
 public class CreateGalaxy : MonoBehaviour
 {
-    public Text StarListText;
-    public const int starMuti = 75;
+    public Text starListText;
+    
+    public const int starMuti = 100;
     public const int planetMuti = 50;
     //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
@@ -45,7 +46,8 @@ public class CreateGalaxy : MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {        
+    {
+        Random.seed = 5;
         Application.runInBackground = true;
         GenerateGalaxy();
         ShowStarList();
@@ -320,7 +322,7 @@ public class CreateGalaxy : MonoBehaviour
         {
             float dis = Vector3.Distance(bHole.transform.position, tempArray[i].starPos); // Get Distance Between two stars 
 
-            if (dis < ((bHole.mass/2) + tempArray[i].radius()))
+            if (dis < ((bHole.transform.localScale.x / 2) + tempArray[i].radius()))
             {
                 //remove from the list so we dont try and acces a empty gameobjecct 
                 //the count is the number of stars a blackhole can absorbe before it stops moving them
@@ -415,9 +417,11 @@ public class CreateGalaxy : MonoBehaviour
         hold += "Ternary Star Count: " + starCount[(int)starType.Ternarystar] + "\n";
 
 
-        StarListText.text = hold;
+        starListText.text = hold;
 
     }
+
+   
 
 }
 
