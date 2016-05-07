@@ -11,6 +11,7 @@ public class Star: CelestialBody
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
+    public string asteroidPrefabName = "AsteroidPrefab";
     //const float dist = 0.05f;//
     const float dist = CreateGalaxy.planetMuti;
    // const float minDis = 0.05f;//CreateGalaxy.starMuti;
@@ -24,6 +25,8 @@ public class Star: CelestialBody
     public GameObject[] miniStars;
     public GameObject[] bigStars;
     public Renderer[] theRend;
+
+    public GameObject[] asteroids;
 
 
     //public float angle;
@@ -101,19 +104,16 @@ public class Star: CelestialBody
 
 
     /// <summary>
-    /// Function for making planets this is called by the genration algrithum when the size of the star is set
+    /// Function for setting the planrts locations around its star 
     /// </summary>
     public void GeneratePlanets(PlanetsInfo planets, Transform parentSun)
     {
         // start with the size of the bisun and remove the spsace the mini sun would take up along with the raioud of a planet so planets cant stick out  
         float disatanceCalc = parentSun.lossyScale.x - (CreateGalaxy.planetMuti * 1.5f)- (CreateGalaxy.planetMuti/2);
-        disatanceCalc /= (2 * (dist )); // then size to the number of planets that cna fit 
+        disatanceCalc /= (4 * (dist )); // then size to the number of planets that cna fit 
         name = disatanceCalc.ToString();
         int maxplanets = Mathf.FloorToInt(disatanceCalc); //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
        
-       //TODO check maxplanets
-
-
 
         int numPlanets = 0;
         if (maxplanets > 0)
@@ -124,25 +124,27 @@ public class Star: CelestialBody
             } while (numPlanets > maxplanets);
         }
         numPlanets = maxplanets;
-       //Debug.Log(maxplanets);
+        
 
         
         planets.planetsLoc = new SataliteDetails[numPlanets];
-        float hold = (CreateGalaxy.planetMuti*1.5f)/2;
+        float hold = (CreateGalaxy.planetMuti);
         
         Vector2 circlePos;
         circlePos = Vector2.one;
+        List<string> a = new List<string>();
         for (int i = 0; i < planets.planetsLoc.Length; i++)
         {          
-           // circlePos = Random.insideUnitCircle.normalized;
-           //TODO unalign planets
+            //circlePos = Random.insideUnitCircle.normalized;
+         
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
             planets.planetsLoc[i] = SataliteLocation(hold, dist, dist, circlePos, WorkOutLife(i));
-            
-
-            hold = planets.planetsLoc[i].distFromBody + minDis;
+            //a.Add(planets.planetsLoc[i].distFromBody);
+            hold = planets.planetsLoc[i].distFromBody + CreateGalaxy.planetMuti;
         }
     }
+
+
 
 
     
@@ -247,15 +249,15 @@ public class Star: CelestialBody
 
 
     /// <summary>
-    /// spawing satalite planets around the star 
+    /// spawing A planet around the star 
     /// </summary>
     /// <param name="starPos">The stars position info</param>
     /// <param name="prefabName">name of the prefab to spawn</param>
     /// <param name="parent">name of the star to parent the planet to</param>
     /// <returns>the satalite spawned</returns>
-    protected GameObject SpawnPlanet(SataliteDetails starPos, string prefabName,GameObject parent)
+    protected GameObject SpawnPlanet(SataliteDetails starPos,GameObject parent)
     {
-        GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
+        GameObject a = Instantiate(Resources.Load(planetPrefabName)) as GameObject;
         Planet holds = a.GetComponent<Planet>();
         holds.orbitingBody = parent;
         holds.distPlanet = starPos.distFromBody;
@@ -265,12 +267,72 @@ public class Star: CelestialBody
         a.transform.position = parent.transform.position;
 
         a.transform.position += starPos.location;
+        Debug.Log(starPos.location);
        // Debug.Log(starPos.location);
         
         holds.haveLife = starPos.haveLifeHold;
         holds.SetBiomes();
         return a;
     }
+
+    protected GameObject SpawnAsteroid(SataliteDetails starPos,  GameObject parent)
+    {
+        GameObject asteroidHolder = new GameObject();
+        asteroidHolder.name = "asteroidHolder";
+
+        asteroidHolder.transform.SetParent(parent.transform);
+        asteroidHolder.transform.position = parent.transform.position;
+        asteroids = new GameObject[18];
+        for (int i =0;i< asteroids.Length;i++)
+        {
+            Debug.Log("asteroid");
+            asteroids[i] = Instantiate(Resources.Load(asteroidPrefabName)) as GameObject;
+
+            asteroids[i].transform.SetParent(asteroidHolder.transform);
+
+            asteroids[i].transform.position = asteroidHolder.transform.position;
+
+            asteroids[i].transform.position += starPos.location;
+
+            asteroids[i].transform.RotateAround(asteroidHolder.transform.position, Vector3.up, (i * 20));
+
+        }        
+        
+      
+        
+        return asteroidHolder;
+    }
+    private void SortPlanetSpawning()
+    {
+        int asteroidMin = 3;
+        for (int c = 0; c < planetsOnStar.Length; c++)
+        {
+            planetsOnStar[c].planets = new GameObject[planetsOnStar[c].planetsLoc.Length];
+            bool asteroid = false;
+            if (starType.SingeStar == typeOfStar &&planetsOnStar[c].planetsLoc.Length > asteroidMin) // if there is a sngle star and more than 3 planets one ccan be an asteroid
+            {
+               // asteroid = true;
+            }
+
+            for (int i = 0; i < planetsOnStar[c].planetsLoc.Length; i++)
+            {
+                if (asteroid && i > asteroidMin)
+                {
+                    planetsOnStar[c].planets[i] = SpawnAsteroid(planetsOnStar[c].planetsLoc[i], bigStars[c]);
+                    asteroid = false;
+                }
+                else
+                {
+                    planetsOnStar[c].planets[i] = SpawnPlanet(planetsOnStar[c].planetsLoc[i], bigStars[c]);
+                }
+            }
+        }
+        planetsSpawned = true;
+
+
+    }
+
+
 
     void OnTriggerEnter(Collider other)
     {
@@ -286,39 +348,25 @@ public class Star: CelestialBody
             {
                 miniStars[i].SetActive(true);
             }
-
-            
-            
             if (planetsSpawned)
             {
-                int c = 0;
+                
                 foreach (PlanetsInfo pla in planetsOnStar)
                 {
                     for (int i = 0; i < pla.planets.Length; i++)
                     {
                         pla.planets[i].SetActive(true);
-                     Debug.Log(   Vector3.Distance(pla.planets[i].transform.position, bigStars[c].transform.position) + " " + bigStars[c].name +" " + pla.planets[i].name);
-
+                    
                     }
                     
-                    c++;
+                   
                 }
             }
             else
             {
-                for(int c =0;c< planetsOnStar.Length;c++)
-                {
-
-                    planetsOnStar[c].planets = new GameObject[planetsOnStar[c].planetsLoc.Length];
-
-                    for (int i = 0; i < planetsOnStar[c].planetsLoc.Length; i++)
-                    {
-                        planetsOnStar[c].planets[i] = SpawnPlanet(planetsOnStar[c].planetsLoc[i], planetPrefabName,bigStars[c]);
-
-                    }
-                }
-                planetsSpawned = true;
+                SortPlanetSpawning();
             }
+
             StopAllCoroutines(); // use this to stop the current fade if any
 
             for (int i = 0; i < theRend.Length; i++)
@@ -367,9 +415,15 @@ public class Star: CelestialBody
             for (int i = 0; i < pla.planets.Length; i++)
             {
                 Planet holdplan = pla.planets[i].GetComponent<Planet>();
-                hold += "Planet " + pla.planets[i].name;
-                hold += " Moons: " + holdplan.moons.Count ;
-                hold +=  "Life: " + holdplan.haveLife + "\n";
+                if (holdplan)
+                {
+                    hold += "Planet " + pla.planets[i].name;
+                    hold += " Moons: " + holdplan.moons.Count;
+                    hold += "Life: " + holdplan.haveLife + "\n";
+
+                }
+
+              
                 
 
             }

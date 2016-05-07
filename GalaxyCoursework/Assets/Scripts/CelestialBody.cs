@@ -72,13 +72,14 @@ public abstract class CelestialBody : MonoBehaviour {
     {
 
         // star by moving out a bit from the planet 
-        float move = moveAmount + Random.Range(minDist, maxDist);
+        float distance = moveAmount + Random.Range(minDist, maxDist);
+
        // Debug.Log(move);
         // GameObject a = Instantiate(Resources.Load(prefabName)) as GameObject;
         // a.transform.SetParent(transform);
         Vector3 starPos;
 
-        move = Mathf.Sqrt((move * move) / 2);
+        float move = Mathf.Sqrt((distance * distance) / 2);
 
         
         starPos = circle * move;
@@ -90,7 +91,7 @@ public abstract class CelestialBody : MonoBehaviour {
         starPos.y = 0;
 
 
-        SataliteDetails a = new SataliteDetails(starPos, move, life);
+        SataliteDetails a = new SataliteDetails(starPos, distance, life);
 
         return a;
         //Debug.Log(MoveAmount + " " + move + " " + Vector3.Distance(Vector3.zero, starPos));
