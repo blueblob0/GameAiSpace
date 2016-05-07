@@ -135,11 +135,11 @@ public class Star: CelestialBody
         List<string> a = new List<string>();
         for (int i = 0; i < planets.planetsLoc.Length; i++)
         {          
-            //circlePos = Random.insideUnitCircle.normalized;
+            circlePos = Random.insideUnitCircle.normalized;
          
-            //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
+           
             planets.planetsLoc[i] = SataliteLocation(hold, dist, dist, circlePos, WorkOutLife(i));
-            //a.Add(planets.planetsLoc[i].distFromBody);
+            
             hold = planets.planetsLoc[i].distFromBody + CreateGalaxy.planetMuti;
         }
     }
@@ -183,7 +183,7 @@ public class Star: CelestialBody
     /// </summary>
     private bool WorkOutLife(int planetNum)
     {
-        if (planetNum >2 && planetNum < 5)
+        if (planetNum >2 && planetNum < 6)
         {
             //TODO make life random
             return true;
@@ -267,8 +267,7 @@ public class Star: CelestialBody
         a.transform.position = parent.transform.position;
 
         a.transform.position += starPos.location;
-        Debug.Log(starPos.location);
-       // Debug.Log(starPos.location);
+        
         
         holds.haveLife = starPos.haveLifeHold;
         holds.SetBiomes();
@@ -287,7 +286,7 @@ public class Star: CelestialBody
         {
             Debug.Log("asteroid");
             asteroids[i] = Instantiate(Resources.Load(asteroidPrefabName)) as GameObject;
-
+            asteroids[i].transform.localScale = (CreateGalaxy.planetMuti / 2) * Vector3.one;
             asteroids[i].transform.SetParent(asteroidHolder.transform);
 
             asteroids[i].transform.position = asteroidHolder.transform.position;
@@ -311,7 +310,7 @@ public class Star: CelestialBody
             bool asteroid = false;
             if (starType.SingeStar == typeOfStar &&planetsOnStar[c].planetsLoc.Length > asteroidMin) // if there is a sngle star and more than 3 planets one ccan be an asteroid
             {
-               // asteroid = true;
+                asteroid = true;
             }
 
             for (int i = 0; i < planetsOnStar[c].planetsLoc.Length; i++)
@@ -422,10 +421,11 @@ public class Star: CelestialBody
                     hold += "Life: " + holdplan.haveLife + "\n";
 
                 }
+                else
+                {
+                    hold += "Asteroids " + "\n";
 
-              
-                
-
+                }
             }
         }
         planetListText.text = hold;
