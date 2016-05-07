@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class CreateGalaxy : MonoBehaviour
 {
     public Text StarListText;
-    public const int starMuti = 200;
+    public const int starMuti = 75;
     public const int planetMuti = 50;
     //public int numStars = 100;
     private List<HoldStar> holdStars = new List<HoldStar>();
@@ -138,7 +138,7 @@ public class CreateGalaxy : MonoBehaviour
             }
             else
             {
-                Debug.Log("black");
+
                 checkBlack.SetCount(false); // setting the number of stars it can pull in 
                 MoveTowardsBlackHole(checkBlack,true);
                 blackHoleCount++;
@@ -245,7 +245,7 @@ public class CreateGalaxy : MonoBehaviour
             
             stara.GetComponent<Renderer>().material.SetColor("_Color", Color.blue);
             stara.name = "Neutron";
-            Debug.Log("Neutron");
+
         }
         else if (sType == starType.SingeStar)
         {

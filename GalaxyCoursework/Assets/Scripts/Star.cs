@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Collections;
 public class Star: CelestialBody
 {
-    public int numPlanets;
-    public GameObject[] planets;// = new List<GameObject>();
-    public SataliteDetails[] planetsLoc;// = new List<SataliteDetails>();
-    
+    //public int[] numPlanets;
+    PlanetsInfo[] planetOnStar; //used to hold planets on each star, so that multistar systems have planet around rach star 
+
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
@@ -38,8 +37,15 @@ public class Star: CelestialBody
         base.Start();
         planetsSpawned = false;
         //mass = 100;      
-        //for now do this now will change later 
-        GeneratePlanets();
+        
+        foreach(PlanetsInfo pla in planetOnStar)
+        {
+
+            GeneratePlanets(pla);
+
+        }
+
+        
     }
 
     public void AssignVarables()
@@ -70,36 +76,62 @@ public class Star: CelestialBody
         }
 
 
+        if(starType.BinaryStar == typeOfStar)
+        {
+            planetOnStar = new PlanetsInfo[2];
+            
+        }
+        else if (starType.Ternarystar == typeOfStar)
+        {
+            planetOnStar = new PlanetsInfo[3];
+        }
+        else
+        {
+            planetOnStar = new PlanetsInfo[1];
+        }
+
+        for (int i =0;i< planetOnStar.Length;i++)
+        {
+            planetOnStar[i] = new PlanetsInfo();
+
+        }
+
+
+
     }
 
 
     /// <summary>
     /// Function for making planets this is called by the genration algrithum when the size of the star is set
     /// </summary>
-    public void GeneratePlanets()
+    public void GeneratePlanets(PlanetsInfo planets)
     {
         // the number of planets can be between 0 and 12 ( for now)
         // 40% are between 8 and 10 20% 11 or 12,  20% 5 6 7, 432 12% 1 6% 0   2%
         int maxplanets = Mathf.RoundToInt(((transform.lossyScale.x- (CreateGalaxy.planetMuti * 2)) / CreateGalaxy.planetMuti) * 2)/10; //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
-        
-        do
+        int numPlanets = 0;
+        if (maxplanets > 0)
         {
-            planetsNum();
-        } while (numPlanets > maxplanets);
+            do
+            {
+                numPlanets = planetsNum();
+            } while (numPlanets > maxplanets);
+        }
 
-        //numPlanets = maxplanets;
-        // Debug.Log(numPlanets);
-        planetsLoc = new SataliteDetails[numPlanets];
+        //Debug.Log(planets);
+
+        
+        planets.planetsLoc = new SataliteDetails[numPlanets];
         float hold = CreateGalaxy.starMuti;
         
         Vector2 circlePos;
         circlePos = Vector2.one;
-        for (int i = 0; i < planetsLoc.Length; i++)
+        for (int i = 0; i < planets.planetsLoc.Length; i++)
         {          
             circlePos = Random.insideUnitCircle.normalized;
             //planetsLoc[i] = SataliteLocation(hold,  minDis, dist);
-            planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos, WorkOutLife(i));
-            hold = planetsLoc[i].distFromBody + minDis;
+            planets.planetsLoc[i] = SataliteLocation(hold, minDis, dist, circlePos, WorkOutLife(i));
+            hold = planets.planetsLoc[i].distFromBody + minDis;
         }
     }
 
@@ -136,24 +168,19 @@ public class Star: CelestialBody
     /// </summary>
     private bool WorkOutLife(int planetNum)
     {
-        
-
         if (planetNum >2 && planetNum < 5)
         {
             Debug.Log("make life random");
             return true;
         }
         return false;
-
-       
-
     }
 
 
     public int planetsNum()
     {
 
-        numPlanets = Random.Range(0, 100);
+       int  numPlanets = Random.Range(0, 100);
 
         if (numPlanets < 2) //2%
         {
@@ -248,18 +275,25 @@ public class Star: CelestialBody
             
             if (planetsSpawned)
             {
-                for (int i = 0; i < planets.Length; i++)
+                foreach (PlanetsInfo pla in planetOnStar)
                 {
-                    planets[i].SetActive(true);
-                }
+                    for (int i = 0; i < pla.planets.Length; i++)
+                    {
+                        pla.planets[i].SetActive(true);
+                    }
+                }               
             }
             else
             {
-                planets = new GameObject[planetsLoc.Length];
-
-                for (int i = 0; i < planetsLoc.Length; i++)
+                foreach (PlanetsInfo pla in planetOnStar)
                 {
-                    planets[i] = SpawnSatalite(planetsLoc[i], planetPrefabName);
+
+                    pla.planets = new GameObject[pla.planetsLoc.Length];
+
+                    for (int i = 0; i < pla.planetsLoc.Length; i++)
+                    {
+                        pla.planets[i] = SpawnSatalite(pla.planetsLoc[i], planetPrefabName);
+                    }
                 }
                 planetsSpawned = true;
             }
@@ -307,11 +341,14 @@ public class Star: CelestialBody
         {
             miniStars[i].SetActive(false);
         }
-
-        for (int i = 0; i < planets.Length; i++)
+        foreach (PlanetsInfo pla in planetOnStar)
         {
-            planets[i].SetActive(false);
+            for (int i = 0; i < pla.planets.Length; i++)
+            {
+                pla.planets[i].SetActive(false);
+            }
         }
+        
     }
 
     void OnTriggerExit(Collider other)
@@ -337,6 +374,20 @@ public class Star: CelestialBody
     }
 
 
+
+
+
+}
+
+/// <summary>
+/// for storing the info of all the planets around a star(so that binary and ternary stars have planets)
+/// </summary>
+public class PlanetsInfo
+{
+
+    public GameObject[] planets;// = new List<GameObject>();
+    public SataliteDetails[] planetsLoc;// = new List<SataliteDetails>();
+    
 
 
 
