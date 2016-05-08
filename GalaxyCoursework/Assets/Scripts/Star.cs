@@ -318,12 +318,12 @@ public class Star: CelestialBody
             {
                 if (asteroid && i > asteroidMin)
                 {
-                    planetsOnStar[c].planets[i] = SpawnAsteroid(planetsOnStar[c].planetsLoc[i], bigStars[c]);
+                    planetsOnStar[c].planets[i] = SpawnAsteroid(planetsOnStar[c].planetsLoc[i], miniStars[c]);
                     asteroid = false;
                 }
                 else
                 {
-                    planetsOnStar[c].planets[i] = SpawnPlanet(planetsOnStar[c].planetsLoc[i], bigStars[c]);
+                    planetsOnStar[c].planets[i] = SpawnPlanet(planetsOnStar[c].planetsLoc[i], miniStars[c]);
                 }
             }
         }
