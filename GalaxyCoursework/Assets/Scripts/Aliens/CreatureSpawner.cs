@@ -76,11 +76,11 @@ public class CreatureSpawner : MonoBehaviour {
             creature.GetComponent<AlienAI>().setPlanetScale(scaleValue);
 
             //Reproduce the creature a few times
-            int reproAmount = Random.Range(2, 5);
-            for(int j = 0; j < reproAmount; j++) {
-                creature.GetComponent<AlienAI>().reproduce();
-                yield return null;
-            }
+            //int reproAmount = Random.Range(2, 5);
+            //for(int j = 0; j < reproAmount; j++) {
+            //    creature.GetComponent<AlienAI>().reproduce();
+            //    yield return null;
+            //}
         }
     }
 }

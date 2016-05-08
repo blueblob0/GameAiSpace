@@ -112,6 +112,11 @@ public class AlienAI : MonoBehaviour {
     //Make sure the agents stay on the ground
     private float startY;
 
+    //Stops agents being double affected by biomes on spawn
+    private float biomeWait;
+    private float biomeWaitPast;
+    private bool set = false;
+
     //An array of potential name parts
     private string[] nameParts = {"si", "la",  "ti",  "aa", "ul",
                                   "er", "ta",  "ei",  "ae", "ui",
@@ -131,6 +136,12 @@ public class AlienAI : MonoBehaviour {
         }
         for(int i = 0; i < creatureBody.Length; i++) {
             creatureBody[i].GetComponent<Renderer>().material.color = bodyColour;
+        }
+
+        //Set the biome wait times
+        if(!set) {
+            biomeWait = 0;  //gets given a value on reproduce
+            biomeWaitPast = 0;
         }
 
         //Construct the main selector
@@ -160,10 +171,18 @@ public class AlienAI : MonoBehaviour {
         currentSpeed = 0;
         targetSpeed = currentSpeed;
         //Keep track of the base values
-        baseAttackSpeed = attackSpeed;
-        baseDodge = dodgeModifier;
-        baseStrength = strengthModifier;
-        baseReproduction = reproductionTimer;
+        if(baseAttackSpeed == 0) {
+            baseAttackSpeed = attackSpeed;
+        }
+        if(baseDodge == 0) {
+            baseDodge = dodgeModifier;
+        }
+        if(baseStrength == 0) {
+            baseStrength = strengthModifier;
+        }
+        if(baseReproduction == 0) {
+            baseReproduction = reproductionTimer;
+        }
 
         //Let the agent attack
         canAttack = true;
@@ -213,11 +232,9 @@ public class AlienAI : MonoBehaviour {
 	
 	// Update is called once per frame
 	public virtual void Update () {
-        //Debug----------------------------------------
-        if(Input.GetKeyDown(KeyCode.Space)) {
-            reproduce();
+        if(biomeWaitPast < biomeWait) {
+            biomeWaitPast += Time.deltaTime;
         }
-        //---------------------------------------------
 
         //Check the health
         if(health <= 0) {
@@ -316,17 +333,20 @@ public class AlienAI : MonoBehaviour {
     /// Called when the creature enters a biome, adjusts stats accordingly
     /// </summary>
     public void enteredBiome(biomes biome) {
+        if(biomeWaitPast < biomeWait) {
+            return;
+        }
         if(biome == favouriteBiome) {
             //Increase stats by 35%
             strengthModifier += baseStrength * 0.35f;
             dodgeModifier += baseDodge * 0.35f;
-            attackSpeed += baseAttackSpeed * 0.35f;
+            attackSpeed -= baseAttackSpeed * 0.35f;
             reproductionTimer -= baseReproduction * 0.35f;
         } else if(biome == leastFavouriteBiome) {
             //Decrease stats by 60%
             strengthModifier -= baseStrength * 0.6f;
             dodgeModifier -= baseDodge * 0.6f;
-            attackSpeed -= baseAttackSpeed * 0.6f;
+            attackSpeed += baseAttackSpeed * 0.6f;
             reproductionTimer += baseReproduction * 0.6f;
         } else {
             strengthModifier = baseStrength;
@@ -350,6 +370,15 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     public AlienAI getReproductionTarget() {
         return reproductionTarget;
+    }
+
+    /// <summary>
+    /// Makes the creature wait before detecting biomes
+    /// </summary>
+    public void initBiomeWait() {
+        biomeWait = 1;
+        biomeWaitPast = 0;
+        set = true;
     }
 
     /// <summary>
@@ -684,6 +713,10 @@ public class AlienAI : MonoBehaviour {
         GameObject spawn = GameObject.Instantiate(gameObject);
         //Get the script reference
         AlienAI spawnScript = spawn.GetComponent<AlienAI>();
+
+        //Init the biome wait
+        spawnScript.initBiomeWait();
+
         //Immediatley set the scale
         spawnScript.setPlanetScale(planetScale);
         //Set the parent if there is one
