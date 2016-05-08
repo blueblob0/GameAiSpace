@@ -702,7 +702,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public bool canReproduce() {
-        return reproductionTimePassed >= reproductionTimer;
+        return reproductionTimePassed >= reproductionTimer && otherCreatures.Count < 15;
     }
 
     /// <summary>
