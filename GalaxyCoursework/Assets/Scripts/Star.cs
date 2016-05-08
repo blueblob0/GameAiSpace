@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
+
 public class Star: CelestialBody
 {    
     PlanetsInfo[] planetsOnStar; //used to hold planets on each star, so that multistar systems have planets around each star 
@@ -26,7 +27,7 @@ public class Star: CelestialBody
 
     public GameObject[] asteroids;
 
-
+    
      
     protected override void Start()
     {
@@ -101,12 +102,7 @@ public class Star: CelestialBody
     /// </summary>
     public void GeneratePlanets(PlanetsInfo planets, Transform parentStar)
     {
-        // start with the size of the bigStar and remove the spsace the mini star would take up along with the raioud of a planet so planets cant stick out  
-        float disatanceCalc = parentStar.lossyScale.x - (CreateGalaxy.planetMuti * 1.5f)- (CreateGalaxy.planetMuti/2);
-        disatanceCalc /= (4 * (dist )); // then size to the number of planets that cna fit 
-        name = disatanceCalc.ToString();
-        int maxplanets = Mathf.FloorToInt(disatanceCalc); //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
-       
+        int maxplanets = MaxPlanet( parentStar);
 
         int numPlanets = 0;
         if (maxplanets > 0)
@@ -162,7 +158,7 @@ public class Star: CelestialBody
     /// returns the max number of planets fopr a star
     /// </summary>
     /// <returns></returns>
-    private int MaxPlanet()
+    private int MaxPlanet(Transform parentStar)
     {
         if(typeOfStar == starType.Neutron) //neutron stars have a very small change to have a planet around them 
         {
@@ -179,7 +175,11 @@ public class Star: CelestialBody
         }
         else
         {
-            return Mathf.RoundToInt(((transform.lossyScale.x - (CreateGalaxy.planetMuti * 2)) / CreateGalaxy.planetMuti) * 2) / 10;
+            // start with the size of the bigStar and remove the spsace the mini star would take up along with the raioud of a planet so planets cant stick out  
+            float disatanceCalc = parentStar.lossyScale.x - (CreateGalaxy.planetMuti * 1.5f) - (CreateGalaxy.planetMuti / 2);
+            disatanceCalc /= (4 * (dist)); // then size to the number of planets that cna fit 
+            name = disatanceCalc.ToString();
+            return Mathf.FloorToInt(disatanceCalc); //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
         }
 
     }
