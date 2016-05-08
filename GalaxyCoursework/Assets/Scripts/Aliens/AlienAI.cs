@@ -206,9 +206,8 @@ public class AlienAI : MonoBehaviour {
         //Set the object name
         name = creatureSpecies + ": " + creatureName;
 
-        //Set the collider size
+        //Get the collider reference and make sure it is a trigger
         targetDetectCollider = GetComponent<SphereCollider>();
-        targetDetectCollider.radius = 30;
         targetDetectCollider.isTrigger = true;
     }
 	
