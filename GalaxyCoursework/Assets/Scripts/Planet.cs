@@ -232,43 +232,33 @@ public class Planet : Satalite
     {
         if(test == biomes.Land)
         {
-            return Color.grey;
+            return new Color32(43, 214, 43, 1); //Bright Green
         }
         else if(test == biomes.Forest)
         {
-            return Color.yellow;
+            return new Color32(47, 153, 47, 1); //Dark Green
         }
         else if (test == biomes.Desert)
         {
-            return Color.red;
+            return new Color32(242, 237, 82, 1); //Light yellow
         }
         else if (test == biomes.Ice)
         {
-            return Color.cyan;
+            return new Color32(77, 232, 217, 1); //Light cyan
         }
         else if (test == biomes.Water)
         {
-
-            return Color.blue;
-
+            return new Color32(21, 60, 214, 1); //Deep blue
         }
         else if (test == biomes.Mountainous)
         {
-
-
-            return Color.magenta;
+            return new Color32(212, 107, 32, 1); //Brown
         }
         else if (test == biomes.Lava)
         {
-
-            return Color.black;
-
+            return new Color32(255, 0, 0, 1); //Red
         }
-
-
-        return Color.white;
-
-
+        return new Color32(43, 214, 43, 1);
     }
     
     // Update is called once per frame
