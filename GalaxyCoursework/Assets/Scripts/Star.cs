@@ -186,7 +186,7 @@ public class Star: CelestialBody
     {
         if (planetNum >2 && planetNum < 6)
         {
-            //TODO make life random
+            //life is not random in the end as it is already very rare
             return true;
         }
         return false;

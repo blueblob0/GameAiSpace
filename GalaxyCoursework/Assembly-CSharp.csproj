@@ -100,7 +100,6 @@
      <Compile Include="Assets\Scripts\Enums\Surnames.cs" />
      <Compile Include="Assets\Scripts\Enums\biomes.cs" />
      <Compile Include="Assets\Scripts\Moon.cs" />
-     <Compile Include="Assets\Scripts\Noise.cs" />
      <Compile Include="Assets\Scripts\Planet.cs" />
      <Compile Include="Assets\Scripts\Satalite.cs" />
      <Compile Include="Assets\Scripts\Star.cs" />
