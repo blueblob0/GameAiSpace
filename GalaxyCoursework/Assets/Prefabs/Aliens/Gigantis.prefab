@@ -2595,6 +2595,9 @@ MonoBehaviour:
   canFly: 0
   creatureBody:
   - {fileID: 141338}
+  allignmentDistance: 8
+  cohesionDistance: 12
+  seperationDistance: 10
 --- !u!135 &13598738
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2646,6 +2649,18 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_StepOffset
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: allignmentDistance
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: cohesionDistance
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: seperationDistance
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
