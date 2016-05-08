@@ -766,7 +766,7 @@ public class AlienAI : MonoBehaviour {
     /// <param name="distance">Distance ahead to avoid obstacles</param>
     /// <param name="strength">How strong the force will be</param>
     /// <returns></returns>
-    private Vector3 collisionAvoidance(float distance = 10, float strength = 3) {
+    private Vector3 collisionAvoidance(float distance = 10, float strength = 5) {
         //Scale back the distance
         distance /= planetScale;
         //Combined force of the 3 rays
