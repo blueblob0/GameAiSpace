@@ -780,7 +780,7 @@ MonoBehaviour:
   - {fileID: 431140}
   - {fileID: 472984}
   - {fileID: 456772}
-  scaleValue: 50
+  scaleValue: 30
 --- !u!114 &11469362
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -997,7 +997,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: scaleValue
-      value: 50
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 0}
       propertyPath: biomeCollider
