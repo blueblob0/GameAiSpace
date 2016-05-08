@@ -220,8 +220,8 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 137390}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: 53b995727e4c3a84f9260ae07b427067, type: 2}
   m_SubsetIndices: 
@@ -316,8 +316,8 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 197292}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: 53b995727e4c3a84f9260ae07b427067, type: 2}
   m_SubsetIndices: 
@@ -340,8 +340,8 @@ MeshRenderer:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 184750}
   m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 2100000, guid: 53b995727e4c3a84f9260ae07b427067, type: 2}
   m_SubsetIndices: 
@@ -426,10 +426,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mass: 0
-  numPlanets: 0
-  planets: []
+  planetListText: {fileID: 0}
   spheres: []
   planetPrefabName: PlanetPrefab
+  twinPlanetPrefabName: TwinPlanetPrefab
+  asteroidPrefabName: AsteroidPrefab
   typeOfStar: 3
   miniStars:
   - {fileID: 118280}
@@ -440,6 +441,7 @@ MonoBehaviour:
   - {fileID: 184750}
   - {fileID: 197292}
   theRend: []
+  asteroids: []
 --- !u!135 &13556066
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -494,7 +496,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 185450}
