@@ -411,7 +411,7 @@ public class AlienAI : MonoBehaviour {
     /// </summary>
     /// <returns></returns>
     public float getBreakingDistance() {
-        return breakingDistance;
+        return breakingDistance / planetScale;
     }
 
     /// <summary>
