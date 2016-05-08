@@ -29,6 +29,7 @@ public class AlienAI : MonoBehaviour {
     public float allignmentDistance = 8;
     public float cohesionDistance = 12;
     public float seperationDistance = 10;
+    public float breakingDistance = 5;  //Distance to start breaking when pursuing targets
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -403,6 +404,14 @@ public class AlienAI : MonoBehaviour {
     /// <returns></returns>
     public float getPlanetScale() {
         return planetScale;
+    }
+
+    /// <summary>
+    /// Returns the breaking distance of the agent
+    /// </summary>
+    /// <returns></returns>
+    public float getBreakingDistance() {
+        return breakingDistance;
     }
 
     /// <summary>

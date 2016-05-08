@@ -2592,12 +2592,12 @@ MonoBehaviour:
   reproductionTimer: 180
   favouriteBiome: 0
   leastFavouriteBiome: 1
-  canFly: 0
   creatureBody:
   - {fileID: 141338}
   allignmentDistance: 18
   cohesionDistance: 22
   seperationDistance: 20
+  breakingDistance: 15
 --- !u!135 &13598738
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -2661,6 +2661,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: seperationDistance
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: breakingDistance
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
