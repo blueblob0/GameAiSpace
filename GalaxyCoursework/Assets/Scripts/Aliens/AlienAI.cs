@@ -26,6 +26,10 @@ public class AlienAI : MonoBehaviour {
     public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
     public bool canFly = false;         //DOESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
     public GameObject[] creatureBody;   //Reference so it can set the colour of its body
+    //Distances on how far to compute the specific steering behaviours
+    public float allignmentDistance = 8;
+    public float cohesionDistance = 12;
+    public float seperationDistance = 10;
 
     //List of potential targets
     protected List<AlienAI> nearTargets = new List<AlienAI>();
@@ -86,10 +90,6 @@ public class AlienAI : MonoBehaviour {
     private float allignmentWeight;
     private float cohesionWeight;
     private float seperationWeight;
-    //Distances on how far to compute the specific steering behaviours
-    private float allignmentDistance;
-    private float cohesionDistance;
-    private float seperationDistance;
     //Variables to control how long to wait for weight changing
     private float weightChangeWait;
     private float weightChangePass;
@@ -174,11 +174,6 @@ public class AlienAI : MonoBehaviour {
         allignmentWeight = 1;
         cohesionWeight  = 1;
         seperationWeight = 1;
-
-        //Init distances
-        allignmentDistance = 8;
-        cohesionDistance = 12;
-        seperationDistance = 10;
 
         //Init timer
         weightChangeWait = Random.Range(3, 10);
