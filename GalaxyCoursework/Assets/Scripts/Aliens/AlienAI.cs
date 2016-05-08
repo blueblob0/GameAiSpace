@@ -766,24 +766,13 @@ public class AlienAI : MonoBehaviour {
     /// <param name="distance">Distance ahead to avoid obstacles</param>
     /// <param name="strength">How strong the force will be</param>
     /// <returns></returns>
-    private Vector3 collisionAvoidance(float distance = 10, float strength = 3) {
+    private Vector3 collisionAvoidance(float distance = 10, float strength = 5) {
         //Scale back the distance
         distance /= planetScale;
         //Combined force of the 3 rays
         Vector3 force = Vector3.zero;
         //Fire a ray straight infront of the target
         force += fireAvoidanceRay(transform.position, velocity, distance);
-
-        //Fire a ray 45 degrees to either side (in radians)
-        Vector3 displace = velocity;
-        displace.x = Mathf.Cos(45 * Mathf.PI / 180);
-        displace.z = Mathf.Sin(45 * Mathf.PI / 180);
-        force += fireAvoidanceRay(transform.position, displace, distance);
-
-        displace = velocity;
-        displace.x = Mathf.Cos(-45 * Mathf.PI / 180);
-        displace.z = Mathf.Sin(-45 * Mathf.PI / 180);
-        force += fireAvoidanceRay(transform.position, displace, distance);
 
         //Calculate the force
         force = force.normalized * strength * Time.deltaTime;
@@ -811,7 +800,7 @@ public class AlienAI : MonoBehaviour {
             if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit) && hit.tag != "Biome") {
                 //Calculate the avoidance force
                 Vector3 ahead = transform.position + velocity * distance * Time.deltaTime;
-                Vector3 avoidanceForce = ahead - (rayOut.point + hit.transform.position);
+                Vector3 avoidanceForce = ahead - rayOut.point;
                 //Return the new force
                 return avoidanceForce;
             }

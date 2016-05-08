@@ -15,7 +15,6 @@ public class GetTarget : Task {
 
     public bool activate() {
         //Loop through and get the first target
-        //TODO get a target bassed off of the 'shouldAttack' function
         foreach(AlienAI alien in agentRef.getNearTargets()) {
             agentRef.setTarget(alien);
             break; //Break for now
