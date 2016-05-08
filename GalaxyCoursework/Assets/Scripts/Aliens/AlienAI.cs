@@ -775,9 +775,7 @@ public class AlienAI : MonoBehaviour {
             //Store the game object
             GameObject hit = rayOut.collider.gameObject;
             //First make sure we arent avoiding targets or allies
-            if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit)) {
-                Debug.Log(name + " is applying force away from " + hit.name);
-
+            if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit) && hit.tag != "Biome") {
                 //Calculate the avoidance force
                 Vector3 ahead = transform.position + velocity * distance * Time.deltaTime;
                 Vector3 avoidanceForce = ahead - (rayOut.point + hit.transform.position);
