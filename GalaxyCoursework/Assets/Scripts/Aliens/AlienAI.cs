@@ -24,7 +24,6 @@ public class AlienAI : MonoBehaviour {
     public float reproductionTimer;     //How long between each reproduction attempt (seconds)
     public biomes favouriteBiome;       //Creature gets a +%35 in stats inside this biome
     public biomes leastFavouriteBiome;  //Creature gets a -%60 in stats inside this biome 
-    public bool canFly = false;         //DOESN'T DO ANYTHING -------------------------------------------------------------------------------------------------
     public GameObject[] creatureBody;   //Reference so it can set the colour of its body
     //Distances on how far to compute the specific steering behaviours
     public float allignmentDistance = 8;
