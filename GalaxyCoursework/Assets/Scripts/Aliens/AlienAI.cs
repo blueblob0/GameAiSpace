@@ -217,7 +217,6 @@ public class AlienAI : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Space)) {
             reproduce();
         }
-        displayDebugLines();
         //---------------------------------------------
 
         //Check the health
