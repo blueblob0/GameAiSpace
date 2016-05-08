@@ -104,6 +104,7 @@
      <Compile Include="Assets\Scripts\Planet.cs" />
      <Compile Include="Assets\Scripts\Satalite.cs" />
      <Compile Include="Assets\Scripts\Star.cs" />
+     <Compile Include="Assets\Scripts\TwinPlanet.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

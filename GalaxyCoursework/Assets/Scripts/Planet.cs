@@ -15,15 +15,14 @@ public class Planet : Satalite
     public Renderer surface; // The plane on the planet
     public string moonPrefabName = "MoonPrefab";
     const float dist = CreateGalaxy.planetMuti/5;
-    const float minDis = CreateGalaxy.planetMuti /10;
-    Texture2D planTexture;
-    public biomes[] biomeList;
+    const float minDis = CreateGalaxy.planetMuti /10;    
+    
 
     //For the biome collider----------
     public GameObject biomeCollider;
     //--------------------------------
     public bool haveLife = false;
-    public bool startFinish = false;
+    
     
 
     // Use this for initialization
@@ -91,36 +90,7 @@ public class Planet : Satalite
 
     }
 
-    /// <summary>
-    /// creates a ring to show orbit
-    /// </summary>
-    void CreateOrbit()
-    {
-        LineRenderer line = gameObject.GetComponent<LineRenderer>();
-        int segments =40;
-        float radius = (transform.lossyScale.x/2);
-
-        line.SetVertexCount(segments + 1);
-        line.useWorldSpace = true;
-        
-        float x;
-        float y =0;
-        float z = 0f;
-
-        float angle = 0f;
-
-        for (int i = 0; i < (segments + 1); i++)
-        {
-            float move = Mathf.Sqrt((distPlanet * distPlanet) / 2);
-            x = Mathf.Sin(Mathf.Deg2Rad * angle) * move ;
-            z = Mathf.Cos(Mathf.Deg2Rad * angle) * move ;
-            Vector3 pos = new Vector3(x, y, z);
-            pos = transform.parent.position + pos;
-            line.SetPosition(i, pos);
-
-            angle += (360f / segments);
-        }
-    }
+   
 
     /// <summary>
     /// creaes a planet ring
@@ -130,7 +100,7 @@ public class Planet : Satalite
         theRing.gameObject.SetActive(true);
         int segments = 40;
         float radius = (transform.lossyScale.x / 2);
-        Debug.Log("ring");
+
         theRing.SetVertexCount(segments + 1);
         theRing.useWorldSpace = true;
 
@@ -153,12 +123,13 @@ public class Planet : Satalite
         }
     }
 
-    protected override void SetScale()
+    public override void SortBiomes()
     {
-        transform.localScale = CreateGalaxy.planetMuti * Vector3.one;
+        SetBiomes(biomeList);
     }
 
-    public void SetBiomes()
+
+    public  void  SetBiomes(biomes[] abiomeList)
     {
 
         Color planColour = Color.white;
@@ -184,12 +155,12 @@ public class Planet : Satalite
         }
 
 
-        biomeList = new biomes[numOfChanges];
+        abiomeList = new biomes[numOfChanges];
 
-        for(int i =0;i<biomeList.Length;i++)
+        for(int i =0;i< abiomeList.Length;i++)
         {
             //biomes hold = 1;
-            biomeList[i] =  (biomes)Random.Range(0, System.Enum.GetValues(typeof(biomes)).Length);
+            abiomeList[i] =  (biomes)Random.Range(0, System.Enum.GetValues(typeof(biomes)).Length);
         }
 
         float oneSect = 0;// texture.height / numOfChanges;
@@ -198,7 +169,7 @@ public class Planet : Satalite
         {
             if (y == oneSect)
             {
-                planColour = GetBiomeColour(biomeList[count]);// new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
+                planColour = GetBiomeColour(abiomeList[count]);// new Color(Random.Range(0, 1.0f), Random.Range(0, 1.0f), Random.Range(0, 1.0f));
                 count++;                
                 //Debug.Log(planColour);
                 float test = planTexture.height;
@@ -214,7 +185,7 @@ public class Planet : Satalite
                 cube.transform.localScale = new Vector3(13, 1, 13 / numOfChanges);
                 //Let the collider know which biome it is and what parent to set (position & scale fuck up if you set the parent here)
                 BiomeColliderScript script = cube.GetComponent<BiomeColliderScript>();
-                script.biomeType = biomeList[count - 1]; //-1 because count gets increased
+                script.biomeType = abiomeList[count - 1]; //-1 because count gets increased
                 script.parenToSet = transform;
                 script.setUp();
                 //--------------------------------------------------------------------------------------------
@@ -228,38 +199,9 @@ public class Planet : Satalite
         planTexture.Apply();
     }
     
-    Color GetBiomeColour(biomes test)
-    {
-        if(test == biomes.Land)
-        {
-            return new Color32(43, 214, 43, 1); //Bright Green
-        }
-        else if(test == biomes.Forest)
-        {
-            return new Color32(47, 153, 47, 1); //Dark Green
-        }
-        else if (test == biomes.Desert)
-        {
-            return new Color32(242, 237, 82, 1); //Light yellow
-        }
-        else if (test == biomes.Ice)
-        {
-            return new Color32(77, 232, 217, 1); //Light cyan
-        }
-        else if (test == biomes.Water)
-        {
-            return new Color32(21, 60, 214, 1); //Deep blue
-        }
-        else if (test == biomes.Mountainous)
-        {
-            return new Color32(212, 107, 32, 1); //Brown
-        }
-        else if (test == biomes.Lava)
-        {
-            return new Color32(255, 0, 0, 1); //Red
-        }
-        return new Color32(43, 214, 43, 1);
-    }
+
+    
+    
     
     // Update is called once per frame
 

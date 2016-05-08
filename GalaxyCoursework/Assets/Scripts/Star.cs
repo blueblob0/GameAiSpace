@@ -11,6 +11,7 @@ public class Star: CelestialBody
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
+    public string twinPlanetPrefabName= "TwinPlanetPrefab";
     public string asteroidPrefabName = "AsteroidPrefab";
     //const float dist = 0.05f;//
     const float dist = CreateGalaxy.planetMuti;
@@ -270,11 +271,29 @@ public class Star: CelestialBody
         
         
         holds.haveLife = starPos.haveLifeHold;
-        holds.SetBiomes();
+        holds.SortBiomes();
       
         return a;
     }
 
+
+    protected GameObject SpawnTwinPlanet(SataliteDetails starPos, GameObject parent)
+    {
+        GameObject a = Instantiate(Resources.Load(twinPlanetPrefabName)) as GameObject;
+        TwinPlanet holds = a.GetComponent<TwinPlanet>();
+        holds.orbitingBody = parent;
+        holds.distPlanet = starPos.distFromBody;
+        a.name = starPos.distFromBody.ToString();
+        a.transform.SetParent(parent.transform);
+
+        a.transform.position = parent.transform.position;
+
+        a.transform.position += starPos.location;
+        
+        holds.SortBiomes();
+        a.transform.LookAt(parent.transform);
+        return a;
+    }
     protected GameObject SpawnAsteroid(SataliteDetails starPos,  GameObject parent)
     {
         GameObject asteroidHolder = new GameObject();
@@ -285,7 +304,7 @@ public class Star: CelestialBody
         asteroids = new GameObject[18];
         for (int i =0;i< asteroids.Length;i++)
         {
-            Debug.Log("asteroid");
+
             asteroids[i] = Instantiate(Resources.Load(asteroidPrefabName)) as GameObject;
             asteroids[i].transform.localScale = (CreateGalaxy.planetMuti / 2) * Vector3.one;
             asteroids[i].transform.SetParent(asteroidHolder.transform);
@@ -310,6 +329,7 @@ public class Star: CelestialBody
         {
             planetsOnStar[c].planets = new GameObject[planetsOnStar[c].planetsLoc.Length];
             bool asteroid = false;
+            bool twinWorld = true;
             if (starType.SingeStar == typeOfStar &&planetsOnStar[c].planetsLoc.Length > asteroidMin) // if there is a sngle star and more than 3 planets one ccan be an asteroid
             {
                 asteroid = true;
@@ -317,10 +337,15 @@ public class Star: CelestialBody
 
             for (int i = 0; i < planetsOnStar[c].planetsLoc.Length; i++)
             {
-                if (asteroid && i > asteroidMin)
+                if (asteroid && i >= asteroidMin && Random.Range(0,100)<40)
                 {
                     planetsOnStar[c].planets[i] = SpawnAsteroid(planetsOnStar[c].planetsLoc[i], miniStars[c]);
                     asteroid = false;
+                }
+                else if (twinWorld &&  Random.Range(0, 100) < 10)
+                {
+                    planetsOnStar[c].planets[i] = SpawnTwinPlanet(planetsOnStar[c].planetsLoc[i], miniStars[c]);
+                    twinWorld = false;
                 }
                 else
                 {
@@ -374,20 +399,26 @@ public class Star: CelestialBody
             {
                 StartCoroutine(ReduceAlpha(theRend[i]));
             }
-
-
-            if (planetsOnStar[0]!=null && planetsOnStar[0].planets[0])
+            Satalite holdPlan;
+            for (int i =0;i< planetsOnStar.Length; i++)
             {
-
-                if (!planetListText)
+                if (planetsOnStar[i] != null && planetsOnStar[i].planets.Length > 0)
                 {
-                    planetListText = GameObject.FindGameObjectWithTag("PlanetList").GetComponent<Text>();
+                    holdPlan = planetsOnStar[i].planets[0].GetComponent<Satalite>();
+                    if (!planetListText)
+                    {
+                        planetListText = GameObject.FindGameObjectWithTag("PlanetList").GetComponent<Text>();
+                    }
+
+
+                    StartCoroutine(DisplayText(holdPlan));
+
                 }
 
-
-              StartCoroutine(  DisplayText(planetsOnStar[0].planets[0].GetComponent<Planet>()));
-
             }
+
+
+            
 
 
 
@@ -397,7 +428,7 @@ public class Star: CelestialBody
         
     }
 
-    private IEnumerator DisplayText(Planet planet)
+    private IEnumerator DisplayText(Satalite planet)
     {
         while (!planet.startFinish)
         {
@@ -411,17 +442,27 @@ public class Star: CelestialBody
     private void ShowPlanetList()
     {       
         string hold = "Planet List" + "\n";
-        foreach (PlanetsInfo pla in planetsOnStar)
+        for (int c = 0;c < planetsOnStar.Length;c++)
         {
-            for (int i = 0; i < pla.planets.Length; i++)
+            for (int i = 0; i < planetsOnStar[c].planets.Length; i++)
             {
-                Planet holdplan = pla.planets[i].GetComponent<Planet>();
-                if (holdplan)
+                Satalite holdSat = planetsOnStar[c].planets[i].GetComponent<Satalite>();
+               
+                if (holdSat)
                 {
-                    hold += "Planet " + (i +1);
-                    hold += " Moons: " + holdplan.moons.Count;
-                    hold += " Life: " + holdplan.haveLife + "\n";
+                    hold += "Sun: " + (c + 1);
+                    hold += " Planet " + (i + 1);
+                    Planet holdPlan = holdSat.GetComponent<Planet>();
+                    if (holdPlan)
+                    {
+                        hold += ", Moons: " + holdPlan.moons.Count;
+                        hold += " Life: " + holdPlan.haveLife + "\n";
 
+                    }
+                    else
+                    {
+                        hold += ", TwinStar"  + "\n";
+                    }
                 }
                 else
                 {
@@ -436,7 +477,15 @@ public class Star: CelestialBody
 
     public void HidePlanetList()
     {
-        planetListText.text = "";
+
+        if (planetListText)
+        {
+            planetListText.text = "";
+
+        }
+
+
+            
     }
 
    
