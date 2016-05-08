@@ -37,9 +37,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
---- !u!127 &3
-LevelGameManager:
-  m_ObjectHideFlags: 0
 --- !u!157 &4
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -68,6 +65,7 @@ LightmapSettings:
     m_TextureCompression: 1
     m_FinalGather: 0
     m_FinalGatherRayCount: 1024
+    m_ReflectionCompression: 2
   m_LightmapSnapshot: {fileID: 112000000, guid: 19c2fabd8bfde514aafdd89d5fc142b4,
     type: 2}
   m_RuntimeCPUUsage: 25
@@ -288,6 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mass: 0
   orbitingBody: {fileID: 0}
+  startFinish: 0
   distPlanet: 0
   ringLine: {fileID: 0}
   ringLine2: {fileID: 0}
@@ -295,10 +294,8 @@ MonoBehaviour:
   spheres: []
   surface: {fileID: 0}
   moonPrefabName: MoonPrefab
-  biomeList: 
   biomeCollider: {fileID: 179242, guid: 1dd3ab79b5777204e8bc19473801d815, type: 2}
   haveLife: 0
-  startFinish: 0
 --- !u!23 &216552896
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -568,6 +565,10 @@ Prefab:
       propertyPath: m_Name
       value: BinaryStarPrefab (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 167882, guid: 33224467a8f4dc14f99f4f570c360405, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 33224467a8f4dc14f99f4f570c360405, type: 2}
   m_IsPrefabParent: 0
@@ -600,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 1997211142, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowActivationOnStandalone: 0
+  m_ForceModuleActive: 0
 --- !u!114 &740770744
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -618,7 +619,7 @@ MonoBehaviour:
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
   m_RepeatDelay: .5
-  m_AllowActivationOnMobileDevice: 0
+  m_ForceModuleActive: 0
 --- !u!114 &740770745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,7 +662,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &796788890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,6 +674,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3aec891561d1be40951c7724b5b9fed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mass: 0
+  orbitingBody: {fileID: 0}
+  startFinish: 0
+  distPlanet: 0
+  planets: []
+  biomeList2: 
 --- !u!120 &796788891
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -931,6 +938,10 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 188760, guid: 1d30e656123bd15499e031df10ee733a, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1d30e656123bd15499e031df10ee733a, type: 2}
   m_IsPrefabParent: 0
@@ -964,6 +975,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: .691176474, g: .289684236, b: .289684236, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
@@ -1030,6 +1047,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: .691176474, g: .289684236, b: .289684236, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 14
@@ -1095,7 +1118,7 @@ MonoBehaviour:
   m_Script: {fileID: 1997211142, guid: f5f67c52d1564df4a8936ccd202a3bd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowActivationOnStandalone: 0
+  m_ForceModuleActive: 0
 --- !u!114 &1710290640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,7 +1136,7 @@ MonoBehaviour:
   m_CancelButton: Cancel
   m_InputActionsPerSecond: 10
   m_RepeatDelay: .5
-  m_AllowActivationOnMobileDevice: 0
+  m_ForceModuleActive: 0
 --- !u!114 &1710290641
 MonoBehaviour:
   m_ObjectHideFlags: 0
