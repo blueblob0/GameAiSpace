@@ -9,8 +9,13 @@ public class Moon : Satalite {
         base.Start();
 
     }
-	
-	
 
-   
+    protected override void SetScale()
+    {
+        transform.localScale = CreateGalaxy.planetMuti / 10 * Vector3.one;
+    }
+    public override void SortBiomes()
+    {
+        //no biomes on moon just to forfil the abstract method
+    }
 }
