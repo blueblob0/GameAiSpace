@@ -219,13 +219,6 @@ public class AlienAI : MonoBehaviour {
         }
         //---------------------------------------------
 
-        //Avoid radnom flying ones
-        if(transform.position.y > startY) {
-            Vector3 temp = transform.position;
-            temp.y = startY;
-            transform.position = temp;
-        }
-
         //Check the health
         if(health <= 0) {
             Destroy(gameObject);
@@ -271,10 +264,8 @@ public class AlienAI : MonoBehaviour {
 
             //Normalise the desired velocity and add the speed
             velocity = calculateSpeed(velocity);
-
-            if(velocity.y > 0) {
-                velocity.y = 0;
-            }
+            //Make sure they do not go in the air
+            velocity.y = 0;
 
             //Update the position and look 'forward'
             transform.rotation = Quaternion.LookRotation(velocity);
