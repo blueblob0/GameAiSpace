@@ -217,6 +217,7 @@ public class AlienAI : MonoBehaviour {
         if(Input.GetKeyDown(KeyCode.Space)) {
             reproduce();
         }
+        displayDebugLines();
         //---------------------------------------------
 
         //Check the health
@@ -736,6 +737,39 @@ public class AlienAI : MonoBehaviour {
     private Vector3 collisionAvoidance(float distance = 10, float strength = 3) {
         //Scale back the distance
         distance /= planetScale;
+        //Combined force of the 3 rays
+        Vector3 force = Vector3.zero;
+        //Fire a ray straight infront of the target
+        force += fireAvoidanceRay(transform.position, velocity, distance);
+
+        //Fire a ray 45 degrees to either side (in radians)
+        Vector3 displace = velocity;
+        displace.x = Mathf.Cos(45 / Mathf.PI);
+        displace.z = Mathf.Sin(45 / Mathf.PI);
+        force += fireAvoidanceRay(transform.position, displace, distance);
+
+        displace = velocity;
+        displace.x = Mathf.Cos(-45 / Mathf.PI);
+        displace.z = Mathf.Sin(-45 / Mathf.PI);
+        force += fireAvoidanceRay(transform.position, displace, distance);
+
+        //Calculate the force
+        force = force.normalized * strength * Time.deltaTime;
+        //Set the desired velocity
+        setDesiredVelocity(force);
+
+        //Return the new force to push the agent away from obsticles
+        return desiredVelocity - velocity;
+    }
+
+    /// <summary>
+    /// For the collision avoidance function, fires a ray in the direction and returns an un noramlized vector
+    /// </summary>
+    /// <param name="from">Where to fire the ray from</param>
+    /// <param name="direction">Direction to fire the ray</param>
+    /// <param name="distance">How far to fire the ray</param>
+    /// <returns></returns>
+    private Vector3 fireAvoidanceRay(Vector3 from, Vector3 direction, float distance) {
         //Fire a ray at the distance to look ahead
         RaycastHit rayOut;
         if(Physics.Raycast(transform.position, velocity, out rayOut, distance)) {
@@ -743,15 +777,13 @@ public class AlienAI : MonoBehaviour {
             GameObject hit = rayOut.collider.gameObject;
             //First make sure we arent avoiding targets or allies
             if((target == null || hit != target) && (reproductionTarget == null || hit != reproductionTarget) && !otherCreatures.Contains(hit)) {
-                //Debug.Log("Applying force away from " + hit.name);
+                Debug.Log(name + " is applying force away from " + hit.name);
 
                 //Calculate the avoidance force
                 Vector3 ahead = transform.position + velocity * distance * Time.deltaTime;
                 Vector3 avoidanceForce = ahead - (rayOut.point + hit.transform.position);
-                //Set the desired velocity
-                setDesiredVelocity(avoidanceForce.normalized * strength * Time.deltaTime);
-                //Return the new force to push the agent away from obsticles
-                return desiredVelocity - velocity;
+                //Return the new force
+                return avoidanceForce;
             }
         }
         return Vector3.zero;
@@ -814,7 +846,7 @@ public class AlienAI : MonoBehaviour {
         //Steering
         Vector3 steer = steering + velocity;
         Debug.DrawLine(transform.position, transform.position + (steer.normalized * 5), Color.red);
-        //Avoidance distance
+        //Avoidance distance (single ray)
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 10), Color.magenta);
         //Velocity
         Debug.DrawLine(transform.position, transform.position + (velocity.normalized * 5), Color.green);
