@@ -47,7 +47,15 @@ public class CreateGalaxy : MonoBehaviour
         GenerateGalaxy();
         ShowStarList();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown("j"))
+        {
+            Application.LoadLevel(0);
 
+        }
+
+    }
     void GenerateGalaxy()
     {
         int theID = 0;
