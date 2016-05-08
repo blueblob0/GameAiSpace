@@ -41,8 +41,8 @@ public class Wander : Task {
         //Init the displacement force (direction to wander to)
         Vector3 displacement = new Vector3(0, 0, 1);
         //Displace the vector by the wanderAngle
-        displacement.x = circleRadius * Mathf.Cos(wanderAngle / Mathf.PI);
-        displacement.z = circleRadius * Mathf.Sin(wanderAngle / Mathf.PI);
+        displacement.x = circleRadius * Mathf.Cos(wanderAngle * Mathf.PI / 180);
+        displacement.z = circleRadius * Mathf.Sin(wanderAngle * Mathf.PI / 180);
         //Get a new angle for the next function call
         wanderAngle = Random.Range(0, 360);
 

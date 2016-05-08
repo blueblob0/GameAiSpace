@@ -743,13 +743,13 @@ public class AlienAI : MonoBehaviour {
 
         //Fire a ray 45 degrees to either side (in radians)
         Vector3 displace = velocity;
-        displace.x = Mathf.Cos(45 / Mathf.PI);
-        displace.z = Mathf.Sin(45 / Mathf.PI);
+        displace.x = Mathf.Cos(45 * Mathf.PI / 180);
+        displace.z = Mathf.Sin(45 * Mathf.PI / 180);
         force += fireAvoidanceRay(transform.position, displace, distance);
 
         displace = velocity;
-        displace.x = Mathf.Cos(-45 / Mathf.PI);
-        displace.z = Mathf.Sin(-45 / Mathf.PI);
+        displace.x = Mathf.Cos(-45 * Mathf.PI / 180);
+        displace.z = Mathf.Sin(-45 * Mathf.PI / 180);
         force += fireAvoidanceRay(transform.position, displace, distance);
 
         //Calculate the force
