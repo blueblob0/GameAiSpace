@@ -33,7 +33,7 @@ public class Wander : Task {
     /// <param name="circleDistance">How far forward to set the wander pos</param>
     /// <param name="circleRadius">How big the displacement vector can be</param>
     /// <returns>The wander (steering) force</returns>
-    private Vector3 wander(float circleDistance = 6.0f, float circleRadius = 5.0f) {
+    private Vector3 wander(float circleDistance = 6.0f, float circleRadius = 3.0f) {
         //Create the 'circle' for a wander position to be in
         Vector3 circleCenter = agentRef.getVelocity().normalized;
         circleCenter *= circleDistance;
@@ -41,10 +41,10 @@ public class Wander : Task {
         //Init the displacement force (direction to wander to)
         Vector3 displacement = new Vector3(0, 0, 1);
         //Displace the vector by the wanderAngle
-        displacement.x = circleRadius * Mathf.Cos(wanderAngle);
-        displacement.z = circleRadius * Mathf.Sin(wanderAngle);
-        //Move the angle slightly in a random direction
-        wanderAngle += Random.Range(-1, 1);
+        displacement.x = circleRadius * Mathf.Cos(wanderAngle / Mathf.PI);
+        displacement.z = circleRadius * Mathf.Sin(wanderAngle / Mathf.PI);
+        //Get a new angle for the next function call
+        wanderAngle = Random.Range(0, 360);
 
         //Normalize the new steering force to the speed
         agentRef.setDesiredVelocity(agentRef.calculateSpeed(circleCenter + displacement));
