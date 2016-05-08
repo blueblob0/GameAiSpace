@@ -109,6 +109,9 @@ public class AlienAI : MonoBehaviour {
     private ReproduceSequence reproduceSq;
     private IdleSelector idle;
 
+    //Make sure the agents stay on the ground
+    private float startY;
+
     //An array of potential name parts
     private string[] nameParts = {"si", "la",  "ti",  "aa", "ul",
                                   "er", "ta",  "ei",  "ae", "ui",
@@ -204,6 +207,8 @@ public class AlienAI : MonoBehaviour {
         //Get the collider reference and make sure it is a trigger
         targetDetectCollider = GetComponent<SphereCollider>();
         targetDetectCollider.isTrigger = true;
+
+        startY = transform.position.y;
     }
 	
 	// Update is called once per frame
@@ -213,6 +218,13 @@ public class AlienAI : MonoBehaviour {
             reproduce();
         }
         //---------------------------------------------
+
+        //Avoid radnom flying ones
+        if(transform.position.y > startY) {
+            Vector3 temp = transform.position;
+            temp.y = startY;
+            transform.position = temp;
+        }
 
         //Check the health
         if(health <= 0) {
@@ -257,11 +269,12 @@ public class AlienAI : MonoBehaviour {
                 steering = Vector3.zero;
             }
 
-            //Avoid radnom flying ones
-            velocity.y = 0;
-
             //Normalise the desired velocity and add the speed
             velocity = calculateSpeed(velocity);
+
+            if(velocity.y > 0) {
+                velocity.y = 0;
+            }
 
             //Update the position and look 'forward'
             transform.rotation = Quaternion.LookRotation(velocity);
