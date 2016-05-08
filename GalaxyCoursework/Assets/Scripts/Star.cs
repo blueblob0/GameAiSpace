@@ -123,7 +123,7 @@ public class Star: CelestialBody
                 numPlanets = planetsNum();
             } while (numPlanets > maxplanets);
         }
-        numPlanets = maxplanets;
+       // numPlanets = maxplanets;
         
 
         
@@ -302,6 +302,7 @@ public class Star: CelestialBody
         
         return asteroidHolder;
     }
+
     private void SortPlanetSpawning()
     {
         int asteroidMin = 3;
@@ -409,7 +410,7 @@ public class Star: CelestialBody
 
     private void ShowPlanetList()
     {       
-        string hold = "PlanetList" + "\n";
+        string hold = "Planet List" + "\n";
         foreach (PlanetsInfo pla in planetsOnStar)
         {
             for (int i = 0; i < pla.planets.Length; i++)
@@ -417,9 +418,9 @@ public class Star: CelestialBody
                 Planet holdplan = pla.planets[i].GetComponent<Planet>();
                 if (holdplan)
                 {
-                    hold += "Planet " + pla.planets[i].name;
+                    hold += "Planet " + (i +1);
                     hold += " Moons: " + holdplan.moons.Count;
-                    hold += "Life: " + holdplan.haveLife + "\n";
+                    hold += " Life: " + holdplan.haveLife + "\n";
 
                 }
                 else

@@ -408,11 +408,11 @@ public class CreateGalaxy : MonoBehaviour
 
     void ShowStarList()
     {
-        string hold = "StarList" + "\n";
+        string hold = "Star List" + "\n";
         hold += "Black Hole Count: " +  blackHoleCount + "\n";
-
-        hold += "Neutron Count: " + starCount[(int)starType.Neutron] + "\n";
-        hold += "Singe Star Count: " + starCount[(int)starType.SingeStar] + "\n";
+    
+        hold += "Neutron Count: " + starCount[(int)starType.Neutron]  + "\n";
+        hold += "Singe Star Count: " + (starCount[(int)starType.SingeStar] + 1) + "\n";
         hold += "Binary StarCount: " + starCount[(int)starType.BinaryStar] + "\n";
         hold += "Ternary Star Count: " + starCount[(int)starType.Ternarystar] + "\n";
 

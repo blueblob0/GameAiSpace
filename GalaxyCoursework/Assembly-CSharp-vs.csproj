@@ -46,7 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Aliens\AgressiveAlien.cs" />
      <Compile Include="Assets\Scripts\Aliens\AlienAI.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Decorators\Inverse.cs" />
      <Compile Include="Assets\Scripts\Aliens\BehaviorTree\Selector.cs" />
