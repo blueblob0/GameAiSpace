@@ -454,7 +454,7 @@ public class Star: CelestialBody
                     }
                     else
                     {
-                        hold += ", TwinStar"  + "\n";
+                        hold += ", TwinPlanet"  + "\n";
                     }
                 }
                 else
