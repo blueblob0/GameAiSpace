@@ -60,18 +60,6 @@ public class BlackHole : CelestialBody
         {
             return;
         }
-      
-         //getting rid of for now as it dosent wrok on start 
-        
-        
-        //mass -= other.GetComponent<CelestialBody>().Mass;
-        //going to try removing count isntead of mass as big stars isntatly remove the black hole 
-        //count--;
-
-       // count -= Mathf.CeilToInt(Mathf.Log10(other.GetComponent<CelestialBody>().mass));
-
-       // controler.DestroyStar(other.gameObject);
-        
     }
 
 

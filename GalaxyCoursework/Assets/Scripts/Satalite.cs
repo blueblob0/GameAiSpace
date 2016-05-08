@@ -9,22 +9,13 @@ public abstract class Satalite : CelestialBody
 
     protected Texture2D planTexture;
     protected biomes[] biomeList;
-
-    void Update()
-    {
-       // transform.RotateAround(orbitingBody.transform.position, Vector3.up, speed * Time.deltaTime);
-        //Debug.Log(orbitingBody.transform.position);
-    }
-
+        
     protected override void SetScale()
     {
         transform.localScale = CreateGalaxy.planetMuti * Vector3.one;
     }
 
     public abstract void SortBiomes();
-   
-
-
 
     /// <summary>
     /// creates a ring to show orbit

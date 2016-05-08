@@ -95,9 +95,6 @@
      <Compile Include="Assets\Scripts\CameraMove.cs" />
      <Compile Include="Assets\Scripts\CelestialBody.cs" />
      <Compile Include="Assets\Scripts\CreateGalaxy.cs" />
-     <Compile Include="Assets\Scripts\Enums\NamesFemale.cs" />
-     <Compile Include="Assets\Scripts\Enums\NamesMale.cs" />
-     <Compile Include="Assets\Scripts\Enums\Surnames.cs" />
      <Compile Include="Assets\Scripts\Enums\biomes.cs" />
      <Compile Include="Assets\Scripts\Moon.cs" />
      <Compile Include="Assets\Scripts\Planet.cs" />

@@ -4,18 +4,15 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.UI;
 public class Star: CelestialBody
-{
-    //public int[] numPlanets;
-    PlanetsInfo[] planetsOnStar; //used to hold planets on each star, so that multistar systems have planet around rach star 
+{    
+    PlanetsInfo[] planetsOnStar; //used to hold planets on each star, so that multistar systems have planets around each star 
     public Text planetListText;
     private bool planetsSpawned;
     public List<float> spheres = new List<float>();
     public string planetPrefabName = "PlanetPrefab";
     public string twinPlanetPrefabName= "TwinPlanetPrefab";
     public string asteroidPrefabName = "AsteroidPrefab";
-    //const float dist = 0.05f;//
     const float dist = CreateGalaxy.planetMuti;
-   // const float minDis = 0.05f;//CreateGalaxy.starMuti;
     const float minDis = CreateGalaxy.planetMuti*0.75f;
 
     public starType typeOfStar;
@@ -30,9 +27,7 @@ public class Star: CelestialBody
     public GameObject[] asteroids;
 
 
-    //public float angle;
-    //public float spiralAngel;
-    // Use this for initialization
+     
     protected override void Start()
     {
         if (!assignedVarables)
@@ -41,7 +36,6 @@ public class Star: CelestialBody
         }
         base.Start();
         planetsSpawned = false;
-        //mass = 100;     
         
         for (int i=0;i< planetsOnStar.Length;i++)
         {           
@@ -51,6 +45,9 @@ public class Star: CelestialBody
 
     }
 
+    /// <summary>
+    /// used to set key Varables that might need to be set before stat has run
+    /// </summary>
     public void AssignVarables()
     {
         assignedVarables = true;
@@ -77,8 +74,6 @@ public class Star: CelestialBody
             }
             miniStars[i].transform.SetParent(bigStars[i].transform);
         }
-
-
         if(starType.BinaryStar == typeOfStar)
         {
             planetsOnStar = new PlanetsInfo[2];
@@ -98,19 +93,16 @@ public class Star: CelestialBody
             planetsOnStar[i] = new PlanetsInfo();
 
         }
-
-
-
     }
 
 
     /// <summary>
-    /// Function for setting the planrts locations around its star 
+    /// Function for setting the planets location around its star 
     /// </summary>
-    public void GeneratePlanets(PlanetsInfo planets, Transform parentSun)
+    public void GeneratePlanets(PlanetsInfo planets, Transform parentStar)
     {
-        // start with the size of the bisun and remove the spsace the mini sun would take up along with the raioud of a planet so planets cant stick out  
-        float disatanceCalc = parentSun.lossyScale.x - (CreateGalaxy.planetMuti * 1.5f)- (CreateGalaxy.planetMuti/2);
+        // start with the size of the bigStar and remove the spsace the mini star would take up along with the raioud of a planet so planets cant stick out  
+        float disatanceCalc = parentStar.lossyScale.x - (CreateGalaxy.planetMuti * 1.5f)- (CreateGalaxy.planetMuti/2);
         disatanceCalc /= (4 * (dist )); // then size to the number of planets that cna fit 
         name = disatanceCalc.ToString();
         int maxplanets = Mathf.FloorToInt(disatanceCalc); //Mathf.RoundToInt((transform.lossyScale.x /CreateGalaxy.starMuti*2)- (CreateGalaxy.starMuti * 2));
@@ -123,11 +115,7 @@ public class Star: CelestialBody
             {
                 numPlanets = planetsNum();
             } while (numPlanets > maxplanets);
-        }
-       // numPlanets = maxplanets;
-        
-
-        
+        }        
         planets.planetsLoc = new SataliteDetails[numPlanets];
         float hold = (CreateGalaxy.planetMuti);
         
@@ -146,10 +134,29 @@ public class Star: CelestialBody
     }
 
 
+    /// <summary>
+    /// Getting the locations to sapwn satalites 
+    /// </summary>
+    /// <param name="moveAmount"></param>
+    /// <param name="minDist"></param>
+    /// <param name="maxDist"></param>
+    /// <param name="circle"></param>
+    /// <param name="life"></param>
+    /// <returns></returns>
+    protected SataliteDetails SataliteLocation(float moveAmount, float minDist, float maxDist, Vector2 circle, bool life)
+    {
 
+        // start by moving out a bit from the planet 
+        float distance = moveAmount + Random.Range(minDist, maxDist);
+        Vector3 starPos;
+        float move = Mathf.Sqrt((distance * distance) / 2);
+        starPos = circle * move;
+        starPos.z = starPos.y;
+        starPos.y = 0;
+        SataliteDetails a = new SataliteDetails(starPos, distance, life);
+        return a;
 
-    
-
+    }
 
     /// <summary>
     /// returns the max number of planets fopr a star
@@ -262,19 +269,30 @@ public class Star: CelestialBody
         Planet holds = a.GetComponent<Planet>();
         holds.orbitingBody = parent;
         holds.distPlanet = starPos.distFromBody;
-        a.name = starPos.distFromBody.ToString();
-        a.transform.SetParent(parent.transform);
+           
 
-        a.transform.position = parent.transform.position;
-
-        a.transform.position += starPos.location;
-        
-        
+        a = GeneralSpawn(starPos, parent, a);
         holds.haveLife = starPos.haveLifeHold;
         holds.SortBiomes();
-      
+
+
         return a;
     }
+
+    protected GameObject GeneralSpawn(SataliteDetails starPos, GameObject parent, GameObject theSpawn)
+    {        
+        theSpawn.name = starPos.distFromBody.ToString();
+        theSpawn.transform.SetParent(parent.transform);
+
+        theSpawn.transform.position = parent.transform.position;
+
+        theSpawn.transform.position += starPos.location;
+
+        theSpawn.transform.LookAt(parent.transform);
+        return theSpawn;
+
+    }
+
 
 
     protected GameObject SpawnTwinPlanet(SataliteDetails starPos, GameObject parent)
@@ -282,18 +300,15 @@ public class Star: CelestialBody
         GameObject a = Instantiate(Resources.Load(twinPlanetPrefabName)) as GameObject;
         TwinPlanet holds = a.GetComponent<TwinPlanet>();
         holds.orbitingBody = parent;
-        holds.distPlanet = starPos.distFromBody;
-        a.name = starPos.distFromBody.ToString();
-        a.transform.SetParent(parent.transform);
+        holds.distPlanet = starPos.distFromBody;     
 
-        a.transform.position = parent.transform.position;
-
-        a.transform.position += starPos.location;
-        
+       
+        a = GeneralSpawn(starPos, parent,a);
         holds.SortBiomes();
         a.transform.LookAt(parent.transform);
         return a;
     }
+
     protected GameObject SpawnAsteroid(SataliteDetails starPos,  GameObject parent)
     {
         GameObject asteroidHolder = new GameObject();
@@ -367,9 +382,7 @@ public class Star: CelestialBody
         {
             //Decrease Speed for moving around soloar system
             other.GetComponent<CameraMove>().DecreaseSpeedStar();
-            // other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 1f);
-            //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 0.5f);
-            // Debug.Log("hit");
+
             for(int  i = 0; i < miniStars.Length; i++)
             {
                 miniStars[i].SetActive(true);
@@ -381,11 +394,8 @@ public class Star: CelestialBody
                 {
                     for (int i = 0; i < pla.planets.Length; i++)
                     {
-                        pla.planets[i].SetActive(true);
-                    
-                    }
-                    
-                   
+                        pla.planets[i].SetActive(true);                    
+                    }         
                 }
             }
             else
@@ -409,23 +419,10 @@ public class Star: CelestialBody
                     {
                         planetListText = GameObject.FindGameObjectWithTag("PlanetList").GetComponent<Text>();
                     }
-
-
                     StartCoroutine(DisplayText(holdPlan));
-
                 }
-
             }
-
-
-            
-
-
-
-        }
-       
-       // Debug.Log("thing should not hit");
-        
+        }        
     }
 
     private IEnumerator DisplayText(Satalite planet)
@@ -433,10 +430,8 @@ public class Star: CelestialBody
         while (!planet.startFinish)
         {
             yield return new WaitForEndOfFrame();
-
         }
         ShowPlanetList();
-
     }
 
     private void ShowPlanetList()
@@ -446,18 +441,16 @@ public class Star: CelestialBody
         {
             for (int i = 0; i < planetsOnStar[c].planets.Length; i++)
             {
-                Satalite holdSat = planetsOnStar[c].planets[i].GetComponent<Satalite>();
-               
+                Satalite holdSat = planetsOnStar[c].planets[i].GetComponent<Satalite>();               
                 if (holdSat)
                 {
-                    hold += "Sun: " + (c + 1);
+                    hold += "star: " + (c + 1);
                     hold += " Planet " + (i + 1);
                     Planet holdPlan = holdSat.GetComponent<Planet>();
                     if (holdPlan)
                     {
                         hold += ", Moons: " + holdPlan.moons.Count;
                         hold += " Life: " + holdPlan.haveLife + "\n";
-
                     }
                     else
                     {
@@ -472,20 +465,14 @@ public class Star: CelestialBody
             }
         }
         planetListText.text = hold;
-
     }
 
     public void HidePlanetList()
     {
-
         if (planetListText)
         {
             planetListText.text = "";
-
-        }
-
-
-            
+        }            
     }
 
    
@@ -523,9 +510,7 @@ public class Star: CelestialBody
         {
             
             //increase speed for moving around galxy 
-            other.GetComponent<CameraMove>().IncreaseStarSpeed();
-            //other.GetComponent<BoxCollider>().size = new Vector3(1, 1, 20f);
-            //other.GetComponent<BoxCollider>().center = new Vector3(0, 0, 10f);
+            other.GetComponent<CameraMove>().IncreaseStarSpeed();           
             StopAllCoroutines(); // use this to stop the current fade if any
 
             for (int i = 0; i < theRend.Length; i++)
@@ -549,11 +534,6 @@ public class Star: CelestialBody
 /// </summary>
 public class PlanetsInfo
 {
-
     public GameObject[] planets;// = new List<GameObject>();
     public SataliteDetails[] planetsLoc;// = new List<SataliteDetails>();
-    
-
-
-
 }

@@ -31,20 +31,17 @@ public class CameraMove : MonoBehaviour {
         // Set target direction to the camera's initial orientation.
         targetDirection = transform.localRotation.eulerAngles;
     }
-
    
     Vector2 mouseAbsolute;
     Vector2 smoothMouse;
 
     public Vector2 clampInDegrees = new Vector2(360, 180);
-
-    //public Vector2 sensitivity = new Vector2(2, 2);
+   
     public Vector2 smoothing = new Vector2(3, 3);
     public Vector2 targetDirection;
 
     // Update is called once per frame
     void Update () {
-        //Debug.Log(maxSpeed);
         CheckButton();
 
         //region to show copied code
@@ -94,6 +91,8 @@ public class CameraMove : MonoBehaviour {
         }
         #endregion
 
+
+        //use keypress to move the camera 
         if (forward && velocity.x < maxSpeed)
         {
             velocity.x += acceleration * Time.deltaTime;
@@ -151,7 +150,7 @@ public class CameraMove : MonoBehaviour {
         }
 
 
-        // move the camera in the diurection its facing 
+        // move the camera in the direction its facing 
         transform.position += transform.forward * velocity.x;
         transform.position += transform.right * velocity.z;
 
@@ -240,10 +239,5 @@ public class CameraMove : MonoBehaviour {
         back = Input.GetKey(KeyCode.S);
         mouseHeld = Input.GetMouseButton(1);
     }
-    /*
-    void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("HIT");
-    }
-    */
+   
 }

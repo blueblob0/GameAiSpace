@@ -1,7 +1,7 @@
 ﻿//script made by: up651590
 using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
+
 public class Planet : Satalite
 {
     public LineRenderer ringLine;
@@ -21,12 +21,7 @@ public class Planet : Satalite
     //For the biome collider----------
     public GameObject biomeCollider;
     //--------------------------------
-    public bool haveLife = false;
-    
-    
-
-    // Use this for initialization
-
+    public bool haveLife = false;   
 
     protected override void Start () {
         base.Start();
@@ -35,9 +30,6 @@ public class Planet : Satalite
         transform.localScale= Vector3.one * CreateGalaxy.planetMuti;
 
         transform.SetParent(theParent);
-
-        
-
         //set the texture of the surface so we can call it later;
         surface.gameObject.SetActive(false);
         
@@ -90,10 +82,10 @@ public class Planet : Satalite
 
     }
 
-   
+
 
     /// <summary>
-    /// creaes a planet ring
+    /// creates a planet ring using the LineRenderer
     /// </summary>
     void CreatePlanetRing(float ringNumber, LineRenderer theRing)
     {
@@ -128,8 +120,11 @@ public class Planet : Satalite
         SetBiomes(biomeList);
     }
 
-
-    public  void  SetBiomes(biomes[] abiomeList)
+    /// <summary>
+    /// sets the biomes for a planet
+    /// </summary>
+    /// <param name="abiomeList"></param>
+    public void SetBiomes(biomes[] abiomeList)
     {
 
         Color planColour = Color.white;
@@ -143,7 +138,6 @@ public class Planet : Satalite
         if (biomeChance < 10) //10%
         {
             numOfChanges = 1;
-
         }
         else if (biomeChance < 80) //70%
         {
@@ -153,7 +147,6 @@ public class Planet : Satalite
         {
             numOfChanges = 3;
         }
-
 
         abiomeList = new biomes[numOfChanges];
 
@@ -199,17 +192,10 @@ public class Planet : Satalite
         planTexture.Apply();
     }
     
-
-    
-    
-    
-    // Update is called once per frame
-
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "minicam")
-        {           
-
+        {  
             //IF the planet can have life then spawn the surface and creatures
             if (haveLife)
             {
@@ -238,16 +224,10 @@ public class Planet : Satalite
                 surface.gameObject.SetActive(false);
                 //increase speed for moving around soloar system
                 other.GetComponentInParent<CameraMove>().IncreasePlanetSpeed();
-            }
-            
+            }            
             
             StopAllCoroutines(); // use this to stop the current fade if any
             StartCoroutine(IncreaseAlpha(gameObject.GetComponent<Renderer>()));
-
-            //Color c = GetComponent<Renderer>().material.color;
-            // c.a = 1;
-            // GetComponent<Renderer>().material.color = c;
-
 
         }
 

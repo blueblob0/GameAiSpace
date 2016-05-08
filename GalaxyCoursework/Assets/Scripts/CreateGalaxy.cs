@@ -8,23 +8,20 @@ public class CreateGalaxy : MonoBehaviour
 {
     public Text starListText;
     
-    public const int starMuti = 100;
-    public const int planetMuti = 50;
-    //public int numStars = 100;
+    public const int starMuti = 100; // used to control star size
+    public const int planetMuti = 50;// used to control planet size must not be bigger than starMuti
     private List<HoldStar> holdStars = new List<HoldStar>();
     private List<Star> realStars = new List<Star>();
     public const string starPrefabName = "StarPrefab";
     public const string binaryPrefabName = "BinaryStarPrefab";
     public const string ternayPrefabName = "TernaryStarPrefab";
     public const string blackHolePrefabName = "BlackHole";
-    // private int spaceBetween = StarMuti*10;
+    
     /// <summary>
     /// the center of the Galaxy might be usefull if you have mutiple galaxys 
     /// </summary>
     private Vector3 centerpos = Vector3.zero;
-    //bool testing = false;
-    //bool backhole = true;
-    //bool backhole = false;
+
     BlackHole black;
     const int startBHoleMass = 500;
     private bool first = true;
@@ -32,22 +29,20 @@ public class CreateGalaxy : MonoBehaviour
     //counting varables to display star count on screen
     private int blackHoleCount =0;
     int[] starCount = new int[4] { 0, 0, 0, 0 };
-    //The way geenration will work
+
+    //The way generation works
     //create stars
     //create balckhole
     //move the stars towards blackhole 
     //stop all stars
     //work out type of star from size
     //then work out planets around star
-    //planets that can have life marked 
-
-    //extra
-    //make stars just struts holding the location and mass and move based on that  
+    //planets that can have life marked     
 
     // Use this for initialization
     void Start()
     {
-        Random.seed = 5;//ToDO Make Random Again 
+        //Random.seed =5; for testing randomness
         Application.runInBackground = true;
         GenerateGalaxy();
         ShowStarList();
@@ -104,29 +99,24 @@ public class CreateGalaxy : MonoBehaviour
             }
 
         }
-        //backhole = false;
-        //once all the stars are made create a blackhole at the center 
-        //GameObject ablack = Instantiate(Resources.Load(blackHolePrefabName)) as GameObject;
-        //ablack.transform.SetParent(transform);
-        //black = ablack.GetComponent<BlackHole>();
-        //black.SetMass(startBHoleMass);
 
+        
+        //once all the stars are made create a blackhole at the center         
         black = MakeBlackHole(transform.position, startBHoleMass);
         black.SetCount(true);
         //then move the stars towards the blackhole
         MoveTowardsBlackHole(black, false);
 
         //Check to see if there are any other blackholes 
-        HandelBackHoles();
+        HandleBlackHoles();
 
         CatogriseStars();
-       // Debug.Log(black.count);
     }
 
     /// <summary>
-    /// used to handel any blackholes created after the first move and move the other stars towards them
+    /// used to handle any blackholes created after the first move and move the other stars towards them
     /// </summary>
-    private void HandelBackHoles()
+    private void HandleBlackHoles()
     {
         bool keepCheck = true;
 
@@ -166,7 +156,6 @@ public class CreateGalaxy : MonoBehaviour
                 
             }
         }
-
         return null;
     }
 
@@ -338,15 +327,15 @@ public class CreateGalaxy : MonoBehaviour
     /// USed for when stars collide during the start time as oncollision does not work here 
     /// </summary>
     public void RemoveStarsInStar(HoldStar theStar)
-    {
-        HoldStar[] tempArray = holdStars.ToArray();
+    {        HoldStar[] tempArray = holdStars.ToArray();
 
-        //Collider[] hitColliders = Physics.OverlapSphere(transform.position, transform.lossyScale.x);
+       
         bool restartCheck = false;
         for (int i = 0; i < tempArray.Length; i++)
         {
             float dis = Vector3.Distance(theStar.starPos, tempArray[i].starPos); // Get Distance Between two stars 
             
+            //check around the point as the star has not been spawned yet
             if (tempArray[i].id != theStar.id && dis < (theStar.radius()+ tempArray[i].radius()) && tempArray[i].StarMass <= theStar.StarMass)
             {
                 theStar.IncreaseMass(tempArray[i].StarMass);    
@@ -392,11 +381,10 @@ public class CreateGalaxy : MonoBehaviour
                 holdStars[i].starPos = Vector3.MoveTowards(holdStars[i].starPos, moveTo, force);// * Time.deltaTime);
             }
 
-        }
-        
+        }        
         //We hold the list in an array temporerally so we can remove stars without error
 
-        //as you cant remove items from a list as you cycle through it 
+        //as you cant remove items from a list as you cycle through it  store in an arrray
         HoldStar[] tempArray = holdStars.ToArray(); 
         foreach (HoldStar s in tempArray)
         {
@@ -405,20 +393,18 @@ public class CreateGalaxy : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// for showing a text log of the number of stars
+    /// </summary>
     void ShowStarList()
     {
         string hold = "Star List" + "\n";
-        hold += "Black Hole Count: " +  blackHoleCount + "\n";
-    
+        hold += "Black Hole Count: " +  blackHoleCount + "\n";    
         hold += "Neutron Count: " + starCount[(int)starType.Neutron]  + "\n";
         hold += "Singe Star Count: " + (starCount[(int)starType.SingeStar] + 1) + "\n";
         hold += "Binary StarCount: " + starCount[(int)starType.BinaryStar] + "\n";
         hold += "Ternary Star Count: " + starCount[(int)starType.Ternarystar] + "\n";
-
-
         starListText.text = hold;
-
     }
 
    
@@ -426,11 +412,13 @@ public class CreateGalaxy : MonoBehaviour
 }
 
 
-//Class to hold the star and move it before we spawn it
+/// <summary>
+/// Class to hold the star and move it before we spawn it
+/// </summary>
 public class HoldStar
 {
-    public Vector3 starPos;
-    private int starMass;
+    public Vector3 starPos; //where the star will be
+    private int starMass; //the star's mass
     public int StarMass
     {
         get { return starMass; }
