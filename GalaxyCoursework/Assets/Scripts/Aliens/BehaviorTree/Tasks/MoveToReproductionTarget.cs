@@ -14,8 +14,16 @@ public class MoveToReproductionTarget : Task {
     }
 
     public bool activate() {
-        //Set the speed
-        agentRef.setTargetSpeed(5);
+        //Quick check to calculate arrival speed
+        float distance = Vector3.Distance(agentRef.transform.position, agentRef.getTarget().transform.position);
+        if(distance > agentRef.getBreakingDistance()) {
+            //Move as fast as possible
+            agentRef.setTargetSpeed(5);
+        } else {
+            //Set the speed based off how far away the agent is
+            agentRef.setTargetSpeed(5 * (distance / agentRef.getBreakingDistance()));
+        }
+
         //Move to target
         agentRef.addSteeringForce(seek(agentRef.getReproductionTarget().transform.position));
         return true;

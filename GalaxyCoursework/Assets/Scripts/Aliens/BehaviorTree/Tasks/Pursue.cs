@@ -14,8 +14,16 @@ public class Pursue : Task {
     }
 
     public bool activate() {
-        //Move as fast as possible
-        agentRef.setTargetSpeed(agentRef.getMaximumSpeed());
+        //Quick check to calculate arrival speed
+        float distance = Vector3.Distance(agentRef.transform.position, agentRef.getTarget().transform.position);
+        if(distance > agentRef.getBreakingDistance()) {
+            //Move as fast as possible
+            agentRef.setTargetSpeed(agentRef.getMaximumSpeed());
+        } else {
+            //Set the speed based off how far away the agent is
+            agentRef.setTargetSpeed(agentRef.getMaximumSpeed() * (distance / agentRef.getBreakingDistance()));
+        }
+
         //Pursue the target
         agentRef.addSteeringForce(pursueSteering(agentRef.getTarget()));
         return true;
