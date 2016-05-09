@@ -50,8 +50,8 @@ public class CreatureSpawner : MonoBehaviour {
                 yield break;
             }
 
-            //Spawn in one creature for now
-            GameObject creature = GameObject.Instantiate(creatureTypes[Random.Range(1, creatureTypes.Length)]);
+            //Spawn in the creature
+            GameObject creature = GameObject.Instantiate(creatureTypes[Random.Range(0, creatureTypes.Length)]);
 
             //Wait one frame
             yield return null;
